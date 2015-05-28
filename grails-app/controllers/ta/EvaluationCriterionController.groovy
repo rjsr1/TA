@@ -23,6 +23,19 @@ class EvaluationCriterionController {
         respond new EvaluationCriterion(params)
     }
 
+    public EvaluationCriterion createEvaluationCriterion() {
+        return new EvaluationCriterion(params)
+    }
+
+    public boolean saveEvaluationCriterion(EvaluationCriterion evaluationCriterion) {
+        if(EvaluationCriterion.findByName(evaluationCriterion.name) == null) {
+            evaluationCriterion.save(flush: true)
+            new StudentController().updateStudentEvaluationCriteria()
+            return true
+        }
+        return false
+    }
+
     @Transactional
     def save(EvaluationCriterion evaluationCriterionInstance) {
         if (evaluationCriterionInstance == null) {

@@ -8,15 +8,15 @@ this.metaClass.mixin(cucumber.api.groovy.Hooks)
 this.metaClass.mixin(cucumber.api.groovy.EN)
 
 Given(~'^the system does not have an evaluation criterion with name "([^"]*)"$') { String criterionName ->
-    throw new PendingException()
+    assert EvaluationCriterion.findByName(criterionName) == null
 }
 
 When(~'^I create an evaluation criterion with name "([^"]*)"$') { String criterionName ->
-    throw new PendingException()
+    EvaluateStudentTestDataAndOperations.createEvaluationCriterion(criterionName)
 }
 
 Then(~'^the evaluation criterion with name "([^"]*)" is properly stored in the system$') { String criterionName ->
-    throw new PendingException()
+    assert EvaluationCriterion.findByName(criterionName) != null
 }
 
 //////////////////////////////////

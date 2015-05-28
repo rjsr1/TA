@@ -28,6 +28,24 @@ class StudentController {
         return student
     }
 
+    public boolean saveStudent(Student student) {
+        if(Student.findByLogin(student.login) == null) {
+            student.save(flush: true)
+            return true
+        }
+        return false
+    }
+
+    public void updateStudentEvaluationCriteria() {
+        for(Student student : Student.getAll()) {
+            for(EvaluationCriterion evCriterion : EvaluationCriterion.getAll()) {
+                if(!student.evaluationCriteria.contains(evCriterion)) {
+                    student.evaluationCriteria.add(evCriterion)
+                }
+            }
+        }
+    }
+
     @Transactional
     def save(Student studentInstance) {
         if (studentInstance == null) {

@@ -10,4 +10,16 @@ class Student {
         login unique: true
         name blank: false
     }
+
+    public void afterCreateAddCriteria(List<EvaluationCriterion> evaluationCriteria) {
+        for(EvaluationCriterion evaluationCriterion : evaluationCriteria) {
+            this.evaluationCriteria.add(evaluationCriterion)
+        }
+    }
+
+    public void addCriterion(EvaluationCriterion evaluationCriterion) {
+        if(!evaluationCriteria.contains(evaluationCriterion)) {
+            evaluationCriteria.add(evaluationCriterion)
+        }
+    }
 }
