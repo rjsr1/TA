@@ -1,6 +1,5 @@
 package steps
 
-import cucumber.api.PendingException
 import ta.EvaluationCriterion
 import ta.Student
 
@@ -35,19 +34,21 @@ Then(~'^the evaluation criterion with name "([^"]*)" was not stored in the syste
 
 //////////////////////////////////
 Given(~'^the system does not have an evaluation criterion with name "([^"]*)"2$') { String criterionName ->
-    throw new PendingException()
+    assert EvaluationCriterion.findByName(criterionName) == null
 }
 
 And(~'^the student "([^"]*)" with login "([^"]*)" is registered in the system$') { String studentName, String studentLogin ->
-    throw new PendingException()
+    EvaluateStudentTestDataAndOperations.createStudent(studentLogin, studentName)
+    assert Student.findByLogin(studentLogin) != null
 }
 
 When(~'^I create an evaluation criterion with name "([^"]*)"3$') { String criterionName ->
-    throw new PendingException()
+    EvaluateStudentTestDataAndOperations.createEvaluationCriterion(criterionName)
 }
 
 Then(~'^the system evaluates "([^"]*)" also using the criterion "([^"]*)"$') { String studentName, String criterionName ->
-    throw new PendingException()
+    def evaluationCriterion = EvaluationCriterion.findByName(criterionName)
+    assert Student.findByName(studentName).evaluationCriteria.contains(evaluationCriterion)
 }
 
 ////////////////////////////////
