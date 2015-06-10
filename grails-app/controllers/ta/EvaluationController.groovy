@@ -1,11 +1,15 @@
 package ta
 
+import commom.EvaluationBuilder
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
 class EvaluationController {
+
+    EvaluationBuilder builder = new EvaluationBuilder()
+    String pageMessage
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 

@@ -1,5 +1,6 @@
 package steps
 
+import pages.RegisterEvaluationPage
 import ta.Evaluation
 import ta.EvaluationController
 
@@ -35,7 +36,7 @@ When (~'^I fill in the field "([^"]*)" with "([^"]*)"$') {
 //And I fill in the field "question" "1" with "How does 'git push' works?"
 //And I fill in the field "alternative" "1" with "Sends a file to cloud repositorie"
 //And I fill in the field "alternative" "2" with "gets a file from cloud repositorie"
-And (~'^I fill in the field "([^"]*)" "([9-0])" with "([^"]*)"$') {
+And (~'^I fill in the field "([^"]*)" "([0-9])" with "([^"]*)"$') {
 	String field, int fieldIndex, String fieldData ->
 
 	at RegisterEvaluationPage
@@ -68,20 +69,8 @@ Then I should see the message "Campo de título é obrigatório. Nenhuma avalia�
 */
 
 //Given I am on Register evaluation page
-Given (~'^I am on Register evaluation page$') {
-	->
-	to RegisterEvaluationPage
-	at RegisterEvaluationPage
-
-}
 
 //And I press "Register" button
-And (~'^I press "([^"]*)" button$') {
-	String button ->
-
-	at RegisterEvaluationPage
-	page.click(button)
-}
 
 //Then I should see the message "Campo de título é obrigatório. Nenhuma avaliação foi registrada."
 Then (~'^Then I should see the message "([^"]*)"$') {
@@ -125,6 +114,8 @@ When I create an evaluation entitled "Git evaluation" with question "How to send
 Then no evaluation should be store in the system
 */
 
+def evTitle
+
 // Given the system already has an evaluation entitled "Git evaluation" stored
 Given (~'^the system already has an evaluation entitled "([^"]*)" stored$') { String evaluationTitle ->
 	evController = new EvaluationController()
@@ -132,7 +123,8 @@ Given (~'^the system already has an evaluation entitled "([^"]*)" stored$') { St
 	evController.builder.setEvaluationTitle(evaluationTitle)
 	expectedEvaluation = evController.builder.getEvaluation()
 
-	evController.saveEvaluation(evaluation)
+	evController.saveEvaluation(expectedEvaluation)
+	evTitle = evaluationTitle
 
 	assert Evaluation.findByTitle(evaluationTitle) != null
 }
@@ -147,10 +139,10 @@ When (~'^I create an evaluation entitled "([^"]*)" with question "([^"]*)"$') { 
 	evController.saveEvaluation(evaluation)
 }
 
-// Then the evaluation "Git evaluation" should be stored in the system
-Then (~'^Then no evaluation should be store in the system$') { ->
-	def actualEvaluation = Evaluation.findByTitle(evaluationTitle)
+// Then no evaluation should be store in the system
+Then (~'^no evaluation should be store in the system$') { ->
+	def actualEvaluation = Evaluation.findByTitle(evTitle)
 	// apenas a avaliacao anterior deve estar salva
 	assert actualEvaluation != null
-	assert actualEvaluation == expectedEvaluation
+	assert actualEvaluation.equals(expectedEvaluation)
 }

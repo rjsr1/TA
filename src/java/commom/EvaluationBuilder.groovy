@@ -1,4 +1,4 @@
-package ta.commom
+package commom
 
 import ta.Evaluation
 
@@ -16,7 +16,7 @@ class EvaluationBuilder implements IEvaluationBuilder {
 
 	public int addEvaluationQuestion(String question) {
 		_Evaluation.questions.add(question)
-
+		_Evaluation.questions.size() - 1
 	}
 
 	public void setQuestionAnswer(int questionIndex, String answer) {
