@@ -15,7 +15,6 @@ Feature: Register evaluation
 	#	Then I should see "Evaluation registered"
 
 	# after review
-  	@ignore
 	Scenario: register evaluation GUI
 			Given I am on Register evaluation page
 			When I fill in the field "title" with "Git evaluation"
@@ -60,7 +59,6 @@ Feature: Register evaluation
 	#	Then I should see "Evaluation's title is required"
 
 	# after review
-	@ignore
 	Scenario: register evaluation with no title GUI
 		Given I am on Register evaluation page
 		When I press "Register" button
