@@ -86,3 +86,39 @@ When (~'^I create an evaluation entitled "([^"]*)"$') { String evaluationTitle -
 Then (~'^the evaluation "([^"]*)" should be stored in the system$') { String evaluationTitle ->
 	assert Evaluation.findByTitle(evaluationTitle) != null
 }
+
+/*
+Given the system already has an evaluation entitled "Git evaluation" stored
+When I create an evaluation entitled "Git evaluation" with question "How to send files to your repository"
+Then no evaluation should be store in the system
+*/
+
+// Given the system already has an evaluation entitled "Git evaluation" stored
+Given (~'^the system already has an evaluation entitled "([^"]*)" stored$') { String evaluationTitle ->
+	evController = new EvaluationController()
+	evController.builder.createEvaluation()
+	evController.builder.setEvaluationTitle(evaluationTitle)
+	expectedEvaluation = evController.builder.getEvaluation()
+
+	evController.saveEvaluation(evaluation)
+
+	assert Evaluation.findByTitle(evaluationTitle) != null
+}
+
+// When I create an evaluation entitled "Git evaluation" with question "How to send files to your repository"
+When (~'^I create an evaluation entitled "([^"]*)" with question "([^"]*)"$') { String evaluationTitle, evaluationQuestion ->
+	evController.builder.createEvaluation()
+	evController.builder.setEvaluationTitle(evaluationTitle)
+	evController.builder.addEvaluationQuestion(evaluationQuestion)
+	def evaluation = evController.builder.getEvaluation()
+
+	evController.saveEvaluation(evaluation)
+}
+
+// Then the evaluation "Git evaluation" should be stored in the system
+Then (~'^Then no evaluation should be store in the system$') { ->
+	def actualEvaluation = Evaluation.findByTitle(evaluationTitle)
+	// apenas a avaliacao anterior deve estar salva
+	assert actualEvaluation != null
+	assert actualEvaluation == expectedEvaluation
+}
