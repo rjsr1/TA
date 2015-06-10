@@ -107,20 +107,20 @@ class EvaluationController {
 
         try {
             builder.createEvaluation()
+            if (title != null) {
+                builder.setEvaluationTitle(title)
+                int quesitonIndex = builder.addEvaluationQuestion(questionDescription)
+                builder.setQuestionAnswer(questionIndex, questionAnswer)
+                builder.addQuestionAlternative(questionIndex, questionAlternative)
 
-            builder.setEvaluationTitle(title)
-            int quesitonIndex = builder.addEvaluationQuestion(questionDescription)
-            builder.setQuestionAnswer(questionIndex, questionAnswer)
-            builder.addQuestionAlternative(questionIndex, questionAlternative)
+                Evaluation evaluation = builder.getEvaluation()
+                saveEvaluation(evaluation)
 
-            Evaluation evaluation = builder.getEvaluation()
-            saveEvaluation(evaluation)
+                pageMessage = "Avaliação registrada."
 
-            pageMessage = "Avaliação registrada."
-
-
-            pageMessage = "Campo de título é obrigatório. Nenhuma avaliação foi registrada."
-
+            } else {
+                pageMessage = "Campo de título é obrigatório. Nenhuma avaliação foi registrada."
+            }
 
         } catch (Exception e) {
             pageMessage = "Ocorreu um erro."

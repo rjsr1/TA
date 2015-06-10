@@ -62,6 +62,38 @@ Then (~'^I should see the message "([^"]*)"$') {
 
 
 /*
+Given I am on Register evaluation page
+When I press "Register" button
+Then I should see the message "Campo de título é obrigatório. Nenhuma avaliação foi registrada."
+*/
+
+//Given I am on Register evaluation page
+Given (~'^I am on Register evaluation page$') {
+	->
+	to RegisterEvaluationPage
+	at RegisterEvaluationPage
+
+}
+
+//And I press "Register" button
+And (~'^I press "([^"]*)" button$') {
+	String button ->
+
+	at RegisterEvaluationPage
+	page.click(button)
+}
+
+//Then I should see the message "Campo de título é obrigatório. Nenhuma avaliação foi registrada."
+Then (~'^Then I should see the message "([^"]*)"$') {
+	String messageText ->
+
+	at RegisterEvaluationPage
+	//def messageBoxText = page.getElementTextById('messageBoxText')
+	def messageBoxText = $('#messageBoxText')
+	assert messageBoxText.Equals(messageText)
+}
+
+/*
 Given the system has no evaluation entitled "Git evaluation" stored
 When I create an evaluation entitled "Git evaluation"
 Then the evaluation "Git evaluation" should be stored in the system
