@@ -27,7 +27,8 @@ class Evaluation {
 			if (ev.questions != null) {
 
 				if (this.questions.size() == ev.questions.size()){
-					for (int i = 0; i < questions.size(); i += 1) {
+					int qSize = this.questions.size()
+					for (int i = 0; i < qSize; i += 1) {
 
 						if (!this.questions[i].question.equals(ev.questions[i].question)) {
 							equals = false
@@ -37,7 +38,25 @@ class Evaluation {
 							equals = false
 						}
 
-						if (this.questions[i].alternatives.size() == ev.questions[i].alternatives.size()) {
+						if (this.questions[i].alternatives != null) {
+							if (ev.questions[i].alternatives != null) {
+
+								if (this.questions[i].alternatives.size() == ev.questions[i].alternatives.size()) {
+									int aSize = this.questions[i].alternatives.size()
+									for (int j = 0; j < qSize; j += 1) {
+
+										if (!this.questions[i].alternatives[j].equals(ev.questions[i].alternatives[j])){
+											equals = false
+										}
+									}
+								} else {
+									equals = false;
+								}
+
+							} else {
+								equals = false
+							}
+						} else {
 							equals = false
 						}
 					}
