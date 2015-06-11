@@ -2,14 +2,15 @@ package ta
 
 class Evaluation {
 	String title
-	List<Question> questions
+	static hasMany = [questions:Question]
+	//List<Question> questions;
 
 	static constraints = {
-        title blank: false
+        title blank: false, unique: true
     }
 
-	public Evaluation() {
-		title = null;
+	public Evaluation(){
+		title = null
 		questions = new ArrayList<Question>()
 	}
 

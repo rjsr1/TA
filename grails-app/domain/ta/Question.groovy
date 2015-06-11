@@ -2,11 +2,14 @@ package ta
 
 class Question {
 
-	public String question
-	public List<String> alternatives
-	public String answer
+	static belongsTo = Evaluation
+	static hasMany = [evaluations:Evaluation, alternatives:Alternative]
 
-	public String getQuestion() { question }
-	public String getAlternative(int index) { alternatives[index] }
-	public String getAnswer() { answer }
+	String question
+	//List<String> alternatives
+	String answer
+
+	static constraints = {
+		question blank: false, unique: true
+	}
 }
