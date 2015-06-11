@@ -3,25 +3,18 @@ package pages
 import geb.Page
 
 class RegisterEvaluationPage extends Page {
-    static url = "evaluation/register"
+    static url = "/TA/evaluation/create"
 
     static at = {
-        title ==~ /Criar Avaliacao/
+        title ==~ /Criar Evaluation/
     }
 
-    def fillData(elementId, text) {
-    	elementId = ("#" + elementId)
-        $(elementId).val(text)
+    def fillData(text) {
+        $("form").title = text
     }
 
-    def fillData(elementId, elementIndex, data) {
-        elementId = ("#" + elementId + elementIndex)
-        $(elementId).val(data)
-    }
-
-    def click(elementId) {
-    	elementId = ("#" + elementId)
-    	$(elementId).click()
+    def click(){
+        $("input", name: "create").click()
     }
 
 }

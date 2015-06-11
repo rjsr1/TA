@@ -1,6 +1,7 @@
 package steps
 
 import pages.RegisterEvaluationPage
+import pages.ShowEvaluationPage
 import ta.Evaluation
 import ta.EvaluationController
 
@@ -10,10 +11,7 @@ this.metaClass.mixin(cucumber.api.groovy.EN)
 /*
 Given I am on Register evaluation page
 When I fill in the field "title" with "Git evaluation"
-And I fill in the field "question" "1" with "How does 'git push' works?"
-And I fill in the field "alternative" "1" with "Sends a file to cloud repositorie"
-And I fill in the field "alternative" "2" with "gets a file from cloud repositorie"
-And I press "Register evaluation" button
+And I press register button
 Then I should see the message "Git evaluation registered"
 */
 
@@ -25,40 +23,25 @@ Given (~'^I am on Register evaluation page$') {
 
 }
 
-//When I fill in the field "title" with "Git evaluation"
-When (~'^I fill in the field "([^"]*)" with "([^"]*)"$') {
-	String field, text ->
+//When I fill in the field title with "Refactor evaluation"
+When (~'^I fill in the field title with "([^"]*)"$') {
+	String text ->
 
 	at RegisterEvaluationPage
-	page.fillData(field, text)
+	page.fillData(text)
 }
 
-//And I fill in the field "question" "1" with "How does 'git push' works?"
-//And I fill in the field "alternative" "1" with "Sends a file to cloud repositorie"
-//And I fill in the field "alternative" "2" with "gets a file from cloud repositorie"
-And (~'^I fill in the field "([^"]*)" "([0-9])" with "([^"]*)"$') {
-	String field, int fieldIndex, String fieldData ->
+//And I press register button
+And (~'^I press register button$') { ->
 
 	at RegisterEvaluationPage
-	page.fillData(field, fieldIndex, fieldData)
+	page.click()
 }
 
-//And I press "Register" button
-And (~'^I press "([^"]*)" button$') {
-	String button ->
+//Then I should be on show evaluation page
+Then (~'^I should be on show evaluation page$') { ->
 
-	at RegisterEvaluationPage
-	page.click(button)
-}
-
-//Then I should see the message "Avaliação registrada."
-Then (~'^I should see the message "([^"]*)"$') {
-	String messageText ->
-
-	at RegisterEvaluationPage
-	//def messageBoxText = page.getElementTextById('messageBoxText')
-	def messageBoxText = $('#messageBoxText')
-	assert messageBoxText.Equals(messageText)
+	at ShowEvaluationPage
 }
 
 
@@ -70,16 +53,11 @@ Then I should see the message "Campo de título é obrigatório. Nenhuma avalia�
 
 //Given I am on Register evaluation page
 
-//And I press "Register" button
+//And I press register button
 
-//Then I should see the message "Campo de título é obrigatório. Nenhuma avaliação foi registrada."
-Then (~'^Then I should see the message "([^"]*)"$') {
-	String messageText ->
-
+//Then I should stay in register evaluation page
+Then (~'^I should stay in register evaluation page$') { ->
 	at RegisterEvaluationPage
-	//def messageBoxText = page.getElementTextById('messageBoxText')
-	def messageBoxText = $('#messageBoxText')
-	assert messageBoxText.Equals(messageText)
 }
 
 /*

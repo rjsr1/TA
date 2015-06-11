@@ -17,12 +17,9 @@ Feature: Register evaluation
 	# after review
 	Scenario: register evaluation GUI
 			Given I am on Register evaluation page
-			When I fill in the field "title" with "Git evaluation"
-			And I fill in the field "question" "1" with "How does 'git push' works?"
-			And I fill in the field "alternative" "1" with "Sends a file to cloud repositorie"
-			And I fill in the field "alternative" "2" with "gets a file from cloud repositorie"
-			And I press "register" button
-			Then I should see the message "Avaliação registrada."
+			When I fill in the field title with "Refactor evaluation"
+			And I press register button
+			Then I should be on show evaluation page
 
 	# before review
 	#Scenario: register evaluation with no items
@@ -61,5 +58,5 @@ Feature: Register evaluation
 	# after review
 	Scenario: register evaluation with no title GUI
 		Given I am on Register evaluation page
-		When I press "Register" button
-		Then I should see the message "Campo de título é obrigatório. Nenhuma avaliação foi registrada."
+		When I press register button
+		Then I should stay in register evaluation page
