@@ -1,7 +1,5 @@
 package ta
 
-
-
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
@@ -49,6 +47,10 @@ class EvaluationCriterionController {
         }
 
         evaluationCriterionInstance.save flush:true
+
+        /////////////////////////
+        new StudentController().updateStudentEvaluationCriteria()
+        /////////////////////////
 
         request.withFormat {
             form multipartForm {

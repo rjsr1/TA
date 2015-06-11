@@ -1,5 +1,9 @@
 package steps
 
+import pages.EvaluationCriterionPages.CreateEvaluationCriterionPage
+import pages.EvaluationCriterionPages.EvaluationCriterionPage
+import pages.StudentPages.CreateStudentPage
+import pages.StudentPages.StudentPage
 import ta.EvaluationCriterion
 import ta.Student
 
@@ -48,7 +52,36 @@ When(~'^I create an evaluation criterion with name "([^"]*)"3$') { String criter
 
 Then(~'^the system evaluates "([^"]*)" also using the criterion "([^"]*)"$') { String studentName, String criterionName ->
     def evaluationCriterion = EvaluationCriterion.findByName(criterionName)
-    assert Student.findByName(studentName).evaluationCriteria.contains(evaluationCriterion)
+    assert Student.findByName(studentName).evaluations.get(evaluationCriterion.name) != null
 }
 
 ////////////////////////////////
+Given(~'^I am on the Students Page$') { ->
+    to StudentPage
+    at StudentPage
+}
+
+And(~'^the student "([^"]*)" with login "([^"]*)" is registered in the system2$') { String name, String login ->
+    to CreateStudentPage
+    at CreateStudentPage
+
+    page.fillStudentDetails(login, name)
+    page.selectCreateStudent()
+}
+
+And(~'^there is a criterion called "([^"]*)" registered in the system$') { String evaluationCriterion ->
+    to CreateEvaluationCriterionPage
+    at CreateEvaluationCriterionPage
+
+    page.fillEvaluationCriterionDetails(evaluationCriterion)
+    page.selectCreateEvaluationCriterion()
+}
+
+When(~'^I go to the Students Page$') { ->
+    to StudentPage
+    at StudentPage
+}
+
+Then(~'^I am should see a table with "([^"]*)" in a row and "([^"]*)" in a column$') { String arg1, String arg2->
+    assert true
+}

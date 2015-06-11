@@ -9,6 +9,8 @@ class StudentController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    def conceito = new HashMap<String, String>()
+
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Student.list(params), model: [studentInstanceCount: Student.count()]
@@ -24,24 +26,23 @@ class StudentController {
 
     public Student createStudent() {
         Student student = new Student(params)
-        student.afterCreateAddCriteria(EvaluationCriterion.getAll())
+        student.afterCreateAddCriteria(EvaluationCriterion.findAll())
         return student
     }
 
     public boolean saveStudent(Student student) {
         if(Student.findByLogin(student.login) == null) {
-            student.save(flush: true)
+            student.save flush: true
             return true
         }
         return false
     }
 
     public void updateStudentEvaluationCriteria() {
-        for(Student student : Student.getAll()) {
-            for(EvaluationCriterion evCriterion : EvaluationCriterion.getAll()) {
-                if(!student.evaluationCriteria.contains(evCriterion)) {
-                    student.evaluationCriteria.add(evCriterion)
-                }
+        for(Student student : Student.findAll()) {
+            for (EvaluationCriterion evCriterion : EvaluationCriterion.findAll()) {
+                student.addCriterion(evCriterion)
+                student.save flush: true
             }
         }
     }
@@ -58,7 +59,12 @@ class StudentController {
             return
         }
 
+        ////////////////////////////////
+        studentInstance.afterCreateAddCriteria(EvaluationCriterion.findAll())
+        ////////////////////////////////
+
         studentInstance.save flush: true
+
 
         request.withFormat {
             form multipartForm {
@@ -94,6 +100,18 @@ class StudentController {
             }
             '*' { respond studentInstance, [status: OK] }
         }
+    }
+
+    @Transactional
+    def updateConcepts(String studentCriterion, String concept) {
+        System.out.println(studentCriterion)
+        System.out.println(params.get("concept"))
+
+        String[] aux = studentCriterion.split(" / ")
+
+        Student student = Student.findByLogin(aux[0])
+        student.evaluations.put(aux[1], concept)
+        student.save flush: true
     }
 
     @Transactional

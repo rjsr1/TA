@@ -30,24 +30,20 @@ Feature: Evaluate the students
     Then the system evaluates "Peter Parker" also using the criterion "Project management"
 
 #GUI Scenario
-  @ignore
   Scenario: Evaluate a registered student
     Given I am on the Students Page
-    And the student "Peter Parker" with login "pp2" is registered in the system
+    And the student "Peter Parker" with login "pp2" is registered in the system2
     And there is a criterion called "Requirements" registered in the system
-    And I should see a table with "Peter" in a row and "Requirements" in a column
-    When I change the value of the cell in line "Peter" and column "Requirements" to "MPA"
-    And I click on "Save" button
-    Then I am still viewing the Students Page
+    When I go to the Students Page
+    Then I am should see a table with "pp2" in a row and "Requirements" in a column
 
 #GUI Scenario
   @ignore
   Scenario: Add a new evaluation criterion
-    Given I am on the Students Page
-    And I click on "Add new evaluation criterion"
-    And I should see the Evaluation Criterion creation page
+    Given I am on the Evaluation Criterion Page
+    And I follow new evaluation criterion
     When I fill "Requirements" in the Name field
-    And I click "Save"
+    And I click Save
     Then I am should see the Students page with a new column named "Requirements"
 
 
