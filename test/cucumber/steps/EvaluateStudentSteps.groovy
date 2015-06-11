@@ -85,3 +85,32 @@ When(~'^I go to the Students Page$') { ->
 Then(~'^I am should see a table with "([^"]*)" in a row and "([^"]*)" in a column$') { String arg1, String arg2->
     assert true
 }
+
+/////////////////////////////////////
+Given(~'^I am on the Evaluation Criterion Page$') { ->
+    to EvaluationCriterionPage
+    at EvaluationCriterionPage
+}
+
+And(~'^I follow new evaluation criterion$') { ->
+    to CreateEvaluationCriterionPage
+    at CreateEvaluationCriterionPage
+}
+
+When(~'^I fill "([^"]*)" in the Name field$') { String criterionName ->
+    at CreateEvaluationCriterionPage
+
+    page.fillEvaluationCriterionDetails(criterionName)
+
+    criterionSaved = criterionName
+}
+
+And(~'^I click Save$') { ->
+    page.selectCreateEvaluationCriterion()
+}
+Then(~'^I am should see the Students page with a new column named "([^"]*)"$') { String criterionName ->
+    to StudentPage
+    at StudentPage
+
+    assert criterionName == criterionSaved
+}

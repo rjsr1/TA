@@ -38,7 +38,6 @@ Feature: Evaluate the students
     Then I am should see a table with "pp2" in a row and "Requirements" in a column
 
 #GUI Scenario
-  @ignore
   Scenario: Add a new evaluation criterion
     Given I am on the Evaluation Criterion Page
     And I follow new evaluation criterion
