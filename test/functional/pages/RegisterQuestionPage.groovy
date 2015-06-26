@@ -6,7 +6,7 @@ class RegisterQuestionPage extends Page{
     static url = "/TA/question/create"
 
     static at = {
-        title ==~ /Criar Question/
+        title ==~ /Create Question/
     }
 
     def fillData(text) {

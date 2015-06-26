@@ -6,7 +6,7 @@ class RegisterAlternativePage extends Page{
     static url = "/TA/alternative/create"
 
     static at = {
-        title ==~ /Criar Alternative/
+        title ==~ /Create Alternative/
     }
 
     def fillData(text) {
