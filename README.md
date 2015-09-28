@@ -14,12 +14,14 @@ Mark as Test Source todas as subpastas imediatas de test (não as subpastas das 
 Run configurations:
 
 Grails:TA
-run-app
+
+  run-app
+
+Cucumber:TA
 
 (IntelliJ) Para rodar os testes, crie uma configuração do grails com a seguinte linha de comando: 
 
-Cucumber:TA
-grails test-app functional:cucumber
+test-app functional:cucumber
 
 Production:
 https://ancient-refuge-7019.herokuapp.com/
