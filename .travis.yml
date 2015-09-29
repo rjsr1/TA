@@ -20,4 +20,4 @@ branches:
   only:
     - master
 
-script: test-app functional:cucumber --non-interactive --stacktrace
+script: grails test-app functional:cucumber --non-interactive --stacktrace
