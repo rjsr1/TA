@@ -1,28 +1,28 @@
-Feature: Editar Conceito
-  Como o professor
-  Eu quero editar os conceitos dados em vários critérios aos meus alunos
-  Para que possa corrigir quaisquer erros cometidos
+Feature: Edit Evaluation
+  As a teacher
+  I want to edit the given evaluations with respect to various criteria
+  So I can fix any errors
 
 #Controller Scenario
-Scenario: Alterar conceito de um aluno
-  Given tenha cadastrado as informações: aluno "Marcos Antônio", login "ma2", tenha o conceito "MANA", no critério "X", de origem "Prova 2", da data "11/11/11"
-  When eu modificar o conceito "MANA" para "MA", no critério "X", de origem "Prova 2", da data "11/11/11"
-  Then o sistema fará a modificação
+Scenario: Edit evaluation of a student
+  Given there is a student with the following information: student "Marcos Antônio", login "ma2", has a "MANA" evaluation in the criterion "X", from "Prova 2", date "11/11/11"
+  When I modify the "MANA" evaluation to "MA" in the criterion "X", from "Prova 2", date "11/11/11"
+  Then the system stores the modification
 
 #Controller Scenario
-Scenario: Remover conceito de um aluno
-  Given tenha cadastrado as informações: aluno "Marcos Antônio", login "ma2", tenha o conceito "MANA", no critério "X", de origem "Prova 2", da data "11/11/11"
-  When eu deletar o conceito "MANA", no critério "X", de origem "Prova 2", da data "11/11/11"
-  Then o sistema irá deletar o conceito
+Scenario: Remove evaluation of a student
+  Given there is a student with the following informations: student "Marcos Antônio", login "ma2", has a "MANA" evaluation in the criterion "X", from "Prova 2", date "11/11/11"
+  When I delete the "MANA" evaluation in the criterion "X", from "Prova 2", date "11/11/11"
+  Then the system deletes the evaluation
 
 #Controller Scenario
-Scenario: Alterar um conceito para um não existente de um aluno
-  Given tenha cadastrado as informações: aluno "Marcos Antônio", login "ma2", tenha o conceito "MANA", no critério "X", de origem "Prova 2", da data "11/11/11"
-  When eu modificar o conceito "MANA" para "10", no critério "X", de origem "Prova 2", da data "11/11/11"
-  Then o sistema não fará a modificação
+Scenario: Edit an evaluation for a non existent one
+  Given there is a student with the following informations: student "Marcos Antônio", login "ma2", has a "MANA" evaluation in the criterion "X", from "Prova 2", date "11/11/11"
+  When I modify the "MANA" evaluation to "10" in the criterion "X", from "Prova 2", date "11/11/11"
+  Then the system do nothing
 
 #GUI Scenario
-Scenario: Alterar um conceito para um não existente de um aluno
-  Given tenha cadastrado as informações: aluno "Marcos Antônio", login "ma2", tenha o conceito "MANA", no critério "X", de origem "Prova 2", da data "11/11/11"
-  When eu solicito ao sistema modificar o conceito "MANA" para "10"
-  Then aparecerá uma mensagem de erro relacionada ao conceito inexistente
+Scenario: Edit an evaluation for a non existent one
+  Given there is a student with the following informations: student "Marcos Antônio", login "ma2", has a "MANA" evaluation in the criterion "X", from "Prova 2", date "11/11/11"
+  When I request the system to modify the evaluation "MANA" to "10"
+  Then an error message related to the evaluation pops up
