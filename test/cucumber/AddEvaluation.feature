@@ -1,7 +1,7 @@
 
 Feature AddMark
   As a teacher, I want to evaluate each student by criteria, to show them their progress in class
-  Scenario: Add marks to a criteria
+  Scenario: Add evaluation to a criteria
     Given there are no evaluations to all students to the "X" criterion, originated from a "Test" and dated from "28/03/2016"
     When I want to evaluate all students to the "X" criterion, originated from a "Test" and dated from "28/03/2016".
     Then all the evaluations will be stored in on the "X" criterion history of each student
