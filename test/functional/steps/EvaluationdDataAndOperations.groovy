@@ -4,9 +4,13 @@
 package steps
 
 import ta.Criterion
+<<<<<<< bd9ece70b3504be2b7be44a3a1bc383624009835
 import ta.CriterionController
 import ta.Evaluation
 import ta.EvaluationController
+=======
+import ta.Evaluation
+>>>>>>> Muita coisa
 import ta.Student
 
 import java.text.SimpleDateFormat
@@ -19,6 +23,7 @@ class EvaluationDataAndOperations{
         return date;
     }
 
+<<<<<<< bd9ece70b3504be2b7be44a3a1bc383624009835
     public static Evaluation findEvaluation(String criterionName, String origin, String dateInString){
         def applicationDate = formattedDate(dateInString)
         for(Student student : Student.findAll()){
@@ -86,6 +91,20 @@ class EvaluationDataAndOperations{
         return cont.checkEvaluations(criterionName,origin,dateInString)
     }
 
+=======
+    public static boolean findEvaluation(String criterionName, String origin, Date applicationDate){
+        for(Student student : Student.findAll()){
+           Criterion criterion =Student.findByName(criterionName)
+            criterion.each(criterion.evaluations) {
+                if(criterion.evaluations.origin == origin && criterion.evaluations.applicationDate == applicationDate){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+>>>>>>> Muita coisa
 
       public static boolean createStudent(String login, String name){
         def cont = new StudentController()
