@@ -1,6 +1,7 @@
 package ta
 
 
+
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
@@ -9,11 +10,9 @@ class StudentController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def conceito = new HashMap<String, String>()
-
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Student.list(params), model: [studentInstanceCount: Student.count()]
+        respond Student.list(params), model:[studentInstanceCount: Student.count()]
     }
 
     def show(Student studentInstance) {
@@ -24,29 +23,6 @@ class StudentController {
         respond new Student(params)
     }
 
-    public Student createStudent() {
-        Student student = new Student(params)
-        student.afterCreateAddCriteria(EvaluationCriterion.findAll())
-        return student
-    }
-
-    public boolean saveStudent(Student student) {
-        if(Student.findByLogin(student.login) == null) {
-            student.save flush: true
-            return true
-        }
-        return false
-    }
-
-    public void updateStudentEvaluationCriteria() {
-        for(Student student : Student.findAll()) {
-            for (EvaluationCriterion evCriterion : EvaluationCriterion.findAll()) {
-                student.addCriterion(evCriterion)
-                student.save flush: true
-            }
-        }
-    }
-
     @Transactional
     def save(Student studentInstance) {
         if (studentInstance == null) {
@@ -55,16 +31,11 @@ class StudentController {
         }
 
         if (studentInstance.hasErrors()) {
-            respond studentInstance.errors, view: 'create'
+            respond studentInstance.errors, view:'create'
             return
         }
 
-        ////////////////////////////////
-        studentInstance.afterCreateAddCriteria(EvaluationCriterion.findAll())
-        ////////////////////////////////
-
-        studentInstance.save flush: true
-
+        studentInstance.save flush:true
 
         request.withFormat {
             form multipartForm {
@@ -87,31 +58,19 @@ class StudentController {
         }
 
         if (studentInstance.hasErrors()) {
-            respond studentInstance.errors, view: 'edit'
+            respond studentInstance.errors, view:'edit'
             return
         }
 
-        studentInstance.save flush: true
+        studentInstance.save flush:true
 
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'Student.label', default: 'Student'), studentInstance.id])
                 redirect studentInstance
             }
-            '*' { respond studentInstance, [status: OK] }
+            '*'{ respond studentInstance, [status: OK] }
         }
-    }
-
-    @Transactional
-    def updateConcepts(String studentCriterion, String concept) {
-        System.out.println(studentCriterion)
-        System.out.println(params.get("concept"))
-
-        String[] aux = studentCriterion.split(" / ")
-
-        Student student = Student.findByLogin(aux[0])
-        student.evaluations.put(aux[1], concept)
-        student.save flush: true
     }
 
     @Transactional
@@ -122,14 +81,14 @@ class StudentController {
             return
         }
 
-        studentInstance.delete flush: true
+        studentInstance.delete flush:true
 
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.deleted.message', args: [message(code: 'Student.label', default: 'Student'), studentInstance.id])
-                redirect action: "index", method: "GET"
+                redirect action:"index", method:"GET"
             }
-            '*' { render status: NO_CONTENT }
+            '*'{ render status: NO_CONTENT }
         }
     }
 
@@ -139,7 +98,7 @@ class StudentController {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'student.label', default: 'Student'), params.id])
                 redirect action: "index", method: "GET"
             }
-            '*' { render status: NOT_FOUND }
+            '*'{ render status: NOT_FOUND }
         }
     }
 }
