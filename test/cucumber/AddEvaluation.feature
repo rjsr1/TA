@@ -1,5 +1,5 @@
 
-Feature AddMark
+Feature AddEvaluation
   As a teacher, I want to evaluate each student by criteria, to show them their progress in class
   Scenario: Add evaluation to a criteria
     Given there are no evaluations to all students to the "X" criterion, originated from a "Test" and dated from "28/03/2016"
