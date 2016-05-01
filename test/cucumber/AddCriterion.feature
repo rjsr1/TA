@@ -1,6 +1,6 @@
 #Arthur Lapprand
 
-Feature: Adicionar critério
+Feature: Add Criterion
   As the teacher
   I want to be able to register new criteria
   So I can evaluate the students with these criteria
