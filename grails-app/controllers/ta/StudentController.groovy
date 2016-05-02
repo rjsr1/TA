@@ -14,17 +14,26 @@ class StudentController {
         params.max = Math.min(max ?: 10, 100)
         respond Student.list(params), model:[studentInstanceCount: Student.count()]
     }
-    def addEvaluations(String criterionName, Evaluation evaluationInstance){
+    public boolean addEvaluations(String criterionName, Evaluation evaluationInstance){
         for(Student student : Student.findAll()){
             def counter = 0
             student.each(student.criterions){
                 if(criterionName == student.criterions.get(counter).name){
-                     student.criterions.get(counter).evaluations.add(evaluationInstance)
+                    def studentCriterions = student.getCriterions().get(counter);
+                    def counter2 = 0;
+                    studentCriterions.each(studentCriterions.evaluations){
+                        if(studentCriterions.getEvaluations().get(counter2).origin == origin && studentCriterions.getEvaluations().get(counter2).applicationDate == date){
+                            return false
+                        }
+                    }
+                    studentCriterions.getEvaluations().add(evaluationInstace)
+                    counter2++
                 }
                 counter++
             }
             student.save flush : true
         }
+        return true
     }
 
     public boolean checkEvaluations(String criterionName, String origin, String dateInString){

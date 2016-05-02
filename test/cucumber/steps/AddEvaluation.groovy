@@ -25,13 +25,13 @@ Given there are no evaluations to all students to the "X" criterion,
 
 Scenario: Add evaluation more than once with same origin
 Given evaluations for every student on the "X" criteria, originated form "Test" and dated from "28/03/2016" are already in the system
-When I want to add a mark to all students to a the "X" criteria, without a specific origin and dated from "28/03/2016"
+When I want to add a mark to all students to a the "X" criteria, originated from "Test" and dated from "28/03/2016"
 Then all the marks will not be stored in on the "X" criteria's history of each student
 
 Scenario: Error related to add a  evaluation
 Given I am at the "Add concept" screen
 When I want to evaluate all students to a the "X" criteria, without a specific origin and dated from "28/03/2016".
-Then an error message related to trying to add a repetead mark will be displayed
+Then an error message related to trying to add a evaluation with missing values will be displayed
 
 Scenario: Import evaluations
 Given I organized all evaluations for the "X" criteron originated from "Midterm", dated from "31/03/2016" in a spreedsheet
@@ -96,26 +96,23 @@ Then(~'^the evaluation criterion with name "([^"]*)" was not stored in the syste
 
 /*Scenario: Add evaluation more than once with same origin
 Given evaluations for every student on the "X" criteria, originated form "Test" and dated from "28/03/2016" are already in the system
-When I want to add a mark to all students to a the "X" criteria, without a specific origin and dated from "28/03/2016"
-Then all the marks will not be stored in on the "X" criteria's history of each student*/
-
+   When I want to evaluate all students on the "X" criteria, originated from "Test" and dated from "28/03/2016"
+   Then all the marks will not be stored in on the "X" criteria's history of each student*/
+Boolean stored = false;
 Given(~'^evaluations for every student on the "([^"]*)" criteria, originated form "([^"]*)" and dated from "([^"]*)" are already in the system$') {
     String criterionName, origin, dateInString ->
     assert EvaluationDataAndOperations.existEvaluation(criterionName,dateInString) == true
 }
 
-And(~'^the student "([^"]*)" with login "([^"]*)" is registered in the system$') { String studentName, String studentLogin ->
-    EvaluateStudentTestDataAndOperations.createStudent(studentLogin, studentName)
-    assert Student.findByLogin(studentLogin) != null
+When(~'^I want to evaluate all students on the"([^"]*)" criteria, originated from "([^"]*)" and date from "([^"]*)" $') {
+    String criterionName, origin, dateInString ->
+    assert EvaluationDataAndOperations.createEvaluation(criterionName,origin,dateInString) == false
+        stored = EvaluationDataAndOperations.createEvaluation(criterionName,origin,dateInString)
 }
 
-When(~'^I create an evaluation criterion with name "([^"]*)"3$') { String criterionName ->
-    EvaluateStudentTestDataAndOperations.createEvaluationCriterion(criterionName)
-}
-
-Then(~'^the system evaluates "([^"]*)" also using the criterion "([^"]*)"$') { String studentName, String criterionName ->
-    def evaluationCriterion = EvaluationCriterion.findByName(criterionName)
-    assert Student.findByName(studentName).evaluations.get(evaluationCriterion.name) != null
+Then(~'^all the marks will not be stored in on the"([^"]*)" criterias history of each student$') {
+    String criterionName->
+        assert EvaluationDataAndOperations.checkChangesEvaluations(criterionName)
 }
 
 ////////////////////////////////

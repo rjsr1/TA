@@ -70,15 +70,16 @@ class EvaluationDataAndOperations{
         return false;
     }
 
-    public static createEvaluation(String criterionName, String origin, String dateInString){
+    public static boolean createEvaluation(String criterionName, String origin, String dateInString){
         def applicationDate = formattedDate(dateInString)
         def cont = new StudentController()
         def cont2 = new EvaluationController();
         cont2.params<<[value : "--"] <<[origin: origin] << [applicationDate : applicationDate];
         Evaluation evaluation = cont2.createEvaluation()
-        cont.addEvaluations(criterionName,Evaluation)
+        def returningValue= cont.addEvaluations(criterionName,Evaluation)
         cont.response.reset()
         cont2.response.reset()
+        return returningValue
     }
     public static boolean checkEvaluation(String criterionName,String origin,String dateInString){
         def cont = new StudentController()
