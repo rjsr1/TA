@@ -23,7 +23,12 @@ class EvaluationController {
         respond new Evaluation(params)
     }
 
-    @Transactional
+    public Evaluation createEvaluation(){
+        Evaluation evaluation = new Evaluation(params)
+        return evaluation
+    }
+
+        @Transactional
     def save(Evaluation evaluationInstance) {
         if (evaluationInstance == null) {
             notFound()

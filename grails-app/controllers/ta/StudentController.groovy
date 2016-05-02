@@ -14,6 +14,72 @@ class StudentController {
         params.max = Math.min(max ?: 10, 100)
         respond Student.list(params), model:[studentInstanceCount: Student.count()]
     }
+    def addEvaluations(String criterionName, Evaluation evaluationInstance){
+        for(Student student : Student.findAll()){
+            def counter = 0
+            student.each(student.criterions){
+                if(criterionName == student.criterions.get(counter).name){
+                     student.criterions.get(counter).evaluations.add(evaluationInstance)
+                }
+                counter++
+            }
+            student.save flush : true
+        }
+    }
+
+    public boolean checkEvaluations(String criterionName, String origin, String dateInString){
+        def date = formattedDate(dateInString)
+        for(Student student : Student.findAll()){
+            def ok = false
+            def counter = 0
+            student.each(student.criterions){
+                if(criterionName == student.criterions.get(counter).name){
+                    def studentCriterions = student.getCriterions().get(counter);
+                    def counter2 = 0;
+                     studentCriterions.each(studentCriterions.evaluations){
+                        if(studentCriterions.getEvaluations().get(counter2).origin == origin && studentCriterions.getEvaluations().get(counter2).applicationDate == date){
+                            ok = true
+                        }
+                    }
+                    counter2++
+                }
+                counter++
+                }
+            if(!ok){
+                return ok;
+            }
+            }
+        return ok
+        }
+
+
+    def boolean saveStudent(Student student){
+        if(Student.findByLogin(student.login) ==null){
+            student.save flush: true
+            return true
+        }else{
+            return false
+        }
+    }
+
+    def addEvaluation(Student studentInstance, String criterionName, Evaluation evaluationInstance){
+        def student = studentInstance
+        def counter = 0
+        student.each(student.criterions){
+            if(student.criterions.get(counter).name == criterionName){
+                student.criterions.get(counter).evaluations.add(evaluationInstance)
+            }
+            counter++
+        }
+       student.save flush : true
+    }
+
+    def addCriterion(Criterion criterionInstance){
+        for(Student student : Student.findAll()){
+            student.criterions.add(criterionInstance);
+            save(student)
+        }
+    }
 
     def show(Student studentInstance) {
         respond studentInstance

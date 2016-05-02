@@ -4,7 +4,9 @@
 package steps
 
 import ta.Criterion
+import ta.CriterionController
 import ta.Evaluation
+import ta.EvaluationController
 import ta.Student
 
 import java.text.SimpleDateFormat
@@ -17,16 +19,70 @@ class EvaluationDataAndOperations{
         return date;
     }
 
-    public static boolean findEvaluation(String criterionName, String origin, Date applicationDate){
+    public static Evaluation findEvaluation(String criterionName, String origin, String dateInString){
+        def applicationDate = formattedDate(dateInString)
         for(Student student : Student.findAll()){
-           Criterion criterion =Student.findByName(criterionName)
-            criterion.each(criterion.evaluations) {
-                if(criterion.evaluations.origin == origin && criterion.evaluations.applicationDate == applicationDate){
-                    return true;
+            def counter = 0
+            student.each(student.criterions){
+                if(criterionName == student.criterions.get(counter).name){
+                    def studentCriterions = student.getCriterions().get(counter);
+                    def counter2 = 0;
+                    studentCriterions.each(studentCriterions.evaluations){
+                        if(studentCriterions.getEvaluations().get(counter2).origin == origin && studentCriterions.getEvaluations().get(counter2).applicationDate == date){
+                            return studentCriterions.getEvaluations().get(counter2);
+                        }
+                    }
+                    counter2++
                 }
+                counter++
             }
         }
+        return null;
+    }
+    public static boolean existEvaluation(String criterionName, String dateInString){
+        def applicationDate = formattedDate(dateInString)
+        def found = false;
+        for(Student student : Student.findAll()){
+            def counter = 0
+            student.each(student.criterions){
+                if(criterionName == student.criterions.get(counter).name){
+                    def studentCriterions = student.getCriterions().get(counter);
+                    def counter2 = 0;
+                    studentCriterions.each(studentCriterions.evaluations){
+                        if(studentCriterions.getEvaluations().get(counter2).applicationDate == date){
+                            return true
+                        }
+                    }
+                    counter2++
+                }
+                counter++
+            }
+        }
+        return false
+    }
+
+    public static boolean existEvaluation(String criterionName, String origin, String dateInString){
+        def applicationDate = formattedDate(dateInString)
+        for(Evaluation evaluation : Evaluation.findAll){
+            if(evaluation.origin == origin && evaluation.applicationDate == applicationDate)
+                return true;
+        }
         return false;
+    }
+
+    public static createEvaluation(String criterionName, String origin, String dateInString){
+        def applicationDate = formattedDate(dateInString)
+        def cont = new StudentController()
+        def cont2 = new EvaluationController();
+        cont2.params<<[value : "--"] <<[origin: origin] << [applicationDate : applicationDate];
+        Evaluation evaluation = cont2.createEvaluation()
+        cont.addEvaluations(criterionName,Evaluation)
+        cont.response.reset()
+        cont2.response.reset()
+    }
+    public static boolean checkEvaluation(String criterionName,String origin,String dateInString){
+        def cont = new StudentController()
+        return cont.checkEvaluations(criterionName,origin,dateInString)
     }
 
 
