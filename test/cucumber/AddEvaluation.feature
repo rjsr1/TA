@@ -23,8 +23,9 @@ Feature AddEvaluation
 
   Scenario: Import evaluations
     Given I organized all evaluations for the "X" criteron originated from "Midterm", dated from "31/03/2016" in a spreedsheet
+    And there are no evaluations for the "X" criteria, originated from "Midterm" and dated from "31/03/2016" in the system
     When I want to import all evaluations from the spreedsheet to add to all students "X" criterias history, originated from "Midterm" and dated from "31/03/2016"
-    Then all the marks will be stored in on the "X" criteria's history of each student
+    Then all the evaluations will be stored in on the "X" criteria's history of each student
 
 
   Scenario: Import repeated evaluations

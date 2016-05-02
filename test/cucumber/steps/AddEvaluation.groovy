@@ -35,8 +35,9 @@ Then an error message related to trying to add a evaluation with missing values 
 
 Scenario: Import evaluations
 Given I organized all evaluations for the "X" criteron originated from "Midterm", dated from "31/03/2016" in a spreedsheet
+And there are no evaluations for the "X" criteria, originated from "Midterm" and dated from "31/03/2016" in the system
 When I want to import all evaluations from the spreedsheet to add to all students "X" criterias history, originated from "Midterm" and dated from "31/03/2016"
-Then all the marks will be stored in on the "X" criteria's history of each student
+Then all the evaluations will be stored in on the "X" criteria's history of each student
 
 
 Scenario: Import repeated evaluations
@@ -115,62 +116,63 @@ Then(~'^all the marks will not be stored in on the"([^"]*)" criterias history of
         assert EvaluationDataAndOperations.checkChangesEvaluations(criterionName)
 }
 
+/*Scenario: Error related to add a  evaluation
+Given I am at the "Add concept" screen
+When I want to evaluate all students to a the "X" criteria, without a specific origin and dated from "28/03/2016".
+Then an error message related to trying to add a evaluation with missing values will be displayed*/
 ////////////////////////////////
-Given(~'^I am on the Students Page$') { ->
-    to StudentPage
-    at StudentPage
+Given(~'^I am on the "Evaluation page"$') { ->
+    to EvaluationPage
+    at MainPage
 }
 
-And(~'^the student "([^"]*)" with login "([^"]*)" is registered in the system2$') { String name, String login ->
-    to CreateStudentPage
-    at CreateStudentPage
-
-    page.fillStudentDetails(login, name)
-    page.selectCreateStudent()
+When(~'^I want to evaluate all students to a the "([^"]*)" criteria, without a specific origin and dated from"([^"]*)"$') {
+    String criteriondName, dateInString ->
+    page.fillEvaluationDetails(criterionName,dateInString)
 }
 
-And(~'^there is a criterion called "([^"]*)" registered in the system$') { String evaluationCriterion ->
-    to CreateEvaluationCriterionPage
-    at CreateEvaluationCriterionPage
-
-    page.fillEvaluationCriterionDetails(evaluationCriterion)
-    page.selectCreateEvaluationCriterion()
+Then(~'^an error message related to trying to add a evaluation with missing values will be displayed$') {
+    page.showErrorMensagem("Missing values")
 }
 
-When(~'^I go to the Students Page$') { ->
-    to StudentPage
-    at StudentPage
-}
-
-Then(~'^I am should see a table with "([^"]*)" in a row and "([^"]*)" in a column$') { String arg1, String arg2->
-    assert true
-}
+/*Scenario: Import evaluations
+Given I organized all evaluations for the "X" criterion originated from "Midterm", dated from "31/03/2016" in a spreedsheet
+When I want to import all evaluations from the spreedsheet to add to all students "X" criterias history, originated from "Midterm" and dated from "31/03/2016"
+Then all the marks will be stored in on the "X" criteria's history of each student*/
 
 /////////////////////////////////////
-Given(~'^I am on the Evaluation Criterion Page$') { ->
-    to EvaluationCriterionPage
-    at EvaluationCriterionPage
+Given(~'^I organized all evaluations for the "([^"]*)" criterion originated from "([^"]*)", date from "([^"]*)" in a spreedsheet named "([^"]*)"$') {
+    String criterionName, origin, dateInString, fileName ->
+        EvaluationDataAndOperations.checkFileExistence(criterionName,origin,dateInString,fileName)
+}
+And(~'^there are no evaluations for the "([^"]*)" criteria, originated from "([^"]*)" and dated from "([^"]*)" in the system') {
+    String criterionName, origin, dateInString ->
+        assert EvaluationDataAndOperations.existEvaluation(criterionName, origin, dateInString) == false
+}
+When(~'^I want to import all evaluations from the spreedsheet named"([^"]*)" to add to all students "([^"]*)" criterias history, originated from "([^"]*)" and dated from "([^"]*)"$') {
+    String fileName, criterionName, origin, dateInString ->
+        EvaluationDataAndOperations.importSpreedSheet(criterionName,origin,dateInString,fileName)
 }
 
-And(~'^I follow new evaluation criterion$') { ->
-    to CreateEvaluationCriterionPage
-    at CreateEvaluationCriterionPage
+Then(~'^all evaluations will be stored on the "([^"]*)" criterias history of each student $') {
+    String criterionName ->
+        assert EvaluationDataAndOperations.checkImportCriterion(criterionName) == true;
 }
 
-When(~'^I fill "([^"]*)" in the Name field$') { String criterionName ->
-    at CreateEvaluationCriterionPage
-
-    page.fillEvaluationCriterionDetails(criterionName)
-
-    criterionSaved = criterionName
+Given(~'^I organized all evaluations for the "([^"]*)" criterion originated from "([^"]*)", date from "([^"]*)" in a spreedsheet named "([^"]*)"$') {
+    String criterionName, origin, dateInString, fileName ->
+        EvaluationDataAndOperations.checkFileExistence(criterionName,origin,dateInString,fileName)
+}
+And(~'^there already are evaluations for the "([^"]*)" criteria, originated from "([^"]*)" and dated from "([^"]*)" in the system') {
+    String criterionName, origin, dateInString ->
+        assert EvaluationDataAndOperations.existEvaluation(criterionName,origin,dateInString) == true
+}
+When(~'^I want to import all evaluations from the spreedsheet named"([^"]*)" to add to all students "([^"]*)" criterias history, originated from "([^"]*)" and dated from "([^"]*)"$') {
+    String fileName, criterionName, origin, dateInString ->
+        EvaluationDataAndOperations.importSpreedSheet(criterionName,origin,dateInString,fileName)
 }
 
-And(~'^I click Save$') { ->
-    page.selectCreateEvaluationCriterion()
-}
-Then(~'^I am should see the Students page with a new column named "([^"]*)"$') { String criterionName ->
-    to StudentPage
-    at StudentPage
-
-    assert criterionName == criterionSaved
+Then(~'^all evaluations will be stored on the "([^"]*)" criterias history of each student $') {
+    String criterionName ->
+        assert EvaluationDataAndOperations.checkImportCriterion(criterionName) == false;
 }
