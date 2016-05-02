@@ -7,7 +7,7 @@ Feature: Add Criterion
 
 #Controller Scenario
   Scenario: Register a criterion that does not exist
-    Given the criterion with name "P1" isn't on the system
+    Given the criterion with name "P1" is not on the system
     When I create the criterion "P1"
     Then the criterion "P1" is properly added to the system
 
