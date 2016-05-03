@@ -19,14 +19,14 @@ Feature: Add Criterion
 
 #GUI Scenario
   Scenario: Error when registering a criterion that already exists
-    Given I am on the Adicionar Critério page
+    Given I am on the Add Criterion page
     And the criterion "P1" already exists
     When I add the criterion "P1"
     Then I should see a message related to the criterion registration failure
 
 #GUI Scenario
   Scenario: Register a non-existent criterion
-    Given I am at the Adicionar Critério page
+    Given I am at the Add Criterion page
     When I fill the field Nome with the name "P1"
     And I finalize the criterion registration
     Then I should see the new criterion available on the criteria list
