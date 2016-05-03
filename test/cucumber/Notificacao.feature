@@ -20,7 +20,7 @@ Feature: Notification
 
 #Controller
   Scenario: Add new report type to the reports list
-    Given the "70% of evaluations are MANA" and "70% of evaluations are under the class average" are on the system
+    Given that "70% of evaluations are MANA" and "70% of evaluations are under the class average" are on the system
     When I add the evaluation "MANA" to the student "Silvio", login "shd2"
     Then 70% of his evaluations are composed of MANA
     And the report "70% of evaluations are MANA" is updated
