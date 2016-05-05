@@ -42,7 +42,7 @@ class EvaluationController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'evaluation.label', default: 'Evaluation'), evaluationInstance.id])
+                flash.message = message(code: 'default.created.message', args: [message(code: 'default.evaluation.label', default: 'Evaluation'), evaluationInstance.id])
                 redirect evaluationInstance
             }
             '*' { respond evaluationInstance, [status: CREATED] }
@@ -120,10 +120,10 @@ class EvaluationController {
                 Evaluation evaluation = builder.getEvaluation()
                 saveEvaluation(evaluation)
 
-                pageMessage = "Avaliação registrada."
+                pageMessage = "Avalia??o registrada."
 
             } else {
-                pageMessage = "Campo de título é obrigatório. Nenhuma avaliação foi registrada."
+                pageMessage = "Campo de t?tulo ? obrigat?rio. Nenhuma avalia??o foi registrada."
             }
 
         } catch (Exception e) {

@@ -1,4 +1,4 @@
-import steps.AddStudentsTestDataAndOperations
+import functional.steps.AddStudentsTestDataAndOperations
 
 /**
  * Created by rodrigocalegario on 4/28/16.
