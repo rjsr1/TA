@@ -1,5 +1,7 @@
 package steps
 
+import ta.CriterionController
+
 /**
  * Created by lapp on 07/05/2016.
  */
