@@ -16,16 +16,16 @@ class Student {
         name blank: false
     }
 
-    public void afterCreateAddCriteria(List<EvaluationCriterion> evaluationCriteria) {
+    public void afterCreateAddCriteria(List<Criterion> evaluationCriteria) {
         evaluations = new HashMap<>()
-        for(EvaluationCriterion evaluationCriterion : evaluationCriteria) {
+        for(Criterion evaluationCriterion : evaluationCriteria) {
             if(this.evaluations.get(evaluationCriterion.name) == null) {
                 this.evaluations.put(evaluationCriterion.name, Concept.CONCEPTS.get(3))
             }
         }
     }
 
-    public void addCriterion(EvaluationCriterion evaluationCriterion) {
+    public void addCriterion(Criterion evaluationCriterion) {
         if(evaluations == null) {
             evaluations = new HashMap<>()
         }

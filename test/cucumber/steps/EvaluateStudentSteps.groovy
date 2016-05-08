@@ -4,14 +4,15 @@ import pages.EvaluationCriterionPages.CreateEvaluationCriterionPage
 import pages.EvaluationCriterionPages.EvaluationCriterionPage
 import pages.StudentPages.CreateStudentPage
 import pages.StudentPages.StudentPage
-import ta.EvaluationCriterion
+import ta.Criterion
+import ta.Criterion
 import ta.Student
 
 this.metaClass.mixin(cucumber.api.groovy.Hooks)
 this.metaClass.mixin(cucumber.api.groovy.EN)
 
 Given(~'^the system does not have an evaluation criterion with name "([^"]*)"$') { String criterionName ->
-    assert EvaluationCriterion.findByName(criterionName) == null
+    assert Criterion.findByName(criterionName) == null
 }
 
 When(~'^I create an evaluation criterion with name "([^"]*)"$') { String criterionName ->
@@ -19,13 +20,13 @@ When(~'^I create an evaluation criterion with name "([^"]*)"$') { String criteri
 }
 
 Then(~'^the evaluation criterion with name "([^"]*)" is properly stored in the system$') { String criterionName ->
-    assert EvaluationCriterion.findByName(criterionName) != null
+    assert Criterion.findByName(criterionName) != null
 }
 
 //////////////////////////////////
 Given(~'^the system already has an evaluation criterion named "([^"]*)"$') { String criterionName ->
     EvaluateStudentTestDataAndOperations.createEvaluationCriterion(criterionName)
-    assert EvaluationCriterion.findByName(criterionName) != null
+    assert Criterion.findByName(criterionName) != null
 }
 
 When(~'^I create an evaluation criterion with name "([^"]*)"2$') { String criterionName ->
@@ -33,12 +34,12 @@ When(~'^I create an evaluation criterion with name "([^"]*)"2$') { String criter
 }
 
 Then(~'^the evaluation criterion with name "([^"]*)" was not stored in the system$') { String criterionName ->
-    assert EvaluationCriterion.findByName(criterionName) != null && !saved
+    assert Criterion.findByName(criterionName) != null && !saved
 }
 
 //////////////////////////////////
 Given(~'^the system does not have an evaluation criterion with name "([^"]*)"2$') { String criterionName ->
-    assert EvaluationCriterion.findByName(criterionName) == null
+    assert Criterion.findByName(criterionName) == null
 }
 
 And(~'^the student "([^"]*)" with login "([^"]*)" is registered in the system$') { String studentName, String studentLogin ->
@@ -51,7 +52,7 @@ When(~'^I create an evaluation criterion with name "([^"]*)"3$') { String criter
 }
 
 Then(~'^the system evaluates "([^"]*)" also using the criterion "([^"]*)"$') { String studentName, String criterionName ->
-    def evaluationCriterion = EvaluationCriterion.findByName(criterionName)
+    def evaluationCriterion = Criterion.findByName(criterionName)
     assert Student.findByName(studentName).evaluations.get(evaluationCriterion.name) != null
 }
 

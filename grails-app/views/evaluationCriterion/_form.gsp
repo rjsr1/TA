@@ -1,4 +1,4 @@
-<%@ page import="ta.EvaluationCriterion" %>
+<%@ page import="ta.Criterion" %>
 
 
 

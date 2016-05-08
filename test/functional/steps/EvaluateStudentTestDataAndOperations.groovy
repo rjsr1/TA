@@ -1,8 +1,6 @@
 package steps
 
-import ta.EvaluationCriterion
 import ta.EvaluationCriterionController
-import ta.Student
 import ta.StudentController
 
 class EvaluateStudentTestDataAndOperations{

@@ -26,7 +26,7 @@ class StudentController {
 
     public Student createStudent() {
         Student student = new Student(params)
-        student.afterCreateAddCriteria(EvaluationCriterion.findAll())
+        student.afterCreateAddCriteria(Criterion.findAll())
         return student
     }
 
@@ -40,7 +40,7 @@ class StudentController {
 
     public void updateStudentEvaluationCriteria() {
         for(Student student : Student.findAll()) {
-            for (EvaluationCriterion evCriterion : EvaluationCriterion.findAll()) {
+            for (Criterion evCriterion : Criterion.findAll()) {
                 student.addCriterion(evCriterion)
                 student.save flush: true
             }
@@ -60,7 +60,7 @@ class StudentController {
         }
 
         ////////////////////////////////
-        studentInstance.afterCreateAddCriteria(EvaluationCriterion.findAll())
+        studentInstance.afterCreateAddCriteria(Criterion.findAll())
         ////////////////////////////////
 
         studentInstance.save flush: true

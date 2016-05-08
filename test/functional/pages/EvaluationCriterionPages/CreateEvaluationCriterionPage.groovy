@@ -7,7 +7,7 @@ class CreateEvaluationCriterionPage extends Page {
     static url = "/TA/evaluationCriterion/create"
 
     static at =  {
-        title ==~ /Create EvaluationCriterion/
+        title ==~ /Create Criterion/
     }
 
     def fillEvaluationCriterionDetails(String name) {

@@ -1,6 +1,6 @@
 
-<%@ page import="ta.Student" %>
-<%@ page import="ta.EvaluationCriterion" %>
+<%@ page import="ta.Criterion; ta.Student" %>
+<%@ page import="ta.Criterion" %>
 
 <!DOCTYPE html>
 <html>
@@ -62,7 +62,7 @@
 
 				<g:sortableColumn property="name" title="${message(code: 'student.name.label', default: 'Name')}" />
 
-				<g:each in="${EvaluationCriterion.findAll()}" var="evCriterion">
+				<g:each in="${Criterion.findAll()}" var="evCriterion">
 					<g:sortableColumn property="evaluations" title="${evCriterion.name}" />
 				</g:each>
 			</tr>
@@ -75,7 +75,7 @@
 
 					<td>${fieldValue(bean: studentInstance, field: "name")}</td>
 
-					<g:each in="${EvaluationCriterion.findAll()}" var="evCriterion">
+					<g:each in="${ta.Criterion.findAll()}" var="evCriterion">
 						<td>
 							<g:select id="${studentInstance.login}+/+${evCriterion.name}" name="selector"
 									  from="${ta.Student.Concept.CONCEPTS}"

@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta name="layout" content="main">
-		<g:set var="entityName" value="${message(code: 'evaluationCriterion.label', default: 'EvaluationCriterion')}" />
+		<g:set var="entityName" value="${message(code: 'evaluationCriterion.label', default: 'Criterion')}" />
 		<title><g:message code="default.create.label" args="[entityName]" /></title>
 	</head>
 	<body>

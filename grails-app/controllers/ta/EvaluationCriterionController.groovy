@@ -10,23 +10,23 @@ class EvaluationCriterionController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond EvaluationCriterion.list(params), model:[evaluationCriterionInstanceCount: EvaluationCriterion.count()]
+        respond Criterion.list(params), model:[evaluationCriterionInstanceCount: Criterion.count()]
     }
 
-    def show(EvaluationCriterion evaluationCriterionInstance) {
+    def show(Criterion evaluationCriterionInstance) {
         respond evaluationCriterionInstance
     }
 
     def create() {
-        respond new EvaluationCriterion(params)
+        respond new Criterion(params)
     }
 
-    public EvaluationCriterion createEvaluationCriterion() {
-        return new EvaluationCriterion(params)
+    public Criterion createEvaluationCriterion() {
+        return new Criterion(params)
     }
 
-    public boolean saveEvaluationCriterion(EvaluationCriterion evaluationCriterion) {
-        if(EvaluationCriterion.findByName(evaluationCriterion.name) == null) {
+    public boolean saveEvaluationCriterion(Criterion evaluationCriterion) {
+        if(Criterion.findByName(evaluationCriterion.name) == null) {
             evaluationCriterion.save(flush: true)
             new StudentController().updateStudentEvaluationCriteria()
             return true
@@ -35,7 +35,7 @@ class EvaluationCriterionController {
     }
 
     @Transactional
-    def save(EvaluationCriterion evaluationCriterionInstance) {
+    def save(Criterion evaluationCriterionInstance) {
         if (evaluationCriterionInstance == null) {
             notFound()
             return
@@ -54,19 +54,19 @@ class EvaluationCriterionController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'evaluationCriterion.label', default: 'EvaluationCriterion'), evaluationCriterionInstance.id])
+                flash.message = message(code: 'default.created.message', args: [message(code: 'evaluationCriterion.label', default: 'Criterion'), evaluationCriterionInstance.id])
                 redirect evaluationCriterionInstance
             }
             '*' { respond evaluationCriterionInstance, [status: CREATED] }
         }
     }
 
-    def edit(EvaluationCriterion evaluationCriterionInstance) {
+    def edit(Criterion evaluationCriterionInstance) {
         respond evaluationCriterionInstance
     }
 
     @Transactional
-    def update(EvaluationCriterion evaluationCriterionInstance) {
+    def update(Criterion evaluationCriterionInstance) {
         if (evaluationCriterionInstance == null) {
             notFound()
             return
@@ -81,7 +81,7 @@ class EvaluationCriterionController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'EvaluationCriterion.label', default: 'EvaluationCriterion'), evaluationCriterionInstance.id])
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'Criterion.label', default: 'Criterion'), evaluationCriterionInstance.id])
                 redirect evaluationCriterionInstance
             }
             '*'{ respond evaluationCriterionInstance, [status: OK] }
@@ -89,7 +89,7 @@ class EvaluationCriterionController {
     }
 
     @Transactional
-    def delete(EvaluationCriterion evaluationCriterionInstance) {
+    def delete(Criterion evaluationCriterionInstance) {
 
         if (evaluationCriterionInstance == null) {
             notFound()
@@ -100,7 +100,7 @@ class EvaluationCriterionController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'EvaluationCriterion.label', default: 'EvaluationCriterion'), evaluationCriterionInstance.id])
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'Criterion.label', default: 'Criterion'), evaluationCriterionInstance.id])
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }
@@ -110,7 +110,7 @@ class EvaluationCriterionController {
     protected void notFound() {
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'evaluationCriterion.label', default: 'EvaluationCriterion'), params.id])
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'evaluationCriterion.label', default: 'Criterion'), params.id])
                 redirect action: "index", method: "GET"
             }
             '*'{ render status: NOT_FOUND }
