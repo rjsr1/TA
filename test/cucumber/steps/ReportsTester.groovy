@@ -5,9 +5,10 @@ package steps
 
 import funciotnal.pages.ReportsPages.ReportsPage
 import functional.pages.StudentPages.StudentPage
+import pages.ReportsPages.ShowReportsPage
 
 //Cenários de controlador
-//Adicionar novo tipo de relatório na lista de relatórios
+//Atualizar um relatório
 Given(~'^that "([^"]*)" and "([^"]*)" are on the the system$'){
     String report1, String report2 ->
         relat1 = Report.findByName(report1)
@@ -15,37 +16,33 @@ Given(~'^that "([^"]*)" and "([^"]*)" are on the the system$'){
         assert ReportsDataAndOperations.compatibleTo(relat1,report1)
         assert ReportsDataAndOperations.compatibleTo(relat2,report2)
 }
-When(~'^I add the evaluation "([^"]*)" to the student "([^"]*)", login "([^"]*)"$'){String arg, String loginA->
-   EvaluationsDataAndOperations.createEvaluation(arg, loginA)
+When(~'^I add the evaluation "([^"]*)" in the criterion "([^"]*)" with origin "([^"]*)" and date "([^"]*)" to the student with the login "([^"]*)"$'){
+    String eval, String criteName, String origin, String dat, String loginA->
+        EvaluationDataAndOperations.createEvaluation(criteName, origin, dat)//ele retorna um booleano que verifica se foi criado ou não
+        eval = EvaluationDataAndOperations.findEvaluation(criteName, origin, dat)
+        EvaluationDataAndOperations.addEvaluationtoStudent(criteName, loginA, eval)//falta implementar
 }
-Then(~'^70% of his evaluations are composed of "([^"]*)"$'){
-   String evalType ->  double totalE =
-           (ReportsDataAndOperations.countType(evalType)/ReportsDataAndOperations.count())*100
-       if(totalE>=70){
-           return true
-       }
+Then(~'^70% of the student "([^"]*)" evaluations are composed of "([^"]*)"$'){
+   String evalType -> ReportsDataAndOperations.checkCondition(evalType)
 }
 And(~'^the report "([^"]*)" is updated$'){String relato1 ->
-    relatorio = Report.findByName(relato1)
-    ReportsDataAndOperations.update(relatorio)
+    assert ReportsDataAndOperations.checkUpdate(relato1)
 }
 
 //Cenários de GUI
 //Ser notificado sobre os problemas de desempenho dos alunos
-Given(~'^there is the performance problem "([^"]*)" with the students "([^"]*)" and "([^"]*)"$'){
-    String prob -> report1 = Reports.findByName(prob)
-        assert ReportsDataAndOperations.compatibleTo(prob,report1)
-}
-When(~'^I log in the software$'){
-    to LoginPage
-    at LoginPage
-    pages.add("adm","1234")
+Given(~'^I am at the home page$'){
+    to StudentPage
     at StudentPage
 }
-Then(~'^the item "Reports" on the menu will show that there are new notifications$'){
-    to ReportsPage
-    at ReportsPage
-    ReportsPage.showNotifications()
+When(~'^I go to the Reports page$'){
+    to ShowReportsPage
+    at ShowReportsPage
+}
+Then(~'^the item "Reports" on the menu will show if there are new notifications$'){
+    /*to ShowReportsPage
+    at ShowReportsPage*/
+    ShowReportsPage.selectNotifications()
 }
 
 
