@@ -15,6 +15,17 @@ class EvaluationController {
         respond Evaluation.list(params), model:[evaluationInstanceCount: Evaluation.count()]
     }
 
+    public boolean createEvaluation(String criterionName, String evaluationOrigin, String evaluationDate, String studentEvaluation){
+        def applicationDate = formattedDate(evaluationDate)
+        //createEvaluation([origin: evaluationOrigin, value: ])
+        cont2.params<<[value : "--"] <<[origin: origin] << [applicationDate : applicationDate];
+        Evaluation evaluation = cont2.createEvaluation()
+        def returningValue= cont.addEvaluations(criterionName,Evaluation)
+        cont.response.reset()
+        cont2.response.reset()
+        return returningValue
+    }
+
     def show(Evaluation evaluationInstance) {
         respond evaluationInstance
     }

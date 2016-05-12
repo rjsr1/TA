@@ -3,8 +3,8 @@
  */
 package steps
 
-import ta.Criterion
-import ta.CriterionController
+//import ta.Criterion
+//import ta.CriterionController
 import ta.Evaluation
 import ta.EvaluationController
 import ta.Student
@@ -87,11 +87,22 @@ class EvaluationDataAndOperations{
     }
 
 
-      public static boolean createStudent(String login, String name){
+    public static boolean createStudent(String login, String name){
         def cont = new StudentController()
         cont.params << [login: login] << [name: name] << [evaluations: new HashMap<String, String>()]
         boolean saved = cont.saveStudent(cont.createStudent())
         cont.response.reset()
         return saved
+    }
+
+    public static void createAndGiveEvaluation(String studentName, String studentLogin, String studentEvaluation, String criterionName, String evaluationOrigin, String evaluationDate){
+        createStudent(studentLogin, studentName)
+        def evaluation = new EvaluationController()
+        evaluation.createEvaluation(criterionName, evaluationOrigin, evaluationDate, studentEvaluation)
+    }
+
+    public static void createEvaluationWithEvaluation(String criterionName, String evaluationOrigin, String evaluationDate, String studentEvaluation){
+        createEvaluation(criterionName, evaluationOrigin, evaluationDate)
+
     }
 }

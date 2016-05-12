@@ -83,12 +83,12 @@ class StudentController {
        student.save flush : true
     }
 
-    def addCriterion(Criterion criterionInstance){
+    /*def addCriterion(Criterion criterionInstance){
         for(Student student : Student.findAll()){
             student.criterions.add(criterionInstance);
             save(student)
         }
-    }
+    }*/
 
     def show(Student studentInstance) {
         respond studentInstance
