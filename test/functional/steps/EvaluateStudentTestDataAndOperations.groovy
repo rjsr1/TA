@@ -1,12 +1,12 @@
 package steps
 
-import ta.EvaluationCriterionController
+import ta.CriterionController
 import ta.StudentController
 
 class EvaluateStudentTestDataAndOperations{
 
     public static boolean createEvaluationCriterion(String name){
-        def cont = new EvaluationCriterionController()
+        def cont = new CriterionController()
         cont.params << [name: name]
         boolean saved = cont.saveEvaluationCriterion(cont.createEvaluationCriterion())
         cont.response.reset()

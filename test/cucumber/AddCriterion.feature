@@ -15,7 +15,7 @@ Feature: Add Criterion
   Scenario: Register a criterion that already exists
     Given the criterion named "P1" already exists on the system
     When I create the criterion "P1"
-    Then system does nothing
+    Then the system does nothing
 
 #GUI Scenario
   Scenario: Error when registering a criterion that already exists

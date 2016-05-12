@@ -4,6 +4,7 @@
 package steps
 
 import javafx.beans.binding.When
+import pages.CriterionPages.CreateCriterionPage
 
 this.metaClass.mixin(cucumber.api.groovy.Hooks)
 this.metaClass.mixin(cucumber.api.groovy.EN)
@@ -25,16 +26,17 @@ When I create the criterion "P1"
 Then the criterion "P1" is properly added to the system
 */
 Given(~'^the criterion with name "([^"]*)" is not on the system$') {
-    String name -> crit = Criterions.findByName(name)
+    String name -> crit = Criterion.findByName(name)
         assert crit == null
 }
 
 When(~'^I create the criterion "([^"]*)"$') {
-    String name -> CriterionDataAndOperations.createCriterion(name)
+    String name -> CriterionTestDataAndOperations.createCriterion(name)
+        crit = Criterion.findByName(name)
 }
 
 Then(~'^the criterion "([^"]*)" is properly added to the system$') {
-    String name -> assert CriterionDataAndOperations.compatibleTo(name, crit)
+    String name -> assert CriterionTestDataAndOperations.compatibleTo(name, crit)
 }
 
 /*
@@ -45,7 +47,7 @@ When I create the criterion "P1"
 Then system does nothing
 */
 Given(~'^the criterion named "([^"]*)" already exists on the system$') {
-    String name -> assert Criterions.findByName(name) != null
+    String name -> assert Criterion.findByName(name) != null
 }
 
 When(~'^I create the criterion "([^"]*)"$') {
@@ -64,36 +66,32 @@ Then(~'^the system does nothing$') { ->
     When I add the criterion "P1"
     Then I should see a message related to the criterion registration failure
  */
-Given(~'^I am on the "Add Criterion page"$') {
-    to AddCriterionPage
-    at AddCriterionPage
+Given(~'^I am on the Add Criterion page$') {
+    to CreateCriterionPage
+    at CreateCriterionPage
 }
 
 And(~'^the criterion "([^"]*)" already exists$') {
-    String name ->
-        page.add(Criterion.findByName(name))
-        crit = Criterions.findByName(name)
-        assert Criterions.findByName(name) != null
+    String desc ->
+        at CreateCriterionPage
+        CreateCriterionPage.fillCriterionDetails(desc)
+        CreateCriterionPage.selectCreateCriterion()
 }
 
 When(~'^I add the criterion "([^"]*)"$') {
-    String name ->
-        at AddCriterionPage
-        page.add(Criterion.findByName(name))
+    String desc ->
+        at CreateCriterionPage
+        fillAndSelectCreateCriterion(desc)
 }
 
 Then(~'^I should see a message related to the criterion registration failure$') {
     assert page.showFlashMessage()
 }
 
-/*
-#GUI Scenario
-Scenario: Error when registering a criterion that already exists
-Given I am on the Add Criterion page
-And the criterion "P1" already exists
-When I add the criterion "P1"
-Then I should see a message related to the criterion registration failure
-*/
+def fillAndSelectCreateCriterion ( String desc ) {
+    CreateCriterionPage.fillCriterionDetails(desc)
+    CreateCriterionPage.selectCreateCriterion()
+}
 
 /*
 #GUI Scenario

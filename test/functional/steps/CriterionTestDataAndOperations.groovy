@@ -1,5 +1,6 @@
 package steps
 
+import ta.Criterion
 import ta.CriterionController
 
 /**
@@ -13,5 +14,10 @@ class CriterionTestDataAndOperations {
         controller.params << [description: description]
         boolean saved = controller.saveCriterion(controller.createCriterion(description))
         controller.response.reset()
+    }
+
+    public static boolean compatibleTo(String desc, Criterion crit) {
+        if (desc.equals(crit.description)) return true
+        return false
     }
 }
