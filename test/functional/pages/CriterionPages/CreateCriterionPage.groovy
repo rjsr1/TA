@@ -23,4 +23,9 @@ class CreateCriterionPage extends Page {
         $("input", name: "create").click()
     }
 
+    boolean createCriterion(String desc) {
+        fillCriterionDetails(desc)
+        selectCreateCriterion()
+    }
+
 }

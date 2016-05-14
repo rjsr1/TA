@@ -74,23 +74,19 @@ Given(~'^I am on the Add Criterion page$') {
 And(~'^the criterion "([^"]*)" already exists$') {
     String desc ->
         at CreateCriterionPage
-        CreateCriterionPage.fillCriterionDetails(desc)
-        CreateCriterionPage.selectCreateCriterion()
+        CreateCriterionPage.createCriterion(desc)
+        to CreateCriterionPage
+        at CreateCriterionPage
 }
 
 When(~'^I add the criterion "([^"]*)"$') {
     String desc ->
         at CreateCriterionPage
-        fillAndSelectCreateCriterion(desc)
+        CreateCriterionPage.createCriterion(desc)
 }
 
 Then(~'^I should see a message related to the criterion registration failure$') {
-    assert page.showFlashMessage()
-}
-
-def fillAndSelectCreateCriterion ( String desc ) {
-    CreateCriterionPage.fillCriterionDetails(desc)
-    CreateCriterionPage.selectCreateCriterion()
+    assert CreateCriterionPage
 }
 
 /*
