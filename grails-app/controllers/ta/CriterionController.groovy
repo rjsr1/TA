@@ -21,86 +21,87 @@ class CriterionController {
         respond new Criterion(params)
     }
 
-    public Criterion createEvaluationCriterion() {
+    public Criterion createCriterion() {
+
         return new Criterion(params)
     }
 
-    public boolean saveEvaluationCriterion(Criterion evaluationCriterion) {
-        if(Criterion.findByName(evaluationCriterion.name) == null) {
-            evaluationCriterion.save(flush: true)
-            new StudentController().updateStudentEvaluationCriteria()
+    public Criterion retrieveCriterion(String desc) {
+        return Criterion.findByDescription(desc)
+    }
+
+    public boolean saveCriterion(Criterion Criterion) {
+        if(Criterion.findByDescription(Criterion.description) == null) {
+            Criterion.save(flush: true)
+            new CriterionController().updateCriteria()
             return true
         }
         return false
     }
 
     @Transactional
-    def save(Criterion evaluationCriterionInstance) {
-        if (evaluationCriterionInstance == null) {
+    def save(Criterion criterionInstance) {
+        if (criterionInstance == null) {
             notFound()
             return
         }
 
-        if (evaluationCriterionInstance.hasErrors()) {
-            respond evaluationCriterionInstance.errors, view:'create'
+        if (criterionInstance.hasErrors()) {
+            respond criterionInstance.errors, view:'create'
             return
         }
 
-        evaluationCriterionInstance.save flush:true
-
-        /////////////////////////
-        new StudentController().updateStudentEvaluationCriteria()
-        /////////////////////////
+        criterionInstance.save flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'evaluationCriterion.label', default: 'Criterion'), evaluationCriterionInstance.id])
-                redirect evaluationCriterionInstance
+                flash.message = message(code: 'default.created.message', args: [message(code: 'Criterion.label', default: 'Criterion'), criterionInstance.id])
+                redirect criterionInstance
             }
-            '*' { respond evaluationCriterionInstance, [status: CREATED] }
+            '*' { respond criterionInstance, [status: CREATED] }
         }
     }
 
-    def edit(Criterion evaluationCriterionInstance) {
-        respond evaluationCriterionInstance
+    def edit(Criterion criterionInstance) {
+        respond criterionInstance
     }
 
     @Transactional
-    def update(Criterion evaluationCriterionInstance) {
-        if (evaluationCriterionInstance == null) {
+    def update(Criterion criterionInstance) {
+        if (criterionInstance == null) {
             notFound()
             return
         }
 
-        if (evaluationCriterionInstance.hasErrors()) {
-            respond evaluationCriterionInstance.errors, view:'edit'
+        if (criterionInstance.hasErrors()) {
+            respond criterionInstance.errors, view:'edit'
             return
         }
 
-        evaluationCriterionInstance.save flush:true
+        criterionInstance.save flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'Criterion.label', default: 'Criterion'), evaluationCriterionInstance.id])
-                redirect evaluationCriterionInstance
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'Criterion.label', default: 'Criterion'), criterionInstance.id])
+                redirect criterionInstance
             }
-            '*'{ respond evaluationCriterionInstance, [status: OK] }
+            '*'{ respond criterionInstance, [status: OK] }
         }
     }
 
     @Transactional
-    def delete(Criterion evaluationCriterionInstance) {
+    def delete(Criterion criterionInstance) {
 
-        if (evaluationCriterionInstance == null) {
+        if (criterionInstance == null) {
             notFound()
             return
         }
 
-        evaluationCriterionInstance.delete flush:true
+        criterionInstance.delete flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'Criterion.label', default: 'Criterion'), evaluationCriterionInstance.id])
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'Criterion.label', default: 'Criterion'), criterionInstance.id])
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }
@@ -110,7 +111,7 @@ class CriterionController {
     protected void notFound() {
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'evaluationCriterion.label', default: 'Criterion'), params.id])
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'Criterion.label', default: 'Criterion'), params.id])
                 redirect action: "index", method: "GET"
             }
             '*'{ render status: NOT_FOUND }

@@ -9,10 +9,10 @@ import ta.CriterionController
 
 class CriterionTestDataAndOperations {
 
-    public static boolean createCriterion(String description) {
+    public static void createCriterion(String description) {
         def controller = new CriterionController()
         controller.params << [description: description]
-        boolean saved = controller.saveCriterion(controller.createCriterion(description))
+        boolean saved = controller.saveCriterion(controller.createCriterion())
         controller.response.reset()
     }
 
@@ -20,4 +20,10 @@ class CriterionTestDataAndOperations {
         if (desc.equals(crit.description)) return true
         return false
     }
+
+    public static Criterion getCriterion(String desc) {
+        def controller = new CriterionController()
+        return controller.retrieveCriterion(desc)
+    }
+
 }

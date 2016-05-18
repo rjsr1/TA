@@ -26,17 +26,17 @@ When I create the criterion "P1"
 Then the criterion "P1" is properly added to the system
 */
 Given(~'^the criterion with name "([^"]*)" is not on the system$') {
-    String name -> crit = Criterion.findByName(name)
+    String desc -> crit = CriterionTestDataAndOperations.getCriterion(desc)
         assert crit == null
 }
 
 When(~'^I create the criterion "([^"]*)"$') {
-    String name -> CriterionTestDataAndOperations.createCriterion(name)
-        crit = Criterion.findByName(name)
+    String desc -> CriterionTestDataAndOperations.createCriterion(desc)
+        crit = CriterionTestDataAndOperations.getCriterion(desc)
 }
 
 Then(~'^the criterion "([^"]*)" is properly added to the system$') {
-    String name -> assert CriterionTestDataAndOperations.compatibleTo(name, crit)
+    String desc -> assert CriterionTestDataAndOperations.compatibleTo(desc, crit)
 }
 
 /*
@@ -47,11 +47,11 @@ When I create the criterion "P1"
 Then system does nothing
 */
 Given(~'^the criterion named "([^"]*)" already exists on the system$') {
-    String name -> assert Criterion.findByName(name) != null
+    String desc -> assert CriterionTestDataAndOperations.getCriterion(desc) != null
 }
 
 When(~'^I create the criterion "([^"]*)"$') {
-    String name -> CriterionTestDataAndOperations.createCriterion(name)
+    String desc -> CriterionTestDataAndOperations.createCriterion(desc)
 }
 
 Then(~'^the system does nothing$') { ->
