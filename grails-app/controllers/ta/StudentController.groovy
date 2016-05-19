@@ -32,7 +32,7 @@ class StudentController {
     }
 
 
-    def boolean saveStudent(Student student){
+    public boolean saveStudent(Student student){
         if(Student.findByLogin(student.login) ==null){
             student.save flush: true
             return true
