@@ -14,7 +14,7 @@ class Student {
 
     public static void addEvaluation(Evaluation evaluationInstance){
         for(int i = 0; i< this.criterionsAndEvaluations.size(); i++){
-            if(this.criterionsAndEvaluations.get(i).criterion.description.equals(evaluationInstance.criterion.description)){
+            if(this.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(evaluationInstance.criterion.description)){
                 this.criterionsAndEvaluations.get(i).addEvaluation(evaluationInstance);
             }
         }
@@ -22,20 +22,30 @@ class Student {
 
     public static EvaluationsByCriterion findEvaluationByCriterion(String criterionName){
         for(int i =0; i<this.criterionsAndEvaluations.size();i++){
-            if(this.criterionsAndEvaluations.get(i).criterion.description.equals(criterionName)){
+            if(this.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(criterionName)){
                 return this.criterionsAndEvaluations.get(i);
             }
         }
+        return null
     }
 
     public static boolean evaluationExist(Evaluation evaluationInstance){
         for(int i = 0; i<this.criterionsAndEvaluations.size();i++){
-            if(this.criterionsAndEvaluations.get(i).criterion.description.equals(evaluationInstance.criterion.description)){
+            if(this.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(evaluationInstance.getCriterion().getDescription())){
                 List<Evaluation> evaluationsForThisCriterion = this.criterionsAndEvaluations.get(i).evaluations;
                 for(int j=0; j<evaluationsForThisCriterion.size();j++){
-                    //if()
+                    if(evaluationsForThisCriterion.compatibleTo(evaluationInstance)){
+                        return true
+                    }
                 }
             }
         }
+        return false
     }
+
+    /*private boolean criterionExists(String criterionDescription){
+        for(int i=0;i<this.criterionsAndEvaluations.size();i++){
+            if(this.criterionsAndEvaluations.get(i).criterion.description.equals(criterionDescription))
+        }
+    }*/
 }
