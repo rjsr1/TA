@@ -31,6 +31,17 @@ class StudentController {
         def student = Student.findByLogin(login);
         def evaluationInstance = new Evaluation(params);
         student.addEvaluation(evaluationInstance);
+        student.save flush : true
+    }
+
+    public List<Evaluation> countStudentsEvaluated(String criterionName, String origin, String dateInString){
+        List<Evaluation> returningValue;
+        def evaluation = new Evaluation(origin,null,this.formattedDate(dateInString),new Criterion(criterionName));
+        def students = Student.findAll();
+        for(int i =0; i< students.size();i++){
+            returningValue.add(students.get(i).findEvaluationByCriterion(evaluation.getCriterion().getDescription()).findSpecificEvaluation(evaluation))
+        }
+        return returningValue;
     }
 
     public boolean checkEvaluationsAllStudents(String criterionName, String origin, String dateInString){
@@ -45,8 +56,9 @@ class StudentController {
            }
        }
     }
-
-
+    public int countAllStudents(){
+        return Student.findAll().size();
+    }
     public boolean saveStudent(Student student){
         if(Student.findByLogin(student.login) ==null){
             student.save flush: true

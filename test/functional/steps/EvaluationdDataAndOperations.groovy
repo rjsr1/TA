@@ -40,12 +40,16 @@ class EvaluationDataAndOperations{
         return null;
     }*/
 
-    /*public static Evaluation findEvaluation(String criterionName, String origin, String dateInString){
+    public static boolean findEvaluationAndCount(String criterionName, String origin, String dateInString){
         def applicationDate = formattedDate(dateInString)
         def controller = new EvaluationController()
         def controller2 = new StudentController()
+        def listEvaluations = controller2.countStudentsEvaluated(criterionName,origin,dateInString)
+        def countStudents = controller2.countAllStudents();
+        if(countStudents==listEvaluations.size()) return true;
+        else return false
 
-    }*/
+    }
     public static boolean existEvaluation(String criterionName, String dateInString){
         def applicationDate = formattedDate(dateInString)
         def found = false;
