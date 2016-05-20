@@ -15,7 +15,7 @@ class EvaluationController {
         respond Evaluation.list(params), model:[evaluationInstanceCount: Evaluation.count()]
     }
 
-    public boolean createEvaluation(String criterionName, String evaluationOrigin, String evaluationDate, String studentEvaluation){
+    /*public boolean createEvaluation(String criterionName, String evaluationOrigin, String evaluationDate, String studentEvaluation){
         def applicationDate = formattedDate(evaluationDate)
         //createEvaluation([origin: evaluationOrigin, value: ])
         cont2.params<<[value : "--"] <<[origin: origin] << [applicationDate : applicationDate];
@@ -24,6 +24,15 @@ class EvaluationController {
         cont.response.reset()
         cont2.response.reset()
         return returningValue
+    }*/
+
+    public boolean saveEvaluation(Evaluation evaluation){
+        if(Evaluation.findByLogin(evaluation.login) == null){
+            evaluation.save flush: true
+            return true
+        }else{
+            return false
+        }
     }
 
     def show(Evaluation evaluationInstance) {

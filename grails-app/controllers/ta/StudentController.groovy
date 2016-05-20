@@ -62,14 +62,15 @@ class StudentController {
         }
 
 
-    def boolean saveStudent(Student student){
-        if(Student.findByLogin(student.login) ==null){
+    public boolean saveStudent(Student student){
+        if(Student.findByLogin(student.login) == null){
             student.save flush: true
             return true
         }else{
             return false
         }
     }
+
 
     def addEvaluation(Student studentInstance, String criterionName, Evaluation evaluationInstance){
         def student = studentInstance
@@ -89,6 +90,10 @@ class StudentController {
             save(student)
         }
     }*/
+
+    public Student createStudent(){
+        return new Student(params)
+    }
 
     def show(Student studentInstance) {
         respond studentInstance

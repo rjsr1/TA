@@ -95,14 +95,40 @@ class EvaluationDataAndOperations{
         return saved
     }
 
+    //MEUS METODOS
+
     public static void createAndGiveEvaluation(String studentName, String studentLogin, String studentEvaluation, String criterionName, String evaluationOrigin, String evaluationDate){
-        createStudent(studentLogin, studentName)
+        //createStudent(studentLogin, studentName)
+        def student = new StudentController()
+        student.params << [login: studentLogin] << [name: studentName] << [evaluations: new HashMap<String, String>()]
+        Student studentCreated = student.createStudent()
+        student.saveStudent(studentCreated)
+        //aqui em cima vai ser saveStudent ou so save?
         def evaluation = new EvaluationController()
-        evaluation.createEvaluation(criterionName, evaluationOrigin, evaluationDate, studentEvaluation)
+        def applicationDate = formattedDate(evaluationDate)
+        evaluation.params << [origin : evaluationOrigin , value : studentEvaluation , applicationDate : applicationDate]
+        Evaluation evaluationCreated = evaluation.createEvaluation()
+        //ou ao inves de Evaluation, coloca def aqui em cima? Era pra ser createEvaluation ou create?
+        evaluation.saveEvaluation(evaluationCreated)
+        //evaluation.createEvaluation(criterionName, evaluationOrigin, evaluationDate, studentEvaluation)
+        student.addEvaluation(studentCreated, criterionName, evaluationCreated)
+        student.response.reset()
+        evaluation.response.reset()
     }
 
-    public static void createEvaluationWithEvaluation(String criterionName, String evaluationOrigin, String evaluationDate, String studentEvaluation){
+    /*public static void createEvaluationWithEvaluation(String criterionName, String evaluationOrigin, String evaluationDate, String studentEvaluation){
         createEvaluation(criterionName, evaluationOrigin, evaluationDate)
 
+    }*/
+
+    public static void updateEvaluationInStudent(String studentLogin, String newEvaluation, String criterionName, String evaluationOrigin){
+        def student = new StudentController()
+        student.updateEvaluation(studentLogin, newEvaluation, criterionName, evaluationOrigin)
+        student.response.reset()
+    }
+
+    public static Student getStudent(String studentLogin){
+        def student = new StudentController()
+        return student.getStudent(studentLogin)
     }
 }

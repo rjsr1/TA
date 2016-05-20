@@ -26,7 +26,8 @@ Scenario: Edit evaluation of a student
   When I modify the "MANA" evaluation to "MA" in the criterion "X", from "Prova 2", date "11/11/11", from student "Marcos Antonio", login "ma2"
   Then the system stores the modification
   */
-String globalStudentName, globalStudentLogin, globalNewEvaluation, globalCriterionName, globalEvaluationOrigin/*, globalDate*/, globalEvaluationDate;
+//String globalStudentName, globalStudentLogin, globalNewEvaluation, globalCriterionName, globalEvaluationOrigin/*, globalDate*/, globalEvaluationDate;
+Student globalStudent;
 
 Given(~'^there is a student with the following information: student "([^"]*)", login "([^"]*)", has a "([^"]*)" evaluation in the criterion "([^"]*)", from "([^"]*)", date "([^"]*)"$'){
     String studentName, studentLogin, studentEvaluation, criterionName, evaluationOrigin, evaluationDate ->
@@ -39,19 +40,21 @@ Given(~'^there is a student with the following information: student "([^"]*)", l
 When(~'^I modify the "([^"]*)" evaluation to "([^"]*)" in the criterion "([^"]*)", from "([^"]*)", date "([^"]*)", from student "([^"]*)", login "([^"]*)"$'){
     String oldEvaluation, newEvaluation, criterionName, evaluationOrigin, evaluationDate, studentName, studentLogin ->
         //date = formattedDate(criterionDate)
-        globalStudentName = studentName
-        globalStudentLogin = studentLogin
-        globalNewEvaluation = newEvaluation
-        globalCriterionName = criterionName
-        globalEvaluationOrigin = evaluationOrigin
+        //globalStudentName = studentName
+        //globalStudentLogin = studentLogin
+        //globalNewEvaluation = newEvaluation
+        //globalCriterionName = criterionName
+        //globalEvaluationOrigin = evaluationOrigin
         //globalDate = evaluationDate
-        globalEvaluationDate = evaluationDate
+        //globalEvaluationDate = evaluationDate
         EvaluationDataAndOperations.updateEvaluationInStudent(studentName, studentLogin, newEvaluation, criterionName, evaluationOrigin, evaluationDate)
+        globalStudent = EvaluationDataAndOperations.getStudent(studentLogin)
 }
 
-Then(~'^the system stores the modification$'){
+Then(~'^the system stores the modification in the student with login "([^"]*)"$'){
     //date = formattedDate(globalDate)
-    assert EvaluationDataAndOperations.checkEvaluationInStudent(globalStudentName, globalStudentLogin, globalNewEvaluation, globalCriterionName, globalEvaluationOrigin, globalEvaluationDate) != null
+    //assert EvaluationDataAndOperations.checkEvaluationInStudent(globalStudentName, globalStudentLogin, globalNewEvaluation, globalCriterionName, globalEvaluationOrigin, globalEvaluationDate) != null
+    assert EvaluationDataAndOperations.compatibleTo(Student.findByLogin(login), globalStudent)
 }
 
 /*
@@ -93,3 +96,4 @@ Then(~'^an error message related to the evaluation appear$'){
 
     page.showErrorMessage("Invalid Evaluation")
 }
+
