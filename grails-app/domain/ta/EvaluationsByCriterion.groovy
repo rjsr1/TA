@@ -10,11 +10,11 @@ class EvaluationsByCriterion {
         criterion nullable: false
     }
 
-    public static void addEvaluation(Evaluation evaluationInstance) {
+    public void addEvaluation(Evaluation evaluationInstance) {
         this.evaluations.add(evaluationInstance);
     }
 
-    public static void deleteEvaluation(Evaluation evaluationInstance) {
+    public void deleteEvaluation(Evaluation evaluationInstance) {
         for (int i = 0; i < this.evaluations.size(); i++) {
             if (this.evaluations.get(i).compatibleTo(evaluationInstance)) {
                 this.evaluations.remove(i)
@@ -22,7 +22,7 @@ class EvaluationsByCriterion {
         }
     }
 
-    public static Evaluation findSpecificEvaluation(Evaluation evaluationInstance) {
+    public Evaluation findSpecificEvaluation(Evaluation evaluationInstance) {
         for (int i = 0; i <this.evaluations.size(); i++) {
             if (this.evaluations.get(i).compatibleToNoValue(evaluationInstance)) {
                 return this.evaluations.get(i)

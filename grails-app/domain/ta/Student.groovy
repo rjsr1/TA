@@ -12,7 +12,7 @@ class Student {
         criterionsAndEvaluations nullable : false;
     }
 
-    public static void addEvaluation(Evaluation evaluationInstance){
+    public void addEvaluation(Evaluation evaluationInstance){
         for(int i = 0; i< this.criterionsAndEvaluations.size(); i++){
             if(this.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(evaluationInstance.criterion.description)){
                 this.criterionsAndEvaluations.get(i).addEvaluation(evaluationInstance);
@@ -20,7 +20,7 @@ class Student {
         }
     }
 
-    public static void deleteEvaluation(Evaluation evaluationInstance){
+    public void deleteEvaluation(Evaluation evaluationInstance){
         for(int i = 0; i< this.criterionsAndEvaluations.size(); i++){
             if(this.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(evaluationInstance.criterion.description)){
                 this.criterionsAndEvaluations.get(i).deleteEvaluation(evaluationInstance);
@@ -28,7 +28,7 @@ class Student {
         }
     }
 
-    public static EvaluationsByCriterion findEvaluationByCriterion(String criterionName){
+    public EvaluationsByCriterion findEvaluationByCriterion(String criterionName){
         for(int i =0; i<this.criterionsAndEvaluations.size();i++){
             if(this.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(criterionName)){
                 return this.criterionsAndEvaluations.get(i);
@@ -37,7 +37,7 @@ class Student {
         return null
     }
 
-    public static boolean evaluationExist(Evaluation evaluationInstance){
+    public boolean evaluationExist(Evaluation evaluationInstance){
         for(int i = 0; i<this.criterionsAndEvaluations.size();i++){
             if(this.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(evaluationInstance.getCriterion().getDescription())){
                 List<Evaluation> evaluationsForThisCriterion = this.criterionsAndEvaluations.get(i).evaluations;

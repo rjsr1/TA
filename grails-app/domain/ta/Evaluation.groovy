@@ -11,7 +11,7 @@ class Evaluation {
         criterion nullable : false
     }
 
-    public static boolean compatibleTo(Evaluation evaluationInstance){
+    public boolean compatibleTo(Evaluation evaluationInstance){
         if(this.origin.equals(evaluationInstance.getOrigin()) && this.value.equals(evaluationInstance.getValue()) && this.applicatioDate.compareTo(evaluationInstance.getApplicationDate())==0 && this.criterion.getDescription().equals(evaluationInstance.getCriterion().getDescription()))
         {
             return true
@@ -19,7 +19,7 @@ class Evaluation {
             return false
         }
     }
-    public static boolean compatibleToNoValue(Evaluation evaluationInstance){
+    public boolean compatibleToNoValue(Evaluation evaluationInstance){
         if(this.origin.equals(evaluationInstance.getOrigin()) && this.applicatioDate.compareTo(evaluationInstance.getApplicationDate())==0 && this.criterion.getDescription().equals(evaluationInstance.getCriterion().getDescription()))
         {
             return true
