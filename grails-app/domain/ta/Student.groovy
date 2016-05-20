@@ -20,6 +20,14 @@ class Student {
         }
     }
 
+    public static void deleteEvaluation(Evaluation evaluationInstance){
+        for(int i = 0; i< this.criterionsAndEvaluations.size(); i++){
+            if(this.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(evaluationInstance.criterion.description)){
+                this.criterionsAndEvaluations.get(i).deleteEvaluation(evaluationInstance);
+            }
+        }
+    }
+
     public static EvaluationsByCriterion findEvaluationByCriterion(String criterionName){
         for(int i =0; i<this.criterionsAndEvaluations.size();i++){
             if(this.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(criterionName)){
@@ -42,6 +50,7 @@ class Student {
         }
         return false
     }
+
 
     /*private boolean criterionExists(String criterionDescription){
         for(int i=0;i<this.criterionsAndEvaluations.size();i++){

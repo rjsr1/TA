@@ -34,8 +34,16 @@ class StudentController {
     }
 
     public boolean checkEvaluationsAllStudents(String criterionName, String origin, String dateInString){
-       def evaluation = new Evaluation(criterionName,null)
+       def evaluation = new Evaluation(origin,null,this.formattedDate(dateInString),new Criterion(criterionName));
        List<Student> students = Student.findAll()
+       for(int i =0; i<students.size();i++){
+           def evCriterion  = students.get(i).findEvaluationByCriterion(criterionName);
+           if(evCriterion.findSpecificEvaluation(evaluation) != null){
+               return true;
+           }else{
+               return false
+           }
+       }
     }
 
 
