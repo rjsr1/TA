@@ -14,6 +14,12 @@ class EvaluationsByCriterion {
         this.evaluations.add(evaluationInstance);
     }
 
-
+    public static void deleteEvaluation(Evaluation evaluationInstance){
+        for(int i= 0; i<this.evaluations.size();i++){
+            if(this.evaluations.get(i).compatibleTo(evaluationInstance)){
+                this.evaluations.remove(i)
+            }
+        }
+    }
 
 }

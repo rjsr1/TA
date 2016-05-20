@@ -19,4 +19,12 @@ class Evaluation {
             return false
         }
     }
+    public static boolean compatibleToNoValue(Evaluation evaluationInstance){
+        if(this.origin.equals(evaluationInstance.getOrigin()) && this.applicatioDate.compareTo(evaluationInstance.getApplicationDate())==0 && this.criterion.getDescription().equals(evaluationInstance.getCriterion().getDescription()))
+        {
+            return true
+        }else {
+            return false
+        }
+    }
 }

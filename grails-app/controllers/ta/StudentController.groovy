@@ -22,12 +22,14 @@ class StudentController {
         return true
     }
 
-    public void addEvaluationToStudent(Evaluation evaluationInstance, Student studentInstance){
-        def student = Student.findByLogin(studentInstance.getLogin());
+    public void addEvaluationToStudent(String login){
+        def student = Student.findByLogin(login);
+        def evaluationInstance = new Evaluation(params);
         student.addEvaluation(evaluationInstance);
     }
 
     public boolean checkEvaluationsAllStudents(String criterionName, String origin, String dateInString){
+
        List<Student> students = Student.findAll()
     }
 
