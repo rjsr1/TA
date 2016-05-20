@@ -1,6 +1,6 @@
 package ta
 
-
+import java.text.SimpleDateFormat
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -105,5 +105,10 @@ class CriterionController {
             }
             '*'{ render status: NOT_FOUND }
         }
+    }
+    public static Date formattedDate(String dateInString){
+        def formatter = new SimpleDateFormat("dd/mm/yyyy");
+        Date date = formatter.parse(dateInString);
+        return date;
     }
 }

@@ -52,7 +52,7 @@ String dateGlobal;
 Given(~'^ there are no evaluations to all students to the "([^"]*)" criterion, originated from a "([^"]*)" and dated from "([^"]*)"$') {
     String criterionName, origin, dateInString ->
     date = formattedDate(dateInString);
-    assert EvaluationDataAndOperations.findEvaluation(criterionName,origin,date) == null;
+    assert EvaluationDataAndOperations.findEvaluationAndCount(criterionName,origin,date);
 }
 
 /*When(~'^I create an evaluation criterion with name "([^"]*)"$') { String criterionName ->
