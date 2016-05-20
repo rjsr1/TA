@@ -19,7 +19,7 @@ class EvaluationDataAndOperations{
         return date;
     }
 
-    public static Evaluation findEvaluation(String criterionName, String origin, String dateInString){
+    /*public static Evaluation findEvaluation(String criterionName, String origin, String dateInString){
         def applicationDate = formattedDate(dateInString)
         for(Student student : Student.findAll()){
             def counter = 0
@@ -38,6 +38,17 @@ class EvaluationDataAndOperations{
             }
         }
         return null;
+    }*/
+
+    public static boolean findEvaluationAndCount(String criterionName, String origin, String dateInString){
+        def applicationDate = formattedDate(dateInString)
+        def controller = new EvaluationController()
+        def controller2 = new StudentController()
+        def listEvaluations = controller2.countStudentsEvaluated(criterionName,origin,dateInString)
+        def countStudents = controller2.countAllStudents();
+        if(countStudents==listEvaluations.size()) return true;
+        else return false
+
     }
     public static boolean existEvaluation(String criterionName, String dateInString){
         def applicationDate = formattedDate(dateInString)
@@ -89,7 +100,7 @@ class EvaluationDataAndOperations{
 
     public static boolean createStudent(String login, String name){
         def cont = new StudentController()
-        cont.params << [login: login] << [name: name] << [evaluations: new HashMap<String, String>()]
+        cont.params << [login: login] << [name: name]
         boolean saved = cont.saveStudent(cont.createStudent())
         cont.response.reset()
         return saved
@@ -132,3 +143,4 @@ class EvaluationDataAndOperations{
         return student.getStudent(studentLogin)
     }
 }
+

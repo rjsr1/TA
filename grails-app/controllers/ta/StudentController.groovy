@@ -1,6 +1,6 @@
 package ta
 
-
+import java.text.SimpleDateFormat
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -10,60 +10,57 @@ class StudentController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    public static Date formattedDate(String dateInString){
+        def formatter = new SimpleDateFormat("dd/mm/yyyy");
+        Date date = formatter.parse(dateInString);
+        return date;
+    }
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Student.list(params), model:[studentInstanceCount: Student.count()]
     }
-    public boolean addEvaluations(String criterionName, Evaluation evaluationInstance){
+    public boolean addEvaluationsToAllStudents(String criterionName, Evaluation evaluationInstance){
         for(Student student : Student.findAll()){
-            def counter = 0
-            student.each(student.criterions){
-                if(criterionName == student.criterions.get(counter).name){
-                    def studentCriterions = student.getCriterions().get(counter);
-                    def counter2 = 0;
-                    studentCriterions.each(studentCriterions.evaluations){
-                        if(studentCriterions.getEvaluations().get(counter2).origin == origin && studentCriterions.getEvaluations().get(counter2).applicationDate == date){
-                            return false
-                        }
-                    }
-                    studentCriterions.getEvaluations().add(evaluationInstace)
-                    counter2++
-                }
-                counter++
-            }
+            student.addEvaluation(evaluationInstance);
             student.save flush : true
         }
         return true
     }
 
-    public boolean checkEvaluations(String criterionName, String origin, String dateInString){
-        def date = formattedDate(dateInString)
-        for(Student student : Student.findAll()){
-            def ok = false
-            def counter = 0
-            student.each(student.criterions){
-                if(criterionName == student.criterions.get(counter).name){
-                    def studentCriterions = student.getCriterions().get(counter);
-                    def counter2 = 0;
-                     studentCriterions.each(studentCriterions.evaluations){
-                        if(studentCriterions.getEvaluations().get(counter2).origin == origin && studentCriterions.getEvaluations().get(counter2).applicationDate == date){
-                            ok = true
-                        }
-                    }
-                    counter2++
-                }
-                counter++
-                }
-            if(!ok){
-                return ok;
-            }
-            }
-        return ok
+    public void addEvaluationToStudent(String login){
+        def student = Student.findByLogin(login);
+        def evaluationInstance = new Evaluation(params);
+        student.addEvaluation(evaluationInstance);
+        student.save flush : true
+    }
+
+    public List<Evaluation> countStudentsEvaluated(String criterionName, String origin, String dateInString){
+        List<Evaluation> returningValue;
+        def evaluation = new Evaluation(origin,null,this.formattedDate(dateInString),new Criterion(criterionName));
+        def students = Student.findAll();
+        for(int i =0; i< students.size();i++){
+            returningValue.add(students.get(i).findEvaluationByCriterion(evaluation.getCriterion().getDescription()).findSpecificEvaluation(evaluation))
         }
+        return returningValue;
+    }
 
-
+    public boolean checkEvaluationsAllStudents(String criterionName, String origin, String dateInString){
+       def evaluation = new Evaluation(origin,null,this.formattedDate(dateInString),new Criterion(criterionName));
+       List<Student> students = Student.findAll()
+       for(int i =0; i<students.size();i++){
+           def evCriterion  = students.get(i).findEvaluationByCriterion(criterionName);
+           if(evCriterion.findSpecificEvaluation(evaluation) != null){
+               return true;
+           }else{
+               return false
+           }
+       }
+    }
+    public int countAllStudents(){
+        return Student.findAll().size();
+    }
     public boolean saveStudent(Student student){
-        if(Student.findByLogin(student.login) == null){
+        if(Student.findByLogin(student.login) ==null){
             student.save flush: true
             return true
         }else{
@@ -73,15 +70,9 @@ class StudentController {
 
 
     def addEvaluation(Student studentInstance, String criterionName, Evaluation evaluationInstance){
-        def student = studentInstance
-        def counter = 0
-        student.each(student.criterions){
-            if(student.criterions.get(counter).name == criterionName){
-                student.criterions.get(counter).evaluations.add(evaluationInstance)
-            }
-            counter++
-        }
-       student.save flush : true
+        def student = studentInstance;
+        student.addEvaluation(evaluationInstance);
+        student.save flush : true
     }
 
     /*def addCriterion(Criterion criterionInstance){
@@ -146,7 +137,7 @@ class StudentController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'Student.label', default: 'Student'), studentInstance.id])
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'student.label', default: 'Student'), studentInstance.id])
                 redirect studentInstance
             }
             '*'{ respond studentInstance, [status: OK] }
@@ -165,7 +156,7 @@ class StudentController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'Student.label', default: 'Student'), studentInstance.id])
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'student.label', default: 'Student'), studentInstance.id])
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }
