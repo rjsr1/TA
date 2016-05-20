@@ -1,6 +1,6 @@
 package ta
 
-
+import java.text.SimpleDateFormat
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -10,6 +10,11 @@ class StudentController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    public static Date formattedDate(String dateInString){
+        def formatter = new SimpleDateFormat("dd/mm/yyyy");
+        Date date = formatter.parse(dateInString);
+        return date;
+    }
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Student.list(params), model:[studentInstanceCount: Student.count()]
@@ -29,7 +34,7 @@ class StudentController {
     }
 
     public boolean checkEvaluationsAllStudents(String criterionName, String origin, String dateInString){
-
+       def evaluation = new Evaluation(criterionName,null)
        List<Student> students = Student.findAll()
     }
 
