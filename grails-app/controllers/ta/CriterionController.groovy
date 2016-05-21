@@ -23,21 +23,15 @@ class CriterionController {
         respond new Criterion(params)
     }
 
-    public Criterion createCriterion() {
-        return new Criterion(params)
-    }
-
     public Criterion retrieveCriterion(String desc) {
         return Criterion.findByDescription(desc)
     }
 
-    public boolean saveCriterion(Criterion Criterion) {
-        if(Criterion.findByDescription(Criterion.description) == null) {
-            Criterion.save(flush: true)
-            new CriterionController().updateCriteria()
-            return true
+    public createAndSaveCriterion() {
+        Criterion crit = new Criterion(params)
+        if(Criterion.findByDescription(crit.description) == null) {
+            crit.save(flush: true)
         }
-        return false
     }
 
     @Transactional

@@ -12,7 +12,7 @@ class CriterionTestDataAndOperations {
     public static void createCriterion(String description) {
         def controller = new CriterionController()
         controller.params << [description: description]
-        boolean saved = controller.saveCriterion(controller.createCriterion())
+        controller.createAndSaveCriterion()
         controller.response.reset()
     }
 

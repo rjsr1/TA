@@ -5,6 +5,7 @@ package steps
 
 import javafx.beans.binding.When
 import pages.CriterionPages.CreateCriterionPage
+import ta.Criterion
 
 this.metaClass.mixin(cucumber.api.groovy.Hooks)
 this.metaClass.mixin(cucumber.api.groovy.EN)
@@ -16,7 +17,7 @@ Feature: Add Criterion
   So I can evaluate the students with these criteria
 */
 
-Criterion crit = new Criterion()
+Criterion crit
 
 /*
 #Controller Scenario
@@ -50,7 +51,7 @@ Given(~'^the criterion named "([^"]*)" already exists on the system$') {
     String desc -> assert CriterionTestDataAndOperations.getCriterion(desc) != null
 }
 
-When(~'^I create the criterion "([^"]*)"$') {
+When(~'^I create the criterion with description "([^"]*)"$') {
     String desc -> CriterionTestDataAndOperations.createCriterion(desc)
 }
 

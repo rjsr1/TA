@@ -14,7 +14,7 @@ Feature: Add Criterion
 #Controller Scenario
   Scenario: Register a criterion that already exists
     Given the criterion named "P1" already exists on the system
-    When I create the criterion "P1"
+    When I create the criterion with description "P1"
     Then the system does nothing
 
 #GUI Scenario
