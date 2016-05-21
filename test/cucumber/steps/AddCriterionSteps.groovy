@@ -16,7 +16,7 @@ Feature: Add Criterion
   So I can evaluate the students with these criteria
 */
 
-Criterion crit
+Criterion crit = new Criterion()
 
 /*
 #Controller Scenario
