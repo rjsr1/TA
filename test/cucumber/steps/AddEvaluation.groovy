@@ -67,7 +67,7 @@ When(~'^I want to evaluate all students to the  "([^"]*)" criterion, originated 
 }
 
 Then(~'^all the evaluations will be stored in on the "([^"]*)" criterion history of each student .$'){
-    String criterionName -> assert EvaluationDataAndOperations.checkEvaluation(criterionName,originGlobal,dateGlobal)
+    String criterionName -> assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName,originGlobal,dateGlobal)
 }
 
 /*Then(~'^the evaluation criterion with name "([^"]*)" is properly stored in the system$') { String criterionName ->
@@ -102,12 +102,12 @@ Given evaluations for every student on the "X" criteria, originated form "Test" 
 Boolean stored = false;
 Given(~'^evaluations for every student on the "([^"]*)" criteria, originated form "([^"]*)" and dated from "([^"]*)" are already in the system$') {
     String criterionName, origin, dateInString ->
-    assert EvaluationDataAndOperations.existEvaluation(criterionName,dateInString) == true
+    assert EvaluationDataAndOperations.checkEvaluatioAlLStudents(criterionName,origin, dateInString) == true
 }
 
 When(~'^I want to evaluate all students on the"([^"]*)" criteria, originated from "([^"]*)" and date from "([^"]*)" $') {
     String criterionName, origin, dateInString ->
-    assert EvaluationDataAndOperations.createEvaluation(criterionName,origin,dateInString) == false
+    assert EvaluationDataAndOperations.createEvaluationNoValue(criterionName,origin,dateInString) == false
         stored = EvaluationDataAndOperations.createEvaluation(criterionName,origin,dateInString)
 }
 
@@ -123,7 +123,7 @@ Then an error message related to trying to add a evaluation with missing values 
 ////////////////////////////////
 Given(~'^I am on the "Evaluation page"$') { ->
     to EvaluationPage
-    at MainPage
+    at EvaluationPage
 }
 
 When(~'^I want to evaluate all students to a the "([^"]*)" criteria, without a specific origin and dated from"([^"]*)"$') {

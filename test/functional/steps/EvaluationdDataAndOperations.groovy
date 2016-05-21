@@ -97,15 +97,23 @@ class EvaluationDataAndOperations{
         def cont = new StudentController()
         def cont2 = new EvaluationController();
         cont2.params<<[value : null] <<[origin: origin] << [applicationDate : applicationDate];
-        Evaluation evaluation = cont2.createEvaluation()
-        def returningValue= cont.addEvaluations(criterionName,Evaluation)
+        Evaluation evaluation = cont2.createEvaluation(criterionName,origin,dateInString)
+        cont.params<<[origin:origin,applicationDate : evaluation.applicationDate, Criterion:evaluation.criterion, value : null]
+        def returningValue= cont.addEvaluations()
         cont.response.reset()
         cont2.response.reset()
         return returningValue
     }
-    public static boolean checkEvaluation(String criterionName,String origin,String dateInString){
+
+
+    public static boolean checkEvaluationAllStudents(String criterionName,String origin,String dateInString){
         def cont = new StudentController()
-        return cont.checkEvaluations(criterionName,origin,dateInString)
+        return cont.checkEvaluationsAllStudents(criterionName,origin,dateInString)
+    }
+
+    public static boolean checkEvaluationRedundantAllStudents(String criterionName,String origin,String dateInString){
+        def cont = new StudentController()
+        return cont.checkRedundantEvaluationAllStudents(criterionName,origin,dateInString)
     }
 
 

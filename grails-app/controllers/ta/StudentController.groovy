@@ -26,7 +26,13 @@ class StudentController {
         }
         return true
     }
-
+    public boolean addEvaluationToAllStudentes(){
+        def Evaluation = new Evaluation(params);
+        for(Student student : Student.findall()){
+            student.addEvaluation(evaluationInstance);
+            student.save flush : true
+        }
+    }
     public void addEvaluationToStudent(String login){
         def student = Student.findByLogin(login);
         def evaluationInstance = new Evaluation(params);
@@ -42,6 +48,18 @@ class StudentController {
             returningValue.add(students.get(i).findEvaluationByCriterion(evaluation.getCriterion().getDescription()).findSpecificEvaluation(evaluation))
         }
         return returningValue;
+    }
+
+    public boolean checkRedundantEvaluationAllStudents(String criterionName,String origin,String dateInString){
+        def evaluation = new Evaluation(origin,null,this.formattedDate(dateInString),new Criterion(criterionName));
+        List<Student> students = Student.findAll();
+        for(int i=0; i<students.size();i++){
+            def evCriterion = students.get(i).findEvaluationByCriterion(criterionName);
+            if(evCriterion.findAll{it -> evCriterion.findSpecificEvaluation(evaluation)!= null}.size()>1){
+                return false
+            }
+        }
+        return true
     }
 
     public boolean checkEvaluationsAllStudents(String criterionName, String origin, String dateInString){
