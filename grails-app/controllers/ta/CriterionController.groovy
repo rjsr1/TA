@@ -1,5 +1,7 @@
 package ta
 
+
+
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
@@ -10,11 +12,11 @@ class CriterionController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Criterion.list(params), model:[CriterionInstanceCount: Criterion.count()]
+        respond Criterion.list(params), model:[criterionInstanceCount: Criterion.count()]
     }
 
-    def show(Criterion CriterionInstance) {
-        respond CriterionInstance
+    def show(Criterion criterionInstance) {
+        respond criterionInstance
     }
 
     def create() {
@@ -22,7 +24,6 @@ class CriterionController {
     }
 
     public Criterion createCriterion() {
-
         return new Criterion(params)
     }
 
@@ -55,7 +56,7 @@ class CriterionController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'Criterion.label', default: 'Criterion'), criterionInstance.id])
+                flash.message = message(code: 'default.created.message', args: [message(code: 'criterion.label', default: 'Criterion'), criterionInstance.id])
                 redirect criterionInstance
             }
             '*' { respond criterionInstance, [status: CREATED] }
@@ -111,7 +112,7 @@ class CriterionController {
     protected void notFound() {
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'Criterion.label', default: 'Criterion'), params.id])
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'criterion.label', default: 'Criterion'), params.id])
                 redirect action: "index", method: "GET"
             }
             '*'{ render status: NOT_FOUND }
