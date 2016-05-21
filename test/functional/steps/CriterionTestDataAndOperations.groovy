@@ -1,6 +1,6 @@
 package steps
 
-import ta.Criterion
+
 import ta.CriterionController
 
 /**

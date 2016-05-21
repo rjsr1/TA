@@ -4,8 +4,7 @@ import pages.EvaluationCriterionPages.CreateEvaluationCriterionPage
 import pages.EvaluationCriterionPages.EvaluationCriterionPage
 import pages.StudentPages.CreateStudentPage
 import pages.StudentPages.StudentPage
-import ta.Criterion
-import ta.Criterion
+
 import ta.Student
 
 this.metaClass.mixin(cucumber.api.groovy.Hooks)
