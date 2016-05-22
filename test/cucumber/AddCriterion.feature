@@ -25,8 +25,9 @@ Feature: Add Criterion
     Then I should see a message related to the criterion registration failure
 
 #GUI Scenario
-  Scenario: Register a non-existent criterion
-    Given I am at the Add Criterion page
-    When I fill the field Nome with the name "P1"
-    And I finalize the criterion registration
-    Then I should see the new criterion available on the criteria list
+
+#  Scenario: Register a non-existent criterion
+#    Given I am at the Add Criterion page
+#    When I fill the field Nome with the name "P1"
+#    And I finalize the criterion registration
+#    Then I should see the new criterion available on the criteria list

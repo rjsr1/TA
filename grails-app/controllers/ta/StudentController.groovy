@@ -61,12 +61,12 @@ class StudentController {
         return returningValue;
     }
 
-<<<<<<< HEAD
     public Student createStudent() {
         Student student = new Student(params)
         student.afterCreateAddCriteria(Criterion.findAll())
         return student
-=======
+    }
+
     public boolean checkRedundantEvaluationAllStudents(String criterionName,String origin,String dateInString){
         def evaluation = new Evaluation(origin,null,this.formattedDate(dateInString),new Criterion(criterionName));
         List<Student> students = Student.findAll();
@@ -77,7 +77,6 @@ class StudentController {
             }
         }
         return true
->>>>>>> refs/heads/pr/2
     }
 
     public boolean checkEvaluationsAllStudents(String criterionName, String origin, String dateInString){
@@ -92,9 +91,11 @@ class StudentController {
            }
        }
     }
+
     public int countAllStudents(){
         return Student.findAll().size();
     }
+
     public boolean saveStudent(Student student){
         if(Student.findByLogin(student.login) ==null){
             student.save flush: true
@@ -104,14 +105,15 @@ class StudentController {
         }
     }
 
-<<<<<<< HEAD
     public void updateStudentEvaluationCriteria() {
-        for(Student student : Student.findAll()) {
+        for (Student student : Student.findAll()) {
             for (Criterion evCriterion : Criterion.findAll()) {
                 student.addCriterion(evCriterion)
                 student.save flush: true
             }
-=======
+        }
+    }
+
     def addEvaluation(Student studentInstance, String criterionName, Evaluation evaluationInstance){
         def student = studentInstance;
         student.addEvaluation(evaluationInstance);
@@ -122,7 +124,6 @@ class StudentController {
         for(Student student : Student.findAll()){
             student.criterions.add(criterionInstance);
             save(student)
->>>>>>> refs/heads/pr/2
         }
     }
 
@@ -146,16 +147,13 @@ class StudentController {
             return
         }
 
-<<<<<<< HEAD
         ////////////////////////////////
         studentInstance.afterCreateAddCriteria(Criterion.findAll())
         ////////////////////////////////
 
         studentInstance.save flush: true
 
-=======
         studentInstance.save flush:true
->>>>>>> refs/heads/pr/2
 
         request.withFormat {
             form multipartForm {

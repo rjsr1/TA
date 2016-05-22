@@ -26,36 +26,38 @@ class Student {
         }
     }
 
-<<<<<<< HEAD
     public void afterCreateAddCriteria(List<Criterion> evaluationCriteria) {
         evaluations = new HashMap<>()
-        for(Criterion evaluationCriterion : evaluationCriteria) {
-            if(this.evaluations.get(evaluationCriterion.name) == null) {
+        for (Criterion evaluationCriterion : evaluationCriteria) {
+            if (this.evaluations.get(evaluationCriterion.name) == null) {
                 this.evaluations.put(evaluationCriterion.name, Concept.CONCEPTS.get(3))
-=======
-    public void deleteEvaluation(Evaluation evaluationInstance){
-        for(int i = 0; i< this.criterionsAndEvaluations.size(); i++){
-            if(this.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(evaluationInstance.criterion.description)){
-                this.criterionsAndEvaluations.get(i).deleteEvaluation(evaluationInstance);
->>>>>>> refs/heads/pr/2
             }
         }
     }
 
-<<<<<<< HEAD
+    public void deleteEvaluation(Evaluation evaluationInstance){
+        for(int i = 0; i< this.criterionsAndEvaluations.size(); i++){
+            if(this.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(evaluationInstance.criterion.description)){
+                this.criterionsAndEvaluations.get(i).deleteEvaluation(evaluationInstance);
+            }
+        }
+    }
+
     public void addCriterion(Criterion evaluationCriterion) {
-        if(evaluations == null) {
+        if (evaluations == null) {
             evaluations = new HashMap<>()
-=======
+        }
+    }
+
     public EvaluationsByCriterion findEvaluationByCriterion(String criterionName){
         for(int i =0; i<this.criterionsAndEvaluations.size();i++){
             if(this.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(criterionName)){
                 return this.criterionsAndEvaluations.get(i);
             }
->>>>>>> refs/heads/pr/2
         }
         return null
     }
+
     public void addEvaluationsByCriterion(EvaluationsByCriterion evCriterion){
         if(!this.findEvaluationByCriterion(evCriterion.getCriterion().getDescription())){
             this.criterionsAndEvaluations.add(evCriterion);

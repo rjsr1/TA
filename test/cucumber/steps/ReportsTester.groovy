@@ -3,8 +3,7 @@
  */
 package steps
 
-import funciotnal.pages.ReportsPages.ReportsPage
-import functional.pages.StudentPages.StudentPage
+import pages.StudentPages.StudentPage
 
 //Cenários de controlador
 //Adicionar novo tipo de relatório na lista de relatórios

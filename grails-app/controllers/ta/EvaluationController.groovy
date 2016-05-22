@@ -28,7 +28,7 @@ class EvaluationController {
         return evaluation
     }
 
-    public Evaluation createEvaluation(String criterionName, String origin,String dateInString){
+    public Evaluation createEvaluation2(String criterionName, String origin,String dateInString){
         def criterion = Criterion.findByDescription(criterionName)
         def date = this.formattedDate(dateInString)
         Evaluation evaluation = new Evaluation(origin, null, date, criterion)
