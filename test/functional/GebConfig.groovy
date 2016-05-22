@@ -17,6 +17,8 @@ environments {
             new ChromeDriver(); }
    }
 
+    baseUrl = "http://localhost:8070/"
+
    // run as “grails -Dgeb.env=firefox test-app”
    // See: http://code.google.com/p/selenium/wiki/FirefoxDriver
    firefox {
