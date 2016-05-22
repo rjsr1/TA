@@ -8,10 +8,10 @@ import geb.Page
 
 class AddStudentsPage extends Page{
 
-    static url = "/TA/student/add"
+    static url = "/TA/student/create"
 
     static at =  {
-        title ==~ /Add Student/
+        title ==~ /Create Student/
     }
 
     def fillStudentDetails(String login, String name) {
@@ -20,10 +20,6 @@ class AddStudentsPage extends Page{
     }
 
     def selectAddStudent() {
-        $("input", name: "add").click()
-    }
-
-    def showConfirmationMessage(String name, String login) {
-
+        $("input", name: "create").click()
     }
 }

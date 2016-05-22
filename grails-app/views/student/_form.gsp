@@ -25,7 +25,6 @@
 		<g:message code="student.evaluations.label" default="Evaluations" />
 		
 	</label>
-	
 
 </div>
 

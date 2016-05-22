@@ -1,4 +1,4 @@
-Feature: Cadastrar aluno
+Feature: Add Student
   As a professor
   I want to register students in the system
   So
@@ -13,7 +13,7 @@ Feature: Cadastrar aluno
   Scenario: Message from the new student registration
     Given I am in the add student page
     When I add the "Roberto Alves" with login "ra"
-    Then a mensager with the name of "Roberto Alves" and the login "ra" warns me that this student was registered
+    Then I can see the name of "Roberto Alves" and the login "ra" in the list of students
 
 #Cenário Controler
   Scenario: Register a student twice
@@ -25,4 +25,4 @@ Feature: Cadastrar aluno
   Scenario: Error message when registering a student twice
     Given  I am in the add student page
     When I add the "Roberto Alves" with login "ra"
-    Then a error mensager with the name of "Roberto Alves" and the login "ra" warns me that this student was not registered
+    Then I can't see the name of "Roberto Alves" and the login "ra" in the list of students

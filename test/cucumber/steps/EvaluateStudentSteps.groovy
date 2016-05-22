@@ -41,10 +41,10 @@ Given(~'^the system does not have an evaluation criterion with name "([^"]*)"2$'
     assert EvaluationCriterion.findByName(criterionName) == null
 }
 
-And(~'^the student "([^"]*)" with login "([^"]*)" is registered in the system$') { String studentName, String studentLogin ->
+/*And(~'^the student "([^"]*)" with login "([^"]*)" is registered in the system$') { String studentName, String studentLogin ->
     EvaluateStudentTestDataAndOperations.createStudent(studentLogin, studentName)
     assert Student.findByLogin(studentLogin) != null
-}
+}*/
 
 When(~'^I create an evaluation criterion with name "([^"]*)"3$') { String criterionName ->
     EvaluateStudentTestDataAndOperations.createEvaluationCriterion(criterionName)
