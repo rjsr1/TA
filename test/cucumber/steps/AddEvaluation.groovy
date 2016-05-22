@@ -102,7 +102,9 @@ Given evaluations for every student on the "X" criteria, originated form "Test" 
 Boolean stored = false;
 Given(~'^evaluations for every student on the "([^"]*)" criteria, originated form "([^"]*)" and dated from "([^"]*)" are already in the system$') {
     String criterionName, origin, dateInString ->
-        EvaluationDataAndOperations.
+        EvaluationDataAndOperations.createStudents();
+        EvaluationDataAndOperations.createCriterionXandAddToStudents();
+        EvaluationDataAndOperations.createEvaluationNoValue(criterionName,origin,dateInString);
     assert EvaluationDataAndOperations.checkEvaluatioAlLStudents(criterionName,origin, dateInString) == true
 }
 
@@ -122,7 +124,7 @@ Given I am at the "Add concept" screen
 When I want to evaluate all students to a the "X" criteria, without a specific origin and dated from "28/03/2016".
 Then an error message related to trying to add a evaluation with missing values will be displayed*/
 ////////////////////////////////
-Given(~'^I am on the "Evaluation page"$') { ->
+/*Given(~'^I am on the "Evaluation page"$') { ->
     to EvaluationPage
     at EvaluationPage
 }
@@ -134,7 +136,7 @@ When(~'^I want to evaluate all students to a the "([^"]*)" criteria, without a s
 
 Then(~'^an error message related to trying to add a evaluation with missing values will be displayed$') {
     page.showErrorMensagem("Missing values")
-}
+}*/
 
 /*Scenario: Import evaluations
 Given I organized all evaluations for the "X" criterion originated from "Midterm", dated from "31/03/2016" in a spreedsheet
@@ -142,7 +144,7 @@ When I want to import all evaluations from the spreedsheet to add to all student
 Then all the marks will be stored in on the "X" criteria's history of each student*/
 
 /////////////////////////////////////
-Given(~'^I organized all evaluations for the "([^"]*)" criterion originated from "([^"]*)", date from "([^"]*)" in a spreedsheet named "([^"]*)"$') {
+/*Given(~'^I organized all evaluations for the "([^"]*)" criterion originated from "([^"]*)", date from "([^"]*)" in a spreedsheet named "([^"]*)"$') {
     String criterionName, origin, dateInString, fileName ->
         EvaluationDataAndOperations.checkFileExistence(criterionName,origin,dateInString,fileName)
 }
@@ -176,4 +178,4 @@ When(~'^I want to import all evaluations from the spreedsheet named"([^"]*)" to 
 Then(~'^all evaluations will be stored on the "([^"]*)" criterias history of each student $') {
     String criterionName ->
         assert EvaluationDataAndOperations.checkImportCriterion(criterionName) == false;
-}
+}*/
