@@ -23,14 +23,31 @@ class CriterionController {
         respond new Criterion(params)
     }
 
-    public Criterion retrieveCriterion(String desc) {
-        return Criterion.findByDescription(desc)
+    public Criterion retrieveCriterion() {
+        def criterionInstance = new Criterion(params)
+        return Criterion.findByDescription(criterionInstance.description)
+    }
+
+    public boolean compatibleInCriteria() {
+        def criterionInstance = new Criterion(params)
+        Criterion c = Criterion.findByDescription(criterionInstance.description)
+        return criterionInstance.description.equals(c.description)
     }
 
     public createAndSaveCriterion() {
         Criterion crit = new Criterion(params)
         if(Criterion.findByDescription(crit.description) == null) {
             crit.save(flush: true)
+        }
+    }
+
+    public List<Criterion> getCriteriaList() {
+        return Criterion.list()
+    }
+
+    public boolean checkIfCriteriaChanged(List<Criterion> oldCriteriaState) {
+        oldCriteriaState.each { crit ->
+
         }
     }
 

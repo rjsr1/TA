@@ -4,18 +4,18 @@
 <html>
 	<head>
 		<meta name="layout" content="main">
-		<g:set var="entityName" value="${message(code: 'evaluationCriterion.label', default: 'Criterion')}" />
+		<g:set var="entityName" value="${message(code: 'criterion.label', default: 'Criterion')}" />
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>
 	<body>
-		<a href="#list-evaluationCriterion" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
+		<a href="#list-criterion" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div class="nav" role="navigation">
 			<ul>
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 			</ul>
 		</div>
-		<div id="list-evaluationCriterion" class="content scaffold-list" role="main">
+		<div id="list-criterion" class="content scaffold-list" role="main">
 			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
@@ -24,22 +24,22 @@
 			<thead>
 					<tr>
 					
-						<g:sortableColumn property="name" title="${message(code: 'evaluationCriterion.name.label', default: 'Name')}" />
+						<g:sortableColumn property="description" title="${message(code: 'criterion.description.label', default: 'Description')}" />
 					
 					</tr>
 				</thead>
 				<tbody>
-				<g:each in="${evaluationCriterionInstanceList}" status="i" var="evaluationCriterionInstance">
+				<g:each in="${criterionInstanceList}" status="i" var="criterionInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<td><g:link action="show" id="${evaluationCriterionInstance.id}">${fieldValue(bean: evaluationCriterionInstance, field: "name")}</g:link></td>
+						<td><g:link action="show" id="${criterionInstance.id}">${fieldValue(bean: criterionInstance, field: "description")}</g:link></td>
 					
 					</tr>
 				</g:each>
 				</tbody>
 			</table>
 			<div class="pagination">
-				<g:paginate total="${evaluationCriterionInstanceCount ?: 0}" />
+				<g:paginate total="${criterionInstanceCount ?: 0}" />
 			</div>
 		</div>
 	</body>

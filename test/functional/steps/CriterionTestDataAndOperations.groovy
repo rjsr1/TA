@@ -21,9 +21,21 @@ class CriterionTestDataAndOperations {
         return false
     }
 
+    public static boolean compatibleInCriteria(String desc) {
+        def controller = new CriterionController()
+        controller.params << [description: desc]
+        return controller.compatibleInCriteria()
+    }
+
     public static Criterion getCriterion(String desc) {
         def controller = new CriterionController()
-        return controller.retrieveCriterion(desc)
+        controller.params << [description: desc]
+        return controller.retrieveCriterion()
+    }
+
+    public static List<Criterion> getCriteriaList() {
+        def controller = new CriterionController()
+        return controller.getCriteriaList()
     }
 
 }

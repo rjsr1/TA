@@ -2,12 +2,12 @@
 
 
 
-<div class="fieldcontain ${hasErrors(bean: evaluationCriterionInstance, field: 'name', 'error')} required">
-	<label for="name">
-		<g:message code="evaluationCriterion.name.label" default="Name" />
+<div class="fieldcontain ${hasErrors(bean: criterionInstance, field: 'description', 'error')} required">
+	<label for="description">
+		<g:message code="criterion.description.label" default="Description" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="name" required="" value="${evaluationCriterionInstance?.name}"/>
+	<g:textField name="description" required="" value="${criterionInstance?.description}"/>
 
 </div>
 

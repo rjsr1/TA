@@ -19,8 +19,8 @@ Feature: Add Criterion
 
 #GUI Scenario
   Scenario: Error when registering a criterion that already exists
-    Given I am on the Add Criterion page
-    And the criterion "P1" already exists
+    Given the criterion "P1" already exists
+    And I am on the Add Criterion page
     When I add the criterion "P1"
     Then I should see a message related to the criterion registration failure
 

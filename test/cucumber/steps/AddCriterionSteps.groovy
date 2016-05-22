@@ -18,6 +18,8 @@ Feature: Add Criterion
 */
 
 Criterion crit
+String tempDesc
+List<Criterion> oldCriteriaState
 
 /*
 #Controller Scenario
@@ -49,6 +51,7 @@ Then system does nothing
 */
 Given(~'^the criterion named "([^"]*)" already exists on the system$') {
     String desc -> assert CriterionTestDataAndOperations.getCriterion(desc) != null
+        tempDesc = desc
 }
 
 When(~'^I create the criterion with description "([^"]*)"$') {
@@ -56,7 +59,7 @@ When(~'^I create the criterion with description "([^"]*)"$') {
 }
 
 Then(~'^the system does nothing$') { ->
-    assert CriterionTestDataAndOperations.checkIfCriterionsChanged()
+    assert CriterionTestDataAndOperations.compatibleInCriteria(tempDesc)
 }
 
 /*
@@ -67,17 +70,17 @@ Then(~'^the system does nothing$') { ->
     When I add the criterion "P1"
     Then I should see a message related to the criterion registration failure
  */
-Given(~'^I am on the Add Criterion page$') {
-    to CreateCriterionPage
-    at CreateCriterionPage
-}
-
-And(~'^the criterion "([^"]*)" already exists$') {
+Given(~'^the criterion "([^"]*)" already exists$') {
     String desc ->
         at CreateCriterionPage
         CreateCriterionPage.createCriterion(desc)
         to CreateCriterionPage
         at CreateCriterionPage
+}
+
+And(~'^I am on the Add Criterion page$') {
+    to CreateCriterionPage
+    at CreateCriterionPage
 }
 
 When(~'^I add the criterion "([^"]*)"$') {
