@@ -83,13 +83,13 @@ class StudentController {
        student.save flush : true
     }
 
-    def addCriterion(Criterion criterionInstance){
+/*    def addCriterion(Criterion criterionInstance){
         for(Student student : Student.findAll()){
             student.criterions.add(criterionInstance);
             save(student)
         }
     }
-
+*/
     def show(Student studentInstance) {
         respond studentInstance
     }
@@ -175,5 +175,10 @@ class StudentController {
             }
             '*'{ render status: NOT_FOUND }
         }
+    }
+
+    public Student searchStudent (){
+        def student = Student.findByLogin(params)
+        return student
     }
 }

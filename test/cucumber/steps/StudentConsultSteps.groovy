@@ -1,52 +1,56 @@
 package test.cucumber.steps
 
+import pages.StudentConsultPage
+import steps.StudentConsultTestDataAndOperations
 import ta.Student
 
 /**
- * Created by joao on 03/05/16.
+ * Created by joao on 19/05/16.
  */
+
+this.metaClass.mixin(cucumber.api.groovy.Hooks)
+this.metaClass.mixin(cucumber.api.groovy.EN)
 
 //Controller Scenario
 Student estudante;
 
-Given(~'^the student "([^"]*)"$ with login "([^"]*)"$ is not registered in the system'){
+Given(~/^the student "([^"]*)" with login "([^"]*)" is not registered in the system$/) {
     String nome, login ->
-        assert Student.findByLogin(login) != null
+        assert Student.findByLogin(login) == null
 }
 
-When(~'^I search for "([^"]*)"$'){
-    String nome, login ->
-        Student.findByName(nome)
+When(~/^I search for "([^"]*)"$/) {
+    String login ->
+        estudante = StudentConsultTestDataAndOperations.searchStudent(login)
 }
 
-Then(~'^the system will return the information about "([^"]*)"$'){
-    String nome ->
-        estudante  = Student.findByName(nome)
-        assert estudante.StudentConsultTestDataAndOperations.compatibleTo(estudante, nome)
+Then(~/^the system will not return anything$/){
+    ->
+    assert estudante == null
 }
 
 //GUI Scenario
 
-Given(~'^I am on the ([^"]*)"$ page'){
+/*Given(~/^I'm on the "([^"]*)" page$/){
     String pageName->
-    to StudentConsultPage
-    at StudentConsultPage
+        to StudentConsultPage
+        at StudentConsultPage
 }
 
-And(~'^I see the student ([^"]*)"$ with login ([^"]*)"$ in the list of students'){
+And(~/^I see the student "([^"]*)" with login "([^"]*)" in the list of students$/){
     String name, login ->
-    at StudentConsultPage
-        page.findStudent(name, login)
+        at StudentConsultPage
+        StudentConsultPage
 }
 
-When(~'^I request the student information'){
+When(~/^I request the student information$/){
     ->
     at StudentConsultPage
-    page.select()
+    StudentConsultPage.clickStudent()
 }
 
-Then(~'^all the student\'s average evaluation in all criteria will appear in the screen'){
+Then(~/^all the student average evaluation in all criteria will appear in the screen$/){
     ->
     at StudentConsultPage
-    page.showStudentDetails()
-}
+    StudentConsultPage.showStudentDetails()
+}*/
