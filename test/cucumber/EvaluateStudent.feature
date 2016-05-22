@@ -1,5 +1,7 @@
 #Pedro Henrique
 
+@ignore
+
 Feature: Evaluate the students
   As a teacher
   I want to evaluate my students with respect to various criteria

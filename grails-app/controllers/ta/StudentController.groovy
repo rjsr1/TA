@@ -74,13 +74,22 @@ class StudentController {
     public int countAllStudents(){
         return Student.findAll().size();
     }
-    public boolean saveStudent(Student student){
+    /*public boolean saveStudent(Student student){
         if(Student.findByLogin(student.login) ==null){
             student.save flush: true
             return true
         }else{
             return false
         }
+    }*/
+
+    public boolean saveStudent() {
+        def studentInstance = new Student(params);
+        if(Student.findByLogin(studentInstance.login) == null) {
+            studentInstance.save flush: true
+            return true
+        }
+        return false
     }
 
     public void addEvaluation(String studentLogin, String criterionName, String evaluationOrigin){

@@ -16,7 +16,6 @@
 		<g:message code="student.login.label" default="Login" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="login" required="" value="${studentInstance?.login}"/>
 
 </div>
 
