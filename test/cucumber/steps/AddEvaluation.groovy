@@ -102,6 +102,7 @@ Given evaluations for every student on the "X" criteria, originated form "Test" 
 Boolean stored = false;
 Given(~'^evaluations for every student on the "([^"]*)" criteria, originated form "([^"]*)" and dated from "([^"]*)" are already in the system$') {
     String criterionName, origin, dateInString ->
+        EvaluationDataAndOperations.
     assert EvaluationDataAndOperations.checkEvaluatioAlLStudents(criterionName,origin, dateInString) == true
 }
 

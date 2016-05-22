@@ -40,6 +40,28 @@ class EvaluationDataAndOperations{
         return null;
     }*/
 
+    public static void createStudents(){
+        def controller = new StudentController();
+        Student stu1 = new Student("abc","abc")
+        Student stu2 = new Student("def","def")
+        Student stu3 = new Student("ghi","ghi");
+        controller.save(stu1);
+        controller.response.reset();
+        controller.save(stu2);
+        controller.response.reset();
+        controller.save(stu3);
+        controller.response.reset();
+    }
+
+    public static void createCriterionXandAddToStudents(){
+        def controller = new CriterionController()
+        Criterion criterion = new Criterion("X");
+        controller.save(criterion)
+        controller.response.reset();
+        def controller2 = new StudentController()
+        controller2.addCriterionToAllStudent("X");
+    }
+
     public static boolean findEvaluationAndCount(String criterionName, String origin, String dateInString){
         def applicationDate = formattedDate(dateInString)
         def controller = new EvaluationController()
