@@ -13,10 +13,10 @@ class StudentConsultPage extends Page {
     }
 
     def static clickStudent(){
-        $("input", name:"create").click()
+        $("input", name:"pesquisar").click()
     }
 
-    def static showStudentDetails(){
-
+    def static showStudentDetails(text){
+        $("form").title = text
     }
 }

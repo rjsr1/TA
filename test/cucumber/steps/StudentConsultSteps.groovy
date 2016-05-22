@@ -31,7 +31,7 @@ Then(~/^the system will not return anything$/){
 
 //GUI Scenario
 
-/*Given(~/^I'm on the "([^"]*)" page$/){
+Given(~/^I'm on the "([^"]*)" page$/){
     String pageName->
         to StudentConsultPage
         at StudentConsultPage
@@ -53,4 +53,4 @@ Then(~/^all the student average evaluation in all criteria will appear in the sc
     ->
     at StudentConsultPage
     StudentConsultPage.showStudentDetails()
-}*/
+}
