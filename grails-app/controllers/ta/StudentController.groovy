@@ -17,7 +17,7 @@ class StudentController {
     public boolean addEvaluations(String criterionName, Evaluation evaluationInstance){
         for(Student student : Student.findAll()){
             def counter = 0
-            student.each(student.criterions){
+            student.each(student.criterionsAndEvaluations){
                 if(criterionName == student.criterions.get(counter).name){
                     def studentCriterions = student.getCriterions().get(counter);
                     def counter2 = 0;
