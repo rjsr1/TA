@@ -1,7 +1,11 @@
 
+<<<<<<< HEAD
 <%@ page import="ta.Criterion; ta.Student" %>
 <%@ page import="ta.Criterion" %>
 
+=======
+<%@ page import="ta.Student" %>
+>>>>>>> refs/heads/pr/2
 <!DOCTYPE html>
 <html>
 	<head>
@@ -26,11 +30,9 @@
 			<thead>
 					<tr>
 					
-						<g:sortableColumn property="login" title="${message(code: 'student.login.label', default: 'Login')}" />
-					
 						<g:sortableColumn property="name" title="${message(code: 'student.name.label', default: 'Name')}" />
 					
-						<g:sortableColumn property="evaluations" title="${message(code: 'student.evaluations.label', default: 'Evaluations')}" />
+						<g:sortableColumn property="login" title="${message(code: 'student.login.label', default: 'Login')}" />
 					
 					</tr>
 				</thead>
@@ -38,11 +40,9 @@
 				<g:each in="${studentInstanceList}" status="i" var="studentInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<td><g:link action="show" id="${studentInstance.id}">${fieldValue(bean: studentInstance, field: "login")}</g:link></td>
+						<td><g:link action="show" id="${studentInstance.id}">${fieldValue(bean: studentInstance, field: "name")}</g:link></td>
 					
-						<td>${fieldValue(bean: studentInstance, field: "name")}</td>
-					
-						<td>${fieldValue(bean: studentInstance, field: "evaluations")}</td>
+						<td>${fieldValue(bean: studentInstance, field: "login")}</td>
 					
 					</tr>
 				</g:each>
@@ -52,6 +52,7 @@
 				<g:paginate total="${studentInstanceCount ?: 0}" />
 			</div>
 		</div>
+<<<<<<< HEAD
 	<!--Eu que fiz essa parte-->
 	<div>
 		<table>
@@ -92,5 +93,7 @@
 			</tbody>
 		</table>
 	</div>
+=======
+>>>>>>> refs/heads/pr/2
 	</body>
 </html>

@@ -12,6 +12,9 @@ class RegisterEvaluationPage extends Page {
     def fillData(text) {
         $("form").title = text
     }
+    /*def fillEvaluationDetais(String origin, String value, String criterionName,String dateInString){
+        $("form").
+    }*/
 
     def click(){
         $("input", name: "create").click()
