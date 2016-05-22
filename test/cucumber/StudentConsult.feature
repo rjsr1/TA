@@ -1,5 +1,4 @@
 #João Adherval
-
 Feature: Search and Consult a student
   As a teacher
   I want to search a student and consult that student's information

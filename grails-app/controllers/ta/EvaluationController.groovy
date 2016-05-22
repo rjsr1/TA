@@ -1,6 +1,6 @@
 package ta
 
-
+import java.text.SimpleDateFormat
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -9,6 +9,12 @@ import grails.transaction.Transactional
 class EvaluationController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+
+    public static Date formattedDate(String dateInString){
+        def formatter = new SimpleDateFormat("dd/mm/yyyy");
+        Date date = formatter.parse(dateInString);
+        return date;
+    }
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -27,7 +33,7 @@ class EvaluationController {
     }*/
 
     public boolean saveEvaluation(Evaluation evaluation){
-        if(Evaluation.findByLogin(evaluation.login) == null){
+        if(Evaluation.findByCriterion(evaluation.criterion) == null && Evaluation.findByOrigin(evaluation.origin) == null){
             evaluation.save flush: true
             return true
         }else{
@@ -45,6 +51,14 @@ class EvaluationController {
 
     public Evaluation createEvaluation(){
         Evaluation evaluation = new Evaluation(params)
+        return evaluation
+    }
+
+    public Evaluation createAndSaveEvaluation(String evaluationOrigin , String studentEvaluation , String evaluationDate){
+        def applicationDate = formattedDate(evaluationDate)
+        Criterion criterionCreated = new Criterion(params).save()
+        Evaluation evaluation = new Evaluation([origin : evaluationOrigin , value : studentEvaluation , applicationDate : applicationDate , criterion : criterionCreated])
+        saveEvaluation(evaluation)
         return evaluation
     }
 

@@ -1,5 +1,8 @@
 import cucumber.api.PendingException
+import pages.EditEvaluationPage
 import pages.StudentPages.CreateStudentPage
+import steps.EvaluationDataAndOperations
+import ta.Student
 
 /**
  * Created by TMB on 19/05/2016.
@@ -28,8 +31,8 @@ Given(~'^there is a student with the following information: student "([^"]*)", l
     String studentName, studentLogin, studentEvaluation, criterionName, evaluationOrigin, evaluationDate ->
         //date = formattedDate(criterionDate)
         //assert EvaluationDataAndOperations.findEvaluationInStudent(studentName, studentLogin, studentEvaluation, criterionName, criterionOrigin, date) != null
+        //EvaluationdDataAndOperations.createAndGiveEvaluation(studentName, studentLogin, studentEvaluation, criterionName, evaluationOrigin, evaluationDate)
         EvaluationDataAndOperations.createAndGiveEvaluation(studentName, studentLogin, studentEvaluation, criterionName, evaluationOrigin, evaluationDate)
-
 }
 
 When(~'^I modify the "([^"]*)" evaluation to "([^"]*)" in the criterion "([^"]*)", from "([^"]*)", date "([^"]*)", from student "([^"]*)", login "([^"]*)"$'){
@@ -42,11 +45,12 @@ When(~'^I modify the "([^"]*)" evaluation to "([^"]*)" in the criterion "([^"]*)
         //globalEvaluationOrigin = evaluationOrigin
         //globalDate = evaluationDate
         //globalEvaluationDate = evaluationDate
-        EvaluationDataAndOperations.updateEvaluationInStudent(studentName, studentLogin, newEvaluation, criterionName, evaluationOrigin, evaluationDate)
+        EvaluationDataAndOperations.updateEvaluationInStudent(studentLogin, newEvaluation, criterionName, evaluationOrigin)
         globalStudent = EvaluationDataAndOperations.getStudent(studentLogin)
 }
 
 Then(~'^the system stores the modification in the student with login "([^"]*)"$'){
+    String login ->
     //date = formattedDate(globalDate)
     //assert EvaluationDataAndOperations.checkEvaluationInStudent(globalStudentName, globalStudentLogin, globalNewEvaluation, globalCriterionName, globalEvaluationOrigin, globalEvaluationDate) != null
     assert EvaluationDataAndOperations.compatibleTo(Student.findByLogin(login), globalStudent)
@@ -77,8 +81,8 @@ Given(~'^I see the student "([^"]*)", login "([^"]*)", has a "([^"]*)" evaluatio
 
 When(~'^I request the system to modify the evaluation "([^"]*)" to "([^"]*)" in the criterion "([^"]*)", from "([^"]*)", date "([^"]*)", from student "([^"]*)", login "([^"]*)"$'){
     String oldEvaluation, newEvaluation, criterionName, evaluationOrigin, evaluationDate, studentName, studentLogin ->
-        to UpdateEvaluationFromStudentPage
-        at UpdateEvaluationFromStudentPage
+        to EditEvaluationPage
+        at EditEvaluationPage
 
         //date = formattedDate(criterionDate)
         page.fillEvaluationFromStudentDetails(studentName, studentLogin, criterionName, evaluationOrigin, evaluationDate, oldEvaluation, newEvaluation)
@@ -86,8 +90,9 @@ When(~'^I request the system to modify the evaluation "([^"]*)" to "([^"]*)" in 
 }
 
 Then(~'^an error message related to the evaluation appear$'){
-    to UpdateEvaluationFromStudentPage
-    at UpdateEvaluationFromStudentPage
+    ->
+    to EditEvaluationPage
+    at EditEvaluationPage
 
     page.showErrorMessage("Invalid Evaluation")
 }

@@ -6,7 +6,7 @@ import pages.StudentPages.CreateStudentPage
 import pages.StudentPages.StudentPage
 import ta.Evaluation
 import ta.Student
-import ta.funciontal.EvaluationdDataAndOperations
+import ta.functional.EvaluationDataAndOperations
 
 this.metaClass.mixin(cucumber.api.groovy.Hooks)
 this.metaClass.mixin(cucumber.api.groovy.EN)

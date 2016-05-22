@@ -3,7 +3,8 @@
  */
 package steps
 
-import javafx.beans.binding.When
+//import javafx.beans.binding.When
+import ta.Criterion
 
 this.metaClass.mixin(cucumber.api.groovy.Hooks)
 this.metaClass.mixin(cucumber.api.groovy.EN)

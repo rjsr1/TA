@@ -3,6 +3,9 @@
  */
 package steps
 
+import ta.Criterion
+import ta.CriterionController
+
 //import ta.Criterion
 //import ta.CriterionController
 import ta.Evaluation
@@ -109,28 +112,22 @@ class EvaluationDataAndOperations{
     //MEUS METODOS
 
     public static void createAndGiveEvaluation(String studentName, String studentLogin, String studentEvaluation, String criterionName, String evaluationOrigin, String evaluationDate){
-        //createStudent(studentLogin, studentName)
         def student = new StudentController()
-        student.params << [login: studentLogin] << [name: studentName] << [evaluations: new HashMap<String, String>()]
-        Student studentCreated = student.createStudent()
-        student.saveStudent(studentCreated)
-        //aqui em cima vai ser saveStudent ou so save?
+        student.params << [login: studentLogin] << [name: studentName]
+        Student studentCreated = student.createAndSaveStudent()
+
+        def criterion = new CriterionController()
+        criterion.params << [description : criterionName]
+        Criterion criterionCreated = criterion.createAndSaveCriterion()
+
         def evaluation = new EvaluationController()
-        def applicationDate = formattedDate(evaluationDate)
-        evaluation.params << [origin : evaluationOrigin , value : studentEvaluation , applicationDate : applicationDate]
-        Evaluation evaluationCreated = evaluation.createEvaluation()
-        //ou ao inves de Evaluation, coloca def aqui em cima? Era pra ser createEvaluation ou create?
-        evaluation.saveEvaluation(evaluationCreated)
-        //evaluation.createEvaluation(criterionName, evaluationOrigin, evaluationDate, studentEvaluation)
-        student.addEvaluation(studentCreated, criterionName, evaluationCreated)
+        evaluation.params << [description : criterionName]
+        Evaluation evaluationCreated = evaluation.createAndSaveEvaluation(evaluationOrigin, studentEvaluation, evaluationDate)
+        student.addEvaluation(studentLogin, criterionName, evaluationOrigin)
         student.response.reset()
         evaluation.response.reset()
+        criterion.response.reset()
     }
-
-    /*public static void createEvaluationWithEvaluation(String criterionName, String evaluationOrigin, String evaluationDate, String studentEvaluation){
-        createEvaluation(criterionName, evaluationOrigin, evaluationDate)
-
-    }*/
 
     public static void updateEvaluationInStudent(String studentLogin, String newEvaluation, String criterionName, String evaluationOrigin){
         def student = new StudentController()

@@ -56,6 +56,21 @@ class StudentController {
            }
        }
     }
+
+    public boolean updateEvaluation(String studentLogin, String newEvaluation, String criterionName, String evaluationOrigin){
+        Student updatedStudent = Student.findByLogin(studentLogin)
+        for(int i = 0; i < updatedStudent.criterionsAndEvaluations.size(); i++){
+            if(updatedStudent.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(criterionName)){
+                List<Evaluation> evaluationsInCriterion = updatedStudent.criterionsAndEvaluations.get(i).getEvaluations();
+                for(int j = 0; j < evaluationsInCriterion.size(); j++){
+                    if(evaluationsInCriterion.get(j).getOrigin().equals(evaluationOrigin)){
+                        evaluationsInCriterion.get(j).setValue(newEvaluation)
+                    }
+                }
+            }
+        }
+    }
+
     public int countAllStudents(){
         return Student.findAll().size();
     }
@@ -68,10 +83,10 @@ class StudentController {
         }
     }
 
+    public void addEvaluation(String studentLogin, String criterionName, String evaluationOrigin){
 
-    def addEvaluation(Student studentInstance, String criterionName, Evaluation evaluationInstance){
-        def student = studentInstance;
-        student.addEvaluation(evaluationInstance);
+        Student student = Student.findByLogin(studentLogin)
+        student.addEvaluation(null, criterionName, evaluationOrigin)
         student.save flush : true
     }
 
@@ -84,6 +99,12 @@ class StudentController {
 
     public Student createStudent(){
         return new Student(params)
+    }
+
+    public Student createAndSaveStudent(){
+        Student student = new Student(params)
+        saveStudent(student)
+        return student
     }
 
     def show(Student studentInstance) {

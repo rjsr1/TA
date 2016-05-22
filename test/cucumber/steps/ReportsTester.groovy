@@ -3,7 +3,7 @@
  */
 package steps
 
-import funciotnal.pages.ReportsPages.ReportsPage
+import functional.pages.ReportsPages.ReportsPage
 import functional.pages.StudentPages.StudentPage
 
 //Cenários de controlador

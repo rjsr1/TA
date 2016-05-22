@@ -1,4 +1,6 @@
 import functional.steps.AddStudentsTestDataAndOperations
+import ta.functional.AddStudentsTestDataAndOperations
+import ta.Student
 
 /**
  * Created by rodrigocalegario on 4/28/16.
