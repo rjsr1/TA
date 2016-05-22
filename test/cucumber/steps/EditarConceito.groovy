@@ -3,6 +3,7 @@ import pages.StudentPages.CreateStudentPage
 /**
  * Created by TMB on 02/05/2016.
  */
+
 /*
 Feature: Edit Evaluation
   As a teacher
@@ -15,7 +16,8 @@ Scenario: Edit evaluation of a student
   Given there is a student with the following information: student "Marcos Antonio", login "ma2", has a "MANA" evaluation in the criterion "X", from "Prova 2", date "11/11/11"
   When I modify the "MANA" evaluation to "MA" in the criterion "X", from "Prova 2", date "11/11/11", from student "Marcos Antonio", login "ma2"
   Then the system stores the modification
-  */
+*/
+/*
 String globalStudentName, globalStudentLogin, globalNewEvaluation, globalCriterionName, globalCriterionOrigin, globalDate;
 
 Given(~'^there is a student with the following information: student "([^"]*)", login "([^"]*)", has a "([^"]*)" evaluation in the criterion "([^"]*)", from "([^"]*)", date "([^"]*)"$'){
@@ -47,7 +49,7 @@ Scenario: Edit an evaluation for a non existent one
   When I request the system to modify the evaluation "MANA" to "10" in the criterion "X", from "Prova 2", date "11/11/11", from student "Marcos Antonio", login "ma2"
   Then an error message related to the evaluation appear
  */
-
+/*
 Given(~'^there is a student with the following information: student "([^"]*)", login "([^"]*)", has a "([^"]*)" evaluation in the criterion "([^"]*)", from "([^"]*)", date "([^"]*)"$'){
     String studentName, studentLogin, studentEvaluation, criterionName, criterionOrigin, criterionDate ->
         to CreateStudentPage
@@ -80,3 +82,4 @@ Then(~'^an error message related to the evaluation appear$'){
 
     page.showErrorMessage("Invalid Evaluation")
 }
+*/

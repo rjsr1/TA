@@ -6,6 +6,7 @@ class Student {
     String name;
     String login;
     List<EvaluationsByCriterion> criterionsAndEvaluations
+
     static constraints = {
         name blank : false
         login unique : true, blank:false;

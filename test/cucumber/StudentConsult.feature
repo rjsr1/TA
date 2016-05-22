@@ -8,21 +8,21 @@ Feature: Search and Consult a student
 #Controller Scenario
   Scenario: Search a student that is registered in the system
     Given the student "Jose Maria" with login "jm" is registered in the system
-    When I search for "Jose Maria"
-    Then the system will return the information about "Jose Maria"
+    When I search for "jm"
+    Then the system will return the information about "jm"
 
 #Controller Scenario
   Scenario: Search a student that isn't registered in the system
     Given the student "Maria Jose" with login "mj" is not registered in the system
-    When I search for "Maria Jose"
+    When I search for "mj"
     Then the system will not return anything
 
 #GUI Scenario
-  Scenario: Consult a student's average evaluation criteria
+  Scenario: Consult a student average evaluation criteria
     Given I'm on the "Alunos" page
     And I see the student "Jose Maria" with login "jm" in the list of students
     When I request the student information
-    Then all the student's average evaluation in all criteria will appear in the screen
+    Then all the student average evaluation in all criteria will appear in the screen
 
 #GUI Scenario
   Scenario: Consult a non registered student's average evaluation criteria
