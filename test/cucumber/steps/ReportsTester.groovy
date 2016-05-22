@@ -3,13 +3,15 @@
  */
 package steps
 
+//criar um branch para ajeitar isso!!!
+
 import funciotnal.pages.ReportsPages.ReportsPage
 import functional.pages.StudentPages.StudentPage
 import pages.ReportsPages.ShowReportsPage
 
 //Cenários de controlador
 //Atualizar um relatório
-Given(~'^that "([^"]*)" and "([^"]*)" are on the the system$'){
+Given(~'^that "70% of evaluations are MANA" and "70% of evaluations are under the class average" are on the the system$'){
     String report1, String report2 ->
         relat1 = Report.findByName(report1)
         relat2 = Report.findByName(report2)
@@ -23,7 +25,7 @@ When(~'^I add the evaluation "([^"]*)" in the criterion "([^"]*)" with origin "(
         EvaluationDataAndOperations.addEvaluationtoStudent(criteName, loginA, eval)//falta implementar
 }
 Then(~'^70% of the student "([^"]*)" evaluations are composed of "([^"]*)"$'){
-   String evalType -> ReportsDataAndOperations.checkCondition(evalType)
+   String loginA, String evalType -> ReportsDataAndOperations.checkCondition(loginA, evalType)
 }
 And(~'^the report "([^"]*)" is updated$'){String relato1 ->
     assert ReportsDataAndOperations.checkUpdate(relato1)
@@ -31,15 +33,15 @@ And(~'^the report "([^"]*)" is updated$'){String relato1 ->
 
 //Cenários de GUI
 //Ser notificado sobre os problemas de desempenho dos alunos
-Given(~'^I am at the home page$'){
+Given(~'^I am at the home page$'){ ->
     to StudentPage
     at StudentPage
 }
-When(~'^I go to the Reports page$'){
+When(~'^I go to the Reports page$'){ ->
     to ShowReportsPage
     at ShowReportsPage
 }
-Then(~'^the item "Reports" on the menu will show if there are new notifications$'){
+Then(~'^the item "Reports" on the menu will show if there are new notifications$'){ ->
     /*to ShowReportsPage
     at ShowReportsPage*/
     ShowReportsPage.selectNotifications()

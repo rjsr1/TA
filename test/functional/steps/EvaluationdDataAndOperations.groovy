@@ -19,7 +19,7 @@ class EvaluationDataAndOperations{
         return date;
     }
 
-    public static Evaluation findEvaluation(String criterionName, String origin, String dateInString){
+    /*public static Evaluation findEvaluation(String criterionName, String origin, String dateInString){
         def applicationDate = formattedDate(dateInString)
         for(Student student : Student.findAll()){
             def counter = 0
@@ -38,13 +38,20 @@ class EvaluationDataAndOperations{
             }
         }
         return null;
-    }
+    }*/
+
+    /*public static Evaluation findEvaluation(String criterionName, String origin, String dateInString){
+        def applicationDate = formattedDate(dateInString)
+        def controller = new EvaluationController()
+        def controller2 = new StudentController()
+
+    }*/
     public static boolean existEvaluation(String criterionName, String dateInString){
         def applicationDate = formattedDate(dateInString)
         def found = false;
         for(Student student : Student.findAll()){
             def counter = 0
-            student.each(student.criterions){
+            student.each(student.criterionsAndEvaluations){
                 if(criterionName == student.criterions.get(counter).name){
                     def studentCriterions = student.getCriterions().get(counter);
                     def counter2 = 0;
@@ -63,7 +70,7 @@ class EvaluationDataAndOperations{
 
     public static boolean existEvaluation(String criterionName, String origin, String dateInString){
         def applicationDate = formattedDate(dateInString)
-        for(Evaluation evaluation : Evaluation.findAll){
+        for(Evaluation evaluation : Evaluation.findAll()){
             if(evaluation.origin == origin && evaluation.applicationDate == applicationDate)
                 return true;
         }
@@ -87,11 +94,12 @@ class EvaluationDataAndOperations{
     }
 
 
-      public static boolean createStudent(String login, String name){
+    public static boolean createStudent(String login, String name){
         def cont = new StudentController()
-        cont.params << [login: login] << [name: name] << [evaluations: new HashMap<String, String>()]
+        cont.params << [login: login] << [name: name]
         boolean saved = cont.saveStudent(cont.createStudent())
         cont.response.reset()
         return saved
     }
+
 }

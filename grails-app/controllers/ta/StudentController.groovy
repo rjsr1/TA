@@ -85,7 +85,7 @@ class StudentController {
 
     def addCriterion(Criterion criterionInstance){
         for(Student student : Student.findAll()){
-            student.criterions.add(criterionInstance);
+            student.criterionsAndEvaluations.add(criterionInstance)
             save(student)
         }
     }

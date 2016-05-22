@@ -21,8 +21,8 @@ Feature: Notification
 #Controller
   Scenario: Update a report
     Given that "70% of evaluations are MANA" and "70% of evaluations are under the class average" are on the system
-    When I add the evaluation "MANA" in the criterion "blah blah" with origin "Mini-prova 2" and date "26/04/2016" to the student with the login "shd2"
-    Then 70% of the student "shd2" evaluations are composed of MANA
+    When I add the evaluation "MANA" in the criterion "blah blah" with origin "Mini-prova 2" and date "26/04/2016" to the student with name "Saulo Henrique Dias" and the login "shd2"
+    Then 70% of the student "shd2" evaluations are composed of "MANA" in the criterion "blah blah"
     And the report "70% of evaluations are MANA" is updated
 
 #GUI
