@@ -1,6 +1,7 @@
 package ta
 
 
+import java.text.SimpleDateFormat
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -15,23 +16,9 @@ class CriterionController {
         respond Criterion.list(params), model:[criterionInstanceCount: Criterion.count()]
     }
 
-    /*def addEvaluation(Criterion criterionInstance,Evaluation evaluationInstance){
+    def addEvaluation(Criterion criterionInstance,Evaluation evaluationInstance){
         criterionInstance.evaluations.add(evaluationInstance)
         edit(criterionInstance)
-    }*/
-
-    public Criterion createCriterion(){
-        Criterion criterion = new Criterion(params)
-        return criterion
-    }
-
-    public boolean saveCriterion(Criterion criterion){
-        if(Criterion.findByDescription(criterion.description) == null){
-            criterion.save flush: true
-            return true
-        }else{
-            return false
-        }
     }
 
     def show(Criterion criterionInstance) {
@@ -40,10 +27,6 @@ class CriterionController {
 
     def create() {
         respond new Criterion(params)
-    }
-
-    def findByName(String desc){
-        return Criterion.findByDescription(desc)
     }
 
     @Transactional
@@ -123,5 +106,11 @@ class CriterionController {
             }
             '*'{ render status: NOT_FOUND }
         }
+    }
+
+    public static Date formattedDate(String dateInString){
+        def formatter = new SimpleDateFormat("dd/mm/yyyy");
+        Date date = formatter.parse(dateInString);
+        return date;
     }
 }

@@ -4,9 +4,11 @@ class Criterion {
     String description
 
     static constraints = {
-        description unique: true
-        description blank: false
-        description nullable: false
+        description unique: true, blank : false, nullable : false
     }
 
+    public Criterion(String description){
+        this.description = description;
+    }
 }
+

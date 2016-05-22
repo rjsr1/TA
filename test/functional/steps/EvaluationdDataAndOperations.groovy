@@ -40,12 +40,39 @@ class EvaluationDataAndOperations{
         return null;
     }*/
 
-    /*public static Evaluation findEvaluation(String criterionName, String origin, String dateInString){
+    public static void createStudents(){
+        def controller = new StudentController();
+        Student stu1 = new Student("abc","abc")
+        Student stu2 = new Student("def","def")
+        Student stu3 = new Student("ghi","ghi");
+        controller.save(stu1);
+        controller.response.reset();
+        controller.save(stu2);
+        controller.response.reset();
+        controller.save(stu3);
+        controller.response.reset();
+    }
+
+    public static void createCriterionXandAddToStudents(){
+        def controller = new CriterionController()
+        Criterion criterion = new Criterion("X");
+        controller.save(criterion)
+        controller.response.reset();
+        def controller2 = new StudentController()
+        controller2.addCriterionToAllStudent("X");
+    }
+
+    public static boolean findEvaluationAndCount(String criterionName, String origin, String dateInString){
         def applicationDate = formattedDate(dateInString)
         def controller = new EvaluationController()
         def controller2 = new StudentController()
+        def listEvaluations = controller2.countStudentsEvaluated(criterionName,origin,dateInString)
+        def countStudents = controller2.countAllStudents();
+        if(countStudents==listEvaluations.size()) return true;
+        else return false
 
-    }*/
+    }
+
     public static boolean existEvaluation(String criterionName, String dateInString){
         def applicationDate = formattedDate(dateInString)
         def found = false;
@@ -88,9 +115,28 @@ class EvaluationDataAndOperations{
         cont2.response.reset()
         return returningValue
     }
-    public static boolean checkEvaluation(String criterionName,String origin,String dateInString){
+    public static boolean createEvaluationNoValue(String criterionName, String origin, String dateInString){
+        def applicationDate = formattedDate(dateInString)
         def cont = new StudentController()
-        return cont.checkEvaluations(criterionName,origin,dateInString)
+        def cont2 = new EvaluationController();
+        cont2.params<<[value : null] <<[origin: origin] << [applicationDate : applicationDate];
+        Evaluation evaluation = cont2.createEvaluation(criterionName,origin,dateInString)
+        cont.params<<[origin:origin,applicationDate : evaluation.applicationDate, Criterion:evaluation.criterion, value : null]
+        def returningValue= cont.addEvaluations()
+        cont.response.reset()
+        cont2.response.reset()
+        return returningValue
+    }
+
+
+    public static boolean checkEvaluationAllStudents(String criterionName,String origin,String dateInString){
+        def cont = new StudentController()
+        return cont.checkEvaluationsAllStudents(criterionName,origin,dateInString)
+    }
+
+    public static boolean checkEvaluationRedundantAllStudents(String criterionName,String origin,String dateInString){
+        def cont = new StudentController()
+        return cont.checkRedundantEvaluationAllStudents(criterionName,origin,dateInString)
     }
 
 
