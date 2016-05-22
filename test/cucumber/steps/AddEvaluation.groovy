@@ -51,6 +51,8 @@ String dateGlobal;
 
 Given(~'^ there are no evaluations to all students to the "([^"]*)" criterion, originated from a "([^"]*)" and dated from "([^"]*)"$') {
     String criterionName, origin, dateInString ->
+        EvaluationDataAndOperations.createStudents();
+        EvaluationDataAndOperations.createCriterionXandAddToStudents();
     date = formattedDate(dateInString);
     assert EvaluationDataAndOperations.findEvaluationAndCount(criterionName,origin,date);
 }
@@ -80,6 +82,8 @@ Given there are no evaluations to all students to the "X" criterion, dated from 
         Then all evaluations will not be stored in on the "X" criterion history of each student*/
 //////////////////////////////////
 Given(~'^there are no evaluations to all students to the "([^"]*)" criterion, dated from "([^"]*)", with any origin $') { String criterionName, dateInString ->
+    EvaluationDataAndOperations.createStudents();
+    EvaluationDataAndOperations.createCriterionXandAddToStudents();
     assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName,dateInString) == false
 }
 
