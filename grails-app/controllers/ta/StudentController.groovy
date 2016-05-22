@@ -27,17 +27,28 @@ class StudentController {
         return true
     }
     public boolean addEvaluationToAllStudentes(){
-        def Evaluation = new Evaluation(params);
+        def evaluationInstance = new Evaluation(params);
         for(Student student : Student.findall()){
             student.addEvaluation(evaluationInstance);
             student.save flush : true
         }
+        return true
     }
     public void addEvaluationToStudent(String login){
         def student = Student.findByLogin(login);
         def evaluationInstance = new Evaluation(params);
         student.addEvaluation(evaluationInstance);
         student.save flush : true
+    }
+
+
+    public void addCriterionToAllStudent(String description){
+        def students = Students.findAll();
+        for(int i =0; i<students.size();i++){
+            def evCriterion = new EvaluationsByCriterion(Criterion.findByDescription(description));
+            Student student = students.get(i);
+            student.addEvaluationsByCriterion(evCriterion)
+        }
     }
 
     public List<Evaluation> countStudentsEvaluated(String criterionName, String origin, String dateInString){

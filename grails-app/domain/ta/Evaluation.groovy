@@ -11,6 +11,13 @@ class Evaluation {
         criterion nullable : false
     }
 
+    public Evaluation(String origin, String value, Date applicationDate, Criterion criterion){
+        this.origin = origin;
+        this.value = value;
+        this.applicationDate = applicationDate;
+        this.criterion = criterion;
+    }
+
     public boolean compatibleTo(Evaluation evaluationInstance){
         if(this.origin.equals(evaluationInstance.getOrigin()) && this.value.equals(evaluationInstance.getValue()) && this.applicatioDate.compareTo(evaluationInstance.getApplicationDate())==0 && this.criterion.getDescription().equals(evaluationInstance.getCriterion().getDescription()))
         {

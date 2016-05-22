@@ -8,6 +8,16 @@ class EvaluationsByCriterion {
 
     static constrainst = {
         criterion nullable: false
+        evaluations nullable : false
+    }
+
+    public EvaluationsByCriterion(String description){
+        this.criterion = Criterion.findByDescription(description);
+        this.evaluations = new LinkedList<>();
+    }
+    public EvaluationsByCriterion(Criterion criterion){
+        this.criterion = criterion;
+        this.evaluations = new LinkedList<>();
     }
 
     public void addEvaluation(Evaluation evaluationInstance) {
@@ -28,6 +38,6 @@ class EvaluationsByCriterion {
                 return this.evaluations.get(i)
             }
         }
-
+       return null
     }
 }

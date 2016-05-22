@@ -80,7 +80,7 @@ Given there are no evaluations to all students to the "X" criterion, dated from 
         Then all evaluations will not be stored in on the "X" criterion history of each student*/
 //////////////////////////////////
 Given(~'^there are no evaluations to all students to the "([^"]*)" criterion, dated from "([^"]*)", with any origin $') { String criterionName, dateInString ->
-    assert EvaluationDataAndOperations.existEvaluation(criterionName,dateInString) == false
+    assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName,dateInString) == false
 }
 
 When(~'^I want to evaluate all studentes to the "([^"]*)" criterion, withou a specific origin and dated from "([^"]*)"$') { String criterionName, dateInString ->
@@ -90,7 +90,7 @@ When(~'^I want to evaluate all studentes to the "([^"]*)" criterion, withou a sp
 }
 
 Then(~'^the evaluation criterion with name "([^"]*)" was not stored in the system$') { String criterionName ->
-    assert EvaluationDataAndOperations.existEvaluation(criterionName,dateInString) == false
+    assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName,dateInString) == false
 }
 
 //////////////////////////////////
@@ -113,7 +113,7 @@ When(~'^I want to evaluate all students on the"([^"]*)" criteria, originated fro
 
 Then(~'^all the marks will not be stored in on the"([^"]*)" criterias history of each student$') {
     String criterionName->
-        assert EvaluationDataAndOperations.checkChangesEvaluations(criterionName)
+        assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName)
 }
 
 /*Scenario: Error related to add a  evaluation
@@ -165,7 +165,7 @@ Given(~'^I organized all evaluations for the "([^"]*)" criterion originated from
 }
 And(~'^there already are evaluations for the "([^"]*)" criteria, originated from "([^"]*)" and dated from "([^"]*)" in the system') {
     String criterionName, origin, dateInString ->
-        assert EvaluationDataAndOperations.existEvaluation(criterionName,origin,dateInString) == true
+        assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName,origin,dateInString) == true
 }
 When(~'^I want to import all evaluations from the spreedsheet named"([^"]*)" to add to all students "([^"]*)" criterias history, originated from "([^"]*)" and dated from "([^"]*)"$') {
     String fileName, criterionName, origin, dateInString ->
