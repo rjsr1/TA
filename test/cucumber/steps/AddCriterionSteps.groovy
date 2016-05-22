@@ -72,10 +72,9 @@ Then(~'^the system does nothing$') { ->
  */
 Given(~'^the criterion "([^"]*)" already exists$') {
     String desc ->
-        at CreateCriterionPage
-        CreateCriterionPage.createCriterion(desc)
         to CreateCriterionPage
         at CreateCriterionPage
+        CreateCriterionPage.createCriterion(desc)
 }
 
 And(~'^I am on the Add Criterion page$') {
