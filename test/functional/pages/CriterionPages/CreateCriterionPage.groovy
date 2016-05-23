@@ -9,13 +9,13 @@ import geb.Page
 
 class CreateCriterionPage extends Page {
 
-    static url = "TA/criterion/create"
+    static url = "criterion/create"
 
     static at = {
         title ==~ /Create Criterion/
     }
 
-    boolean createCriterion(String desc) {
+    def createCriterion(desc) {
         $("form").description = desc
         $("input", name: "create").click()
     }
