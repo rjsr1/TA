@@ -3,8 +3,8 @@
  */
 package steps
 
-//import ta.Criterion
-//import ta.CriterionController
+import ta.Criterion
+import ta.CriterionController
 import ta.Evaluation
 import ta.EvaluationController
 import ta.Student
@@ -61,6 +61,16 @@ class EvaluationDataAndOperations{
         def controller2 = new StudentController()
         controller2.addCriterionToAllStudent("X");
     }
+
+    public static void createCritAndAddToStudents(String desc){
+        def controller = new CriterionController()
+        Criterion criterion = new Criterion(desc);
+        controller.save(criterion)
+        controller.response.reset();
+        def controller2 = new StudentController()
+        controller2.addCriterionToAllStudent(desc);
+    }
+
 
     public static boolean findEvaluationAndCount(String criterionName, String origin, String dateInString){
         def applicationDate = formattedDate(dateInString)

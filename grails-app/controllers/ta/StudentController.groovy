@@ -28,7 +28,7 @@ class StudentController {
     }
     public boolean addEvaluationToAllStudentes(){
         def evaluationInstance = new Evaluation(params);
-        for(Student student : Student.findall()){
+        for(Student student : Student.findAll()){
             student.addEvaluation(evaluationInstance);
             student.save flush : true
         }
@@ -39,6 +39,13 @@ class StudentController {
         def evaluationInstance = new Evaluation(params);
         student.addEvaluation(evaluationInstance);
         student.save flush : true
+    }
+
+    public void addEvaluationToStudent2(String login, Date applicationDate){
+        def student = Student.findByLogin(login)
+        def eval = Evaluation.findByApplicationDate(applicationDate)
+        student.addEvaluation(eval)
+        student.save flush: true
     }
 
 
@@ -97,7 +104,7 @@ class StudentController {
         }
     }
 
-    def addEvaluation(Student studentInstance, String criterionName, Evaluation evaluationInstance){
+    def addEvaluation(Student studentInstance, Evaluation evaluationInstance){
         def student = studentInstance;
         student.addEvaluation(evaluationInstance);
         student.save flush : true

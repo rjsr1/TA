@@ -1,5 +1,6 @@
 package steps
 
+import ta.EvaluationController
 import ta.Report
 import ta.ReportController
 import ta.StudentController
@@ -9,9 +10,10 @@ import ta.StudentController
  * Created by Milena Carneiro on 07/05/2016.
  */
 class ReportsDataAndOperations {
+
     public static boolean checkCondition(String loginA, String evalType, String crit){
        def contS = new StudentController()
-
+       //falta implementar, sei disso, mas irei dizer como faz :D
 
         /*double totalE =
                 (ReportsDataAndOperations.countType(evalType)/ReportsDataAndOperations.count())*100

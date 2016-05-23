@@ -12,4 +12,14 @@ class StudentConsultTestDataAndOperations {
         controller.params << [login:login]
         controller.searchStudent()
     }
+
+    public static boolean studentExists(String login){
+        def control = new StudentController()
+        if(searchStudent(login)==null){
+            return false
+        }else{
+            return true
+        }
+    }
+
 }
