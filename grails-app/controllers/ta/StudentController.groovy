@@ -26,7 +26,7 @@ class StudentController {
         }
         return true
     }
-    public boolean addEvaluationToAllStudentes(){
+    public boolean addEvaluationToAllStudents(){
         def evaluationInstance = new Evaluation(params);
         for(Student student : Student.findall()){
             student.addEvaluation(evaluationInstance);
