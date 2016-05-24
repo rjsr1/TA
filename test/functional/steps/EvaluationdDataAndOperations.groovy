@@ -109,7 +109,7 @@ class EvaluationDataAndOperations{
         def cont2 = new EvaluationController();
         cont2.params<<[value : "--"] <<[origin: origin] << [applicationDate : applicationDate];
         Evaluation evaluation = cont2.createEvaluation()
-        def returningValue= cont.addEvaluations(criterionName,Evaluation)
+        def returningValue= cont.addEvaluationToAllStudents(criterionName,Evaluation)
         cont.response.reset()
         cont2.response.reset()
         return returningValue
@@ -121,7 +121,7 @@ class EvaluationDataAndOperations{
         cont2.params<<[value : null] <<[origin: origin] << [applicationDate : applicationDate];
         Evaluation evaluation = cont2.createEvaluation(criterionName,origin,dateInString)
         cont.params<<[origin:origin,applicationDate : evaluation.applicationDate, Criterion:evaluation.criterion, value : null]
-        def returningValue= cont.addEvaluations()
+        def returningValue= cont.addEvaluationToAllStudents()
         cont.response.reset()
         cont2.response.reset()
         return returningValue
