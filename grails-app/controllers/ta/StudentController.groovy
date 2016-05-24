@@ -53,7 +53,7 @@ class StudentController {
 
     public List<Evaluation> countStudentsEvaluated(String criterionName, String origin, String dateInString){
         List<Evaluation> returningValue;
-        def evaluation = new Evaluation(origin,null,this.formattedDate(dateInString),new Criterion(criterionName));
+        def evaluation = new Evaluation(origin,null,this.formattedDate(dateInString),criterionName);
         def students = Student.findAll();
         for(int i =0; i< students.size();i++){
             returningValue.add(students.get(i).findEvaluationByCriterion(evaluation.getCriterion().getDescription()).findSpecificEvaluation(evaluation))
@@ -62,7 +62,7 @@ class StudentController {
     }
 
     public boolean checkRedundantEvaluationAllStudents(String criterionName,String origin,String dateInString){
-        def evaluation = new Evaluation(origin,null,this.formattedDate(dateInString),new Criterion(criterionName));
+        def evaluation = new Evaluation(origin,null,this.formattedDate(dateInString),criterionName);
         List<Student> students = Student.findAll();
         for(int i=0; i<students.size();i++){
             def evCriterion = students.get(i).findEvaluationByCriterion(criterionName);
@@ -74,7 +74,7 @@ class StudentController {
     }
 
     public boolean checkEvaluationsAllStudents(String criterionName, String origin, String dateInString){
-       def evaluation = new Evaluation(origin,null,this.formattedDate(dateInString),new Criterion(criterionName));
+       def evaluation = new Evaluation(origin,null,this.formattedDate(dateInString),criterionName);
        List<Student> students = Student.findAll()
        for(int i =0; i<students.size();i++){
            def evCriterion  = students.get(i).findEvaluationByCriterion(criterionName);
