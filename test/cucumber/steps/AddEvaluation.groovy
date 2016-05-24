@@ -53,19 +53,18 @@ Given(~'^ there are no evaluations to all students to the "([^"]*)" criterion, o
     String criterionName, origin, dateInString ->
         EvaluationDataAndOperations.createStudents();
         EvaluationDataAndOperations.createCriterionXandAddToStudents();
-    date = formattedDate(dateInString);
-    assert EvaluationDataAndOperations.findEvaluationAndCount(criterionName,origin,date);
+    assert EvaluationDataAndOperations.findEvaluationAndCount(criterionName,origin,dateInString);
 }
 
 /*When(~'^I create an evaluation criterion with name "([^"]*)"$') { String criterionName ->
     EvaluateStudentTestDataAndOperations.createEvaluationCriterion(criterionName)
 }*/
 When(~'^I want to evaluate all students to the  "([^"]*)" criterion, originated from a  "([^"]*)" and dated from  "([^"]*)".$'){
-    String criterionName, origin, dateInString -> date = formattedDate(dateInString)
+    String criterionName, origin, dateInString ->
         dateGlobal = date
         criterionNameGlobal = criterionName
         originGlobal = origin
-        EvaluationDataAndOperations.createEvaluation(criterionName,origin,date)
+        EvaluationDataAndOperations.createEvaluation(criterionName,origin,dateInString)
 }
 
 Then(~'^all the evaluations will be stored in on the "([^"]*)" criterion history of each student .$'){
