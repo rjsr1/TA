@@ -29,7 +29,7 @@ class EvaluationController {
     }
 
     public Evaluation createEvaluation(String criterionName, String origin,String dateInString){
-        def criterion = Criterion.findByDescription(criterionName)
+        def criterion = criterionName
         def date = this.formattedDate(dateInString)
         Evaluation evaluation = new Evaluation(origin, null, date, criterion)
         evaluation.save flush : true
