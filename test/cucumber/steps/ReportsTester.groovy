@@ -17,8 +17,8 @@ Given(~'^that "70% of evaluations are MANA" and "70% of evaluations are under th
         def contro = new ReportController()
         ReportsDataAndOperations.createSaveResetResponse(contro, report1)
         ReportsDataAndOperations.createSaveResetResponse(contro, report2)
-        relat1 = contro.findByName(report1)
-        relat2 = contro.findByName(report2)
+        relat1 = ReportsDataAndOperations.findByName(report1)
+        relat2 = ReportsDataAndOperations.findByName(report2)
         assert ReportsDataAndOperations.compatibleTo(relat1,report1)
         assert ReportsDataAndOperations.compatibleTo(relat2,report2)
 }
@@ -26,18 +26,19 @@ When(~'^I add the evaluation "([^"]*)" in the criterion "([^"]*)" with origin "(
     String eval, String criteName, String origin, String dat, String nomeA, String loginA->
         def controS = new StudentController()
         AddStudentsTestDataAndOperations.createStudent(nomeA,loginA)
-        StudentConsultTestDataAndOperations.studentExists(loginA)
+        assert StudentConsultTestDataAndOperations.studentExists(loginA)
         EvaluationTestDataAndOperations.createCritAndAddToStudents(criteName)
         EvaluationDataAndOperations.createEvaluation(criteName, origin, dat)//ele retorna um booleano que verifica se foi criado ou não
-        EvaluationDataAndOperations.existEvaluation(criteName, origin, dat)
-        controS.addEvaluationToStudent2(login,dat)
+        assert EvaluationDataAndOperations.existEvaluation(criteName, origin, dat)
+        controS.addEvaluationToStudent2(loginA,dat)
 }
-Then(~'^70% of the student "([^"]*)" evaluations are composed of "([^"]*)" in the criterion "([^"]*)"$'){
-   String loginA, String evalType, String crit -> ReportsDataAndOperations.checkCondition(loginA, evalType, crit)
+Then(~'^70% of the student "([^"]*)" evaluations are composed of "([^"]*)"$'){
+   String loginA, String evalType-> assert ReportsDataAndOperations.checkCondition(loginA, evalType)
 }
 And(~'^the report "([^"]*)" is updated$'){String relato1 ->
     assert ReportsDataAndOperations.checkUpdate(relato1)
 }
+
 
 //Cenários de GUI
 //Ser notificado sobre os problemas de desempenho dos alunos
