@@ -30,9 +30,20 @@ class StudentController {
         return student
     }
 
+    /*COMENTADO POR RODRIGO CALEGARIO 28/05/16
     public boolean saveStudent(Student student) {
         if(Student.findByLogin(student.login) == null) {
             student.save flush: true
+            return true
+        }
+        return false
+    }
+    */
+
+    public boolean saveStudent() {
+        def studentInstance = new Student(params);
+        if(Student.findByLogin(studentInstance.login) == null) {
+            studentInstance.save flush: true
             return true
         }
         return false

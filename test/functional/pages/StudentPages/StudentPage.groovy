@@ -9,4 +9,14 @@ class StudentPage extends Page {
     static at =  {
         title ==~ /Student List/
     }
+
+    boolean confirmStudent(String name, String login) {
+        boolean r = false
+        boolean findName = $("td").has(text: name)
+        boolean findLogin = $("td").has(text: login)
+        if(findName && findLogin){
+            r = true
+        }
+        return r
+    }
 }
