@@ -28,13 +28,13 @@ class EvaluationController {
         return evaluation
     }
 
-    public Evaluation createEvaluation(String criterionName, String origin,String dateInString){
+    /*public Evaluation createEvaluation(String criterionName, String origin,String dateInString){
         def criterion = criterionName
         def date = this.formattedDate(dateInString)
         Evaluation evaluation = new Evaluation(origin, null, date, criterion)
         evaluation.save flush : true
         return evaluation;
-    }
+    }*/
 
 
         @Transactional

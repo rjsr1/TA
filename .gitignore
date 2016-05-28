@@ -126,4 +126,4 @@ stacktrace.log
 /cobertura.ser
 .DS_Store
 /target/
-.idea/workspace.xml
+.idea/*

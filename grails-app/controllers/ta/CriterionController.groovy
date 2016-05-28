@@ -19,6 +19,10 @@ class CriterionController {
         criterionInstance.evaluations.add(evaluationInstance)
         edit(criterionInstance)
     }
+    public createCriterion(){
+        Criterion criterion = new Criterion(params)
+        criterion.save flush : true
+    }
 
     def show(Criterion criterionInstance) {
         respond criterionInstance

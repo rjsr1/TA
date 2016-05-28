@@ -72,21 +72,22 @@ class EvaluationDataAndOperations{
 
     public static void createStudents(){
         def controller = new StudentController();
-        Student stu1 = new Student("abc","abc")
-        Student stu2 = new Student("def","def")
-        Student stu3 = new Student("ghi","ghi");
-        controller.save(stu1);
+        controller.params<<[name:"abc",login:"abc"]
+        controller.createAndSaveStudent();
         controller.response.reset();
-        controller.save(stu2);
+        controller.params<<[name:"dfg",login:"dfg"]
+        controller.createAndSaveStudent();
         controller.response.reset();
-        controller.save(stu3);
+        controller.params<<[name:"hji",login:"hji"]
+        controller.createAndSaveStudent();
         controller.response.reset();
     }
 
     public static void createCriterionXandAddToStudents(){
         def controller = new CriterionController()
         Criterion criterion = new Criterion("X");
-        controller.save(criterion)
+        controller.params << [description : "X"];
+        controller.createCriterion()
         controller.response.reset();
         def controller2 = new StudentController()
         controller2.addCriterionToAllStudent("X");
