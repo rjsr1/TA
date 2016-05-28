@@ -16,7 +16,13 @@ class Student {
         this.name = name;
         this.login = login;
         this.criterionsAndEvaluations = new LinkedList<>();
+        def criterions = Criterion.findAll()
+        for(int i =0; i < criterions.size();i++){
+            EvaluationsByCriterion crit = new EvaluationsByCriterion(criterions.get(i));
+            this.criterionsAndEvaluations.add(crit)
+        }
     }
+
 
     public void addEvaluation(Evaluation evaluationInstance){
         for(int i = 0; i< this.criterionsAndEvaluations.size(); i++){
@@ -50,16 +56,16 @@ class Student {
 
     public boolean evaluationExist(Evaluation evaluationInstance){
         for(int i = 0; i<this.criterionsAndEvaluations.size();i++){
-            if(this.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(evaluationInstance.getCriterion()){
+            if(this.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(evaluationInstance.getCriterion())){
                 List<Evaluation> evaluationsForThisCriterion = this.criterionsAndEvaluations.get(i).evaluations;
-                for(int j=0; j<evaluationsForThisCriterion.size();j++){
-                    if(evaluationsForThisCriterion.compatibleTo(evaluationInstance)){
+                for (int j = 0; j < evaluationsForThisCriterion.size(); j++) {
+                    if (evaluationsForThisCriterion.compatibleTo(evaluationInstance)) {
                         return true
                     }
                 }
-            }
         }
         return false
+    }
     }
 
 

@@ -6,7 +6,7 @@ class Evaluation {
     Date applicationDate;
     String criterion;
     static constraints = {
-        origin inList :["Test","Mini-Test","Form","Final"], blank: false
+        origin inList :["Test","Mini-Test","Form","Final","--"], blank: false
         value inList :["MA","MPA","MANA","--"], blank :false
         criterion nullable : false, blank : false
     }
@@ -19,7 +19,7 @@ class Evaluation {
     }
 
     public boolean compatibleTo(Evaluation evaluationInstance){
-        if(this.origin.equals(evaluationInstance.getOrigin()) && this.value.equals(evaluationInstance.getValue()) && this.applicatioDate.compareTo(evaluationInstance.getApplicationDate())==0 && this.criterion.equals(evaluationInstance.getCriterion())
+        if(this.origin.equals(evaluationInstance.getOrigin()) && this.value.equals(evaluationInstance.getValue()) && this.applicatioDate.compareTo(evaluationInstance.getApplicationDate())==0 && this.criterion.equals(evaluationInstance.getCriterion()))
         {
             return true
         }else {
@@ -27,7 +27,7 @@ class Evaluation {
         }
     }
     public boolean compatibleToNoValue(Evaluation evaluationInstance){
-        if(this.origin.equals(evaluationInstance.getOrigin()) && this.applicatioDate.compareTo(evaluationInstance.getApplicationDate())==0 && this.criterion.equals(evaluationInstance.getCriterion())
+        if(this.origin.equals(evaluationInstance.getOrigin()) && this.applicatioDate.compareTo(evaluationInstance.getApplicationDate())==0 && this.criterion.equals(evaluationInstance.getCriterion()))
         {
             return true
         }else {

@@ -38,6 +38,36 @@ class EvaluationDataAndOperations{
             }
         }
         return null;
+    }
+    public static boolean existEvaluation(String criterionName, String dateInString){
+        def applicationDate = formattedDate(dateInString)
+        def found = false;
+        for(Student student : Student.findAll()){
+            def counter = 0
+            student.each(student.criterions){
+                if(criterionName == student.criterions.get(counter).name){
+                    def studentCriterions = student.getCriterions().get(counter);
+                    def counter2 = 0;
+                    studentCriterions.each(studentCriterions.evaluations){
+                        if(studentCriterions.getEvaluations().get(counter2).applicationDate == date){
+                            return true
+                        }
+                    }
+                    counter2++
+                }
+                counter++
+            }
+        }
+        return false
+    }
+    ​
+    public static boolean existEvaluation(String criterionName, String origin, String dateInString){
+        def applicationDate = formattedDate(dateInString)
+        for(Evaluation evaluation : Evaluation.findAll){
+            if(evaluation.origin == origin && evaluation.applicationDate == applicationDate)
+                return true;
+        }
+        return false;
     }*/
 
     public static void createStudents(){
