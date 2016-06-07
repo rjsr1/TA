@@ -4,6 +4,7 @@
 
 
 import pages.CreateCriterionPage
+import pages.ShowCriterionPage
 import steps.CriterionTestDataAndOperations
 import cucumber.api.groovy.EN
 import cucumber.api.groovy.Hooks
@@ -78,6 +79,7 @@ Given(~'^the criterion "([^"]*)" already exists$') {
         to CreateCriterionPage
         at CreateCriterionPage
         page.createCriterion(desc)
+        at ShowCriterionPage
 }
 
 And(~'^I am on the Add Criterion page$') { ->
