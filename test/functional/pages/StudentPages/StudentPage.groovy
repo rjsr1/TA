@@ -12,8 +12,8 @@ class StudentPage extends Page {
 
     boolean confirmStudent(String name, String login) {
         boolean r = false
-        boolean findName = $("td").has(text: name)
-        boolean findLogin = $("td").has(text: login)
+        boolean findName = $("tr").find("td").has("a",text: name)
+        boolean findLogin = $("tr").has("td",text: login)
         if(findName && findLogin){
             r = true
         }

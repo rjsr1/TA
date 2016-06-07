@@ -1,6 +1,6 @@
 cucumber {
     features = ["test/cucumber"]
     sources = ["test/cucumber"]
-    glue = sources
+    glue = features
     tags = ["~@ignore"]
 }

@@ -13,13 +13,13 @@ class AddStudentsPage extends Page{
         title ==~ /Create Student/
     }
 
-    def fillStudentDetails(String login, String name) {
-        $("form").login = login
+    def fillStudentDetails(String name, String login) {
         $("form").name = name
+        $("form").login = login
+
     }
 
     def selectAddStudent() {
         $("input", name: "create").click()
     }
-
 }

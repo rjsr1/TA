@@ -32,9 +32,11 @@ When(~'^I create an evaluation criterion with name "([^"]*)"2$') { String criter
     saved = EvaluateStudentTestDataAndOperations.createEvaluationCriterion(criterionName)
 }
 
+/* COMENTADO POR RODRIGO CALEGARIO 28/05/16
 Then(~'^the evaluation criterion with name "([^"]*)" was not stored in the system$') { String criterionName ->
     assert EvaluationCriterion.findByName(criterionName) != null && !saved
 }
+*/
 
 //////////////////////////////////
 Given(~'^the system does not have an evaluation criterion with name "([^"]*)"2$') { String criterionName ->

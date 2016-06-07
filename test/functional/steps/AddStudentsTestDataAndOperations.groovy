@@ -11,7 +11,7 @@ class AddStudentsTestDataAndOperations {
     static public void createStudent(String name, String login){
         def cont = new StudentController()
         cont.params << [name: name, login: login]
-        cont.saveStudent()
+        cont.createAndSaveStudent()
         cont.response.reset()
     }
 
