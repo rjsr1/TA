@@ -127,3 +127,17 @@ stacktrace.log
 .DS_Store
 /target/
 .idea/workspace.xml
+grails-app/conf/hibernate/
+grails-app/migrations/
+grails-app/services/
+grails-app/taglib/
+grails-app/utils/
+lib/
+scripts/
+src/
+test/integration/
+test/unit/
+web-app/META-INF/
+web-app/css/
+web-app/images/
+web-app/js/
