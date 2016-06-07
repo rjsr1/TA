@@ -26,14 +26,22 @@ class StudentController {
         }
         return true
     }
-    public boolean addEvaluationToAllStudents(){
+    def addEvaToStudents(String criterionName, LinkedList<Evaluation> evaluations){
+
+        Student.listOrderByLogin().each { Student student ->
+            student.addEvaluation(evaluations.poll());
+        }
+    }
+    //PARA TESTE- CUCUMBER
+    public boolean addEvaluationToAllStudents() {
         def evaluationInstance = new Evaluation(params);
-        for(Student student : Student.findAll()){
+        Student.findAll().each { Student student ->
             student.addEvaluation(evaluationInstance);
-            student.save flush : true
+            student.save flush: true
         }
         return true
     }
+    //PARA TESTE- CUCUMBER
     public void addEvaluationToStudent(String login){
         def student = Student.findByLogin(login);
         def evaluationInstance = new Evaluation(params);
@@ -78,12 +86,9 @@ class StudentController {
        List<Student> students = Student.findAll()
        for(int i =0; i<students.size();i++){
            def evCriterion  = students.get(i).findEvaluationByCriterion(criterionName);
-           if(evCriterion.findSpecificEvaluation(evaluation) != null){
-               return true;
-           }else{
-               return false
-           }
+           return evCriterion.findSpecificEvaluation(evaluation) != null
        }
+        return false;
     }
     public int countAllStudents(){
         return Student.findAll().size();

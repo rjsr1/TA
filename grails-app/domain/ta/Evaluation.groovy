@@ -19,19 +19,9 @@ class Evaluation {
     }
 
     public boolean compatibleTo(Evaluation evaluationInstance){
-        if(this.origin.equals(evaluationInstance.getOrigin()) && this.value.equals(evaluationInstance.getValue()) && this.applicationDate.compareTo(evaluationInstance.getApplicationDate())==0 && this.criterion.equals(evaluationInstance.getCriterion()))
-        {
-            return true
-        }else {
-            return false
-        }
+        return this.origin.equals(evaluationInstance.getOrigin()) && this.value.equals(evaluationInstance.getValue()) && this.applicationDate.compareTo(evaluationInstance.getApplicationDate()) == 0 && this.criterion.equals(evaluationInstance.getCriterion())
     }
     public boolean compatibleToNoValue(Evaluation evaluationInstance){
-        if(this.origin.equals(evaluationInstance.getOrigin()) && this.applicatinoDate.compareTo(evaluationInstance.getApplicationDate())==0 && this.criterion.equals(evaluationInstance.getCriterion()))
-        {
-            return true
-        }else {
-            return false
-        }
+        return this.origin.equals(evaluationInstance.getOrigin()) && this.applicatinoDate.compareTo(evaluationInstance.getApplicationDate()) == 0 && this.criterion.equals(evaluationInstance.getCriterion())
     }
 }

@@ -47,7 +47,7 @@ And there already are evaluations for the "X" criteria, originated from "Midterm
 When I want to import all evaluations from the spreedsheet to add to all students "X" criterias history, originated from "Midterm" and dated from "31/03/2016"
 Then all the evaluations will not be stored in on the "X" criteria's history of each student
 */
-String criterionNameGlobal, originGlobal
+String criterionNameGlobal, originGlobal;
 String dateGlobal;
 
 
@@ -150,7 +150,8 @@ When(~/^I want to evaluate all students to the "([^"]*)" criterion, originated f
     dateGlobal = dateInString
     criterionNameGlobal = criterionName
     originGlobal = origin
-    EvaluationDataAndOperations.createEvaluation(criterionName,origin,dateInString)
+        String value = "--";
+    EvaluationDataAndOperations.createEvaluation(value,criterionName,origin,dateInString)
 
 }
 Then(~/^all the evaluations will be stored in on the "([^"]*)" criterion history of each student$/) {
@@ -165,7 +166,7 @@ Given(~/^there are no evaluations to all students to the "([^"]*)" criterion,$/)
     assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName,"--",dateInString) == false
 }
 When(~/^I want to evaluate all students to a the "([^"]*)" criteria, without a specific origin and dated from "([^"]*)"\.$/) { String criterionName, dateInString ->
-    EvaluationDataAndOperations.createEvaluation(criterionName,'--',dateInString)
+    EvaluationDataAndOperations.createEvaluation("--",criterionName,'--',dateInString)
     criterionNameGlobal = criterionName
     dateGlobal = dateInString;
 }
@@ -173,12 +174,12 @@ Then(~/^all evaluations will not be stored in on the "([^"]*)" criterion history
     assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName,"--",dateGlobal) == false
 }
 ///
-When(~/^I want to add a mark to all students to a the "([^"]*)" criteria, originated from "([^"]*)" and dated from "([^"]*)"$/) {
+ When(~/^I want to add a mark to all students to a the "([^"]*)" criteria, originated from "([^"]*)" and dated from "([^"]*)"$/) {
     String criterionName, origin, dateInString ->
-    stored = EvaluationDataAndOperations.createEvaluation(criterionName,origin,dateInString)
+    stored = EvaluationDataAndOperations.createEvaluation("--",criterionName,origin,dateInString);
     dateGlobal = dateInString;
     originGlobal = origin;
-    assert EvaluationDataAndOperations.createEvaluationNoValue(criterionName,origin,dateInString) == false
+    assert EvaluationDataAndOperations.createEvaluation(null,criterionName,origin,dateInString) == false
 }
 Then(~/^all the marks will not be stored in on the "([^"]*)" criteria's history of each student$/) {
     String criterionName->

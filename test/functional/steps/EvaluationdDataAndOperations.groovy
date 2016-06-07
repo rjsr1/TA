@@ -85,7 +85,6 @@ class EvaluationDataAndOperations{
 
     public static void createCriterionXandAddToStudents(){
         def controller = new CriterionController()
-        Criterion criterion = new Criterion("X");
         controller.params << [description : "X"];
         controller.createCriterion()
         controller.response.reset();
@@ -94,7 +93,6 @@ class EvaluationDataAndOperations{
     }
 
     public static boolean findEvaluationAndCount(String criterionName, String origin, String dateInString){
-        def applicationDate = formattedDate(dateInString)
         def controller = new EvaluationController()
         def controller2 = new StudentController()
         def listEvaluations = controller2.countStudentsEvaluated(criterionName,origin,dateInString)
@@ -104,11 +102,11 @@ class EvaluationDataAndOperations{
 
     }
    
-    public static boolean createEvaluation(String criterionName, String origin, String dateInString){
+    public static boolean createEvaluation(String value, String criterionName, String origin, String dateInString){
         def applicationDate = formattedDate(dateInString)
         def cont = new StudentController()
         def cont2 = new EvaluationController();
-        cont2.params<<[value : "--"] <<[origin: origin] << [applicationDate : applicationDate];
+        cont2.params<<[value : value] <<[origin: origin] << [applicationDate : applicationDate];
         Evaluation evaluation = cont2.createEvaluation()
         cont.params<<[origin:origin,applicationDate : evaluation.applicationDate, criterion:evaluation.criterion, value : null]
         def returningValue= cont.addEvaluationToAllStudents()
