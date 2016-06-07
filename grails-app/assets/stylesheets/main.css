@@ -239,6 +239,37 @@ fieldset,
 	margin-left: 27%;
 }
 
+div#search-header {
+	padding-left: 2em;
+	padding-right: 2em;
+}
+
+div#search-header h1 {
+	border-bottom-style: solid;
+	border-bottom-width: thin;
+}
+
+div#search{
+	padding-left: 2em;
+	padding-right: 2em;
+	padding-top: 1em;
+	height: 2em;
+	display: flex;
+}
+
+input#search_input{
+	position: relative;
+	margin: auto;
+}
+
+label#search-label{
+	margin: auto;
+}
+
+input#search {
+	margin: auto;
+}
+
 label {
 	cursor: pointer;
 	display: inline-block;
@@ -530,6 +561,11 @@ th:hover, tr:hover {
 	        box-shadow: 0 0 3px 1px #aaaaaa;
 	margin: 0.1em 0 0 0;
 	border: none;
+}
+
+.buttonsSearch{
+	margin: auto;
+
 }
 
 .buttons input,

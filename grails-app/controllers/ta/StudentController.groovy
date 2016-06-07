@@ -145,6 +145,9 @@ class StudentController {
         respond new Student(params)
     }
 
+    def search(){
+        respond view: 'search'
+    }
     @Transactional
     def save(Student studentInstance) {
         if (studentInstance == null) {
