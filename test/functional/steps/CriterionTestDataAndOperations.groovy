@@ -3,6 +3,7 @@ package steps
 import ta.Criterion
 import ta.CriterionController
 
+
 /**
  * Created by lapp on 07/05/2016.
  */
@@ -32,10 +33,4 @@ class CriterionTestDataAndOperations {
         controller.params << [description: desc]
         return controller.retrieveCriterion()
     }
-
-    public static List<Criterion> getCriteriaList() {
-        def controller = new CriterionController()
-        return controller.getCriteriaList()
-    }
-
 }

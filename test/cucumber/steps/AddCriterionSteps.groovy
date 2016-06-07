@@ -1,14 +1,16 @@
 /**
  * Created by Arthur Lapprand on 03/05/2016.
  */
-package steps
 
-import javafx.beans.binding.When
-import pages.CriterionPages.CreateCriterionPage
 import ta.Criterion
+import pages.CreateCriterionPage
+import pages.ShowCriterionPage
+import steps.CriterionTestDataAndOperations
+import cucumber.api.groovy.EN
+import cucumber.api.groovy.Hooks
 
-this.metaClass.mixin(cucumber.api.groovy.Hooks)
-this.metaClass.mixin(cucumber.api.groovy.EN)
+this.metaClass.mixin(Hooks)
+this.metaClass.mixin(EN)
 
 /*
 Feature: Add Criterion
@@ -19,7 +21,6 @@ Feature: Add Criterion
 
 Criterion crit
 String tempDesc
-List<Criterion> oldCriteriaState
 
 /*
 #Controller Scenario
@@ -50,7 +51,9 @@ When I create the criterion "P1"
 Then system does nothing
 */
 Given(~'^the criterion named "([^"]*)" already exists on the system$') {
-    String desc -> assert CriterionTestDataAndOperations.getCriterion(desc) != null
+    String desc ->
+        CriterionTestDataAndOperations.createCriterion(desc)
+        assert CriterionTestDataAndOperations.getCriterion(desc) != null
         tempDesc = desc
 }
 
@@ -74,10 +77,10 @@ Given(~'^the criterion "([^"]*)" already exists$') {
     String desc ->
         to CreateCriterionPage
         at CreateCriterionPage
-        CreateCriterionPage.createCriterion(desc)
+        page.createCriterion(desc)
 }
 
-And(~'^I am on the Add Criterion page$') {
+And(~'^I am on the Add Criterion page$') { ->
     to CreateCriterionPage
     at CreateCriterionPage
 }
@@ -85,11 +88,12 @@ And(~'^I am on the Add Criterion page$') {
 When(~'^I add the criterion "([^"]*)"$') {
     String desc ->
         at CreateCriterionPage
-        CreateCriterionPage.createCriterion(desc)
+        page.createCriterion(desc)
 }
 
-Then(~'^I should see a message related to the criterion registration failure$') {
-    assert CreateCriterionPage
+Then(~'^I should see a message related to the criterion registration failure$') { ->
+    at CreateCriterionPage
+    assert page.checkForErrors()
 }
 
 /*

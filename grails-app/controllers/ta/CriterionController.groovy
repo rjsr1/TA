@@ -1,14 +1,12 @@
 package ta
 
-
-
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
 class CriterionController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -43,12 +41,6 @@ class CriterionController {
 
     public List<Criterion> getCriteriaList() {
         return Criterion.list()
-    }
-
-    public boolean checkIfCriteriaChanged(List<Criterion> oldCriteriaState) {
-        oldCriteriaState.each { crit ->
-
-        }
     }
 
     @Transactional

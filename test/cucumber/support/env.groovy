@@ -14,6 +14,9 @@ Before () {
 }
 
 After () {
+    Vaga.list().each { vaga ->
+        vaga.delete(flush:true)
+    }
     scenarioInterceptor.destroy ()
     bindingUpdater.remove ()
 }
