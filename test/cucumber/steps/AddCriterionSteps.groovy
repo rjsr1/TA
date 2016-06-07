@@ -2,12 +2,12 @@
  * Created by Arthur Lapprand on 03/05/2016.
  */
 
-import ta.Criterion
+
 import pages.CreateCriterionPage
-import pages.ShowCriterionPage
 import steps.CriterionTestDataAndOperations
 import cucumber.api.groovy.EN
 import cucumber.api.groovy.Hooks
+import ta.Criterion
 
 this.metaClass.mixin(Hooks)
 this.metaClass.mixin(EN)
