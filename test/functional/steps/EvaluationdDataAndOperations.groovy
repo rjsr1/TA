@@ -120,9 +120,11 @@ class EvaluationDataAndOperations{
         criterion.params << [description : criterionName]
         Criterion criterionCreated = criterion.createAndSaveCriterion()
 
+        Date applicationDate = formattedDate(evaluationDate)
+
         def evaluation = new EvaluationController()
-        evaluation.params << [description : criterionName]
-        Evaluation evaluationCreated = evaluation.createAndSaveEvaluation(evaluationOrigin, studentEvaluation, evaluationDate)
+        evaluation.params << [/*description : criterionName,*/ origin : evaluationOrigin, value : studentEvaluation, applicationDate : applicationDate, criterion : criterionCreated]
+        Evaluation evaluationCreated = evaluation.createAndSaveEvaluationWithoutParam(/*evaluationOrigin, studentEvaluation, evaluationDate*/)
         student.addEvaluation(studentLogin, criterionName, evaluationOrigin)
         student.response.reset()
         evaluation.response.reset()

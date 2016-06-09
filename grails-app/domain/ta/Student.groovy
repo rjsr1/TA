@@ -10,7 +10,7 @@ class Student {
     static constraints = {
         name blank : false
         login unique : true, blank:false;
-        criterionsAndEvaluations nullable : false;
+        //criterionsAndEvaluations nullable : false;
     }
 
     public void addEvaluation(Evaluation evaluationInstance, String criterionName, String evaluationOrigin){
@@ -30,6 +30,32 @@ class Student {
             if(evaluationWithCriterion.get(i).getOrigin().equals(evaluationOrigin)){
                 finalEvaluation = evaluationWithCriterion.get(i)
             }
+        }
+
+        def evaluationsByCriterionController = new EvaluationsByCriterionController()
+        evaluationsByCriterionController.params << [criterion : criterionCreated]
+        EvaluationsByCriterion evaluationsByCriterionCreated = evaluationsByCriterionController.createAndSaveEvaluationsByCriterion()
+        evaluationsByCriterionCreated.addEvaluation(/*evaluationInstance*/finalEvaluation)
+
+        this.criterionsAndEvaluations.add(evaluationsByCriterionCreated)
+
+        evaluationsByCriterionController.response.reset()
+    }
+
+    public void addNewEvaluation(String criterionName, String evaluationOrigin){
+        Criterion criterionCreated = Criterion.findByDescription(criterionName)
+
+        List<Evaluation> evaluationWithCriterion = Evaluation.findAllByCriterion(criterionCreated)
+        Evaluation finalEvaluation
+        for(int i = 0; i < evaluationWithCriterion.size(); i++){
+            if(evaluationWithCriterion.get(i).getOrigin().equals(evaluationOrigin)){
+                finalEvaluation = evaluationWithCriterion.get(i)
+            }
+        }
+
+        println("Tamanho de evaluationWithCriterion = " + evaluationWithCriterion.size())
+        if(finalEvaluation == null){
+            println("Pane no sistema alguem me desconfigurou")
         }
 
         def evaluationsByCriterionController = new EvaluationsByCriterionController()

@@ -63,9 +63,11 @@ class StudentController {
             if(updatedStudent.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(criterionName)){
                 List<Evaluation> evaluationsInCriterion = updatedStudent.criterionsAndEvaluations.get(i).getEvaluations();
                 for(int j = 0; j < evaluationsInCriterion.size(); j++){
-                    if(evaluationsInCriterion.get(j).getOrigin().equals(evaluationOrigin)){
-                        evaluationsInCriterion.get(j).setValue(newEvaluation)
-                    }
+                    //if(evaluationsInCriterion.get(j) != null) {
+                        if (evaluationsInCriterion.get(j).getOrigin().equals(evaluationOrigin)) {
+                            evaluationsInCriterion.get(j).setValue(newEvaluation)
+                        }
+                    //}
                 }
             }
         }
@@ -112,8 +114,16 @@ class StudentController {
 
     public Student createAndSaveStudent(){
         Student student = new Student(params)
-        saveStudent(student)
+        //saveStudent(student)
+        if(Student.findByLogin(student.getLogin()) == null) {
+            student.save flush: true
+        }
         return student
+    }
+
+    public Student getStudent(String studentLogin){
+        Student studentFound = Student.findByLogin(studentLogin)
+        return studentFound
     }
 
     def show(Student studentInstance) {

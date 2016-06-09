@@ -62,7 +62,16 @@ class EvaluationController {
         return evaluation
     }
 
-
+    public Evaluation createAndSaveEvaluationWithoutParam(/*String evaluationDate*/){
+        //def applicationDate = formattedDate(evaluationDate)
+        //params << [applicationDate: applicationDate]
+        Evaluation evaluation = new Evaluation(params)
+        //saveStudent(student)
+        //if(Evaluation.findByLogin(evaluation.get()) == null) {
+            evaluation.save flush: true
+        //}
+        return evaluation
+    }
 
         @Transactional
     def save(Evaluation evaluationInstance) {

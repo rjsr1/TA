@@ -51,9 +51,9 @@ When(~'^I modify the "([^"]*)" evaluation to "([^"]*)" in the criterion "([^"]*)
 
 Then(~'^the system stores the modification in the student with login "([^"]*)"$'){
     String login ->
-    //date = formattedDate(globalDate)
-    //assert EvaluationDataAndOperations.checkEvaluationInStudent(globalStudentName, globalStudentLogin, globalNewEvaluation, globalCriterionName, globalEvaluationOrigin, globalEvaluationDate) != null
-    assert EvaluationDataAndOperations.compatibleTo(Student.findByLogin(login), globalStudent)
+        //date = formattedDate(globalDate)
+        //assert EvaluationDataAndOperations.checkEvaluationInStudent(globalStudentName, globalStudentLogin, globalNewEvaluation, globalCriterionName, globalEvaluationOrigin, globalEvaluationDate) != null
+        assert EvaluationDataAndOperations.compatibleTo(Student.findByLogin(login), globalStudent)
 }
 
 /*
