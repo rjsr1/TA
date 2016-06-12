@@ -18,12 +18,18 @@ class ReportController {
 
     def createSaveResetResponse(){
         create()
-        save()
+        save(flush: true)
         response.reset()
     }
 
     def create(){
         respond new Report(params)
+    }
+
+    public void addStudentToReport(String login, String nome){
+        Report repo = findByName(nome)
+        repo.addStudentToReport(login,nome)
+        respond update(repo)
     }
 
     public boolean saveRep(Report relatorio){
@@ -33,6 +39,23 @@ class ReportController {
         }
         relatorio.save(flush: true)
         return true
+    }
+    def delete(Report reportInstance) {
+
+        if (reportInstance == null) {
+            notFound()
+            return
+        }
+
+        reportInstance.delete flush:true
+
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'Report.label', default: 'Report'), reportInstance.id])
+                redirect action:"index", method:"GET"
+            }
+            '*'{ render status: NO_CONTENT }
+        }
     }
 
     def save(){
@@ -79,6 +102,10 @@ class ReportController {
 
     def findByName(String nome){
         return Report.findByName(nome)
+    }
+
+    def edit(Student studentInstance) {
+        respond studentInstance
     }
 
     protected void notFound() {

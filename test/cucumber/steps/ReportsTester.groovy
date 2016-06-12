@@ -3,12 +3,9 @@
  */
 package steps
 
-
-import funciotnal.pages.ReportsPages.ReportsPage
-import functional.pages.StudentPages.StudentPage
+import pages.StudentPages.StudentPage
 import pages.ReportsPages.ShowReportsPage
 import ta.ReportController
-import ta.StudentController
 
 //Cenários de controlador
 //Atualizar um relatório
@@ -24,13 +21,12 @@ Given(~'^that "70% of evaluations are MANA" and "70% of evaluations are under th
 }
 When(~'^I add the evaluation "([^"]*)" in the criterion "([^"]*)" with origin "([^"]*)" and date "([^"]*)" to the student with name "([^"]*)" and the login "([^"]*)"$'){
     String eval, String criteName, String origin, String dat, String nomeA, String loginA->
-        def controS = new StudentController()
         AddStudentsTestDataAndOperations.createStudent(nomeA,loginA)
         assert StudentConsultTestDataAndOperations.studentExists(loginA)
         EvaluationTestDataAndOperations.createCritAndAddToStudents(criteName)
         EvaluationDataAndOperations.createEvaluation(criteName, origin, dat)//ele retorna um booleano que verifica se foi criado ou não
         assert EvaluationDataAndOperations.existEvaluation(criteName, origin, dat)
-        controS.addEvaluationToStudent2(loginA,dat)
+        ReportsDataAndOperations.addEvalToStudent(loginA, origin, eval, dat, criteName)
 }
 Then(~'^70% of the student "([^"]*)" evaluations are composed of "([^"]*)"$'){
    String loginA, String evalType-> assert ReportsDataAndOperations.checkCondition(loginA, evalType)

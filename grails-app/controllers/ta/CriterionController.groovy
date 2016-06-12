@@ -1,6 +1,5 @@
 package ta
 
-
 import java.text.SimpleDateFormat
 
 import static org.springframework.http.HttpStatus.*
@@ -19,6 +18,10 @@ class CriterionController {
     def addEvaluation(Criterion criterionInstance,Evaluation evaluationInstance){
         criterionInstance.evaluations.add(evaluationInstance)
         edit(criterionInstance)
+    }
+    public createCriterion(){
+        Criterion criterion = new Criterion(params)
+        criterion.save flush : true
     }
 
     def show(Criterion criterionInstance) {
@@ -107,7 +110,6 @@ class CriterionController {
             '*'{ render status: NOT_FOUND }
         }
     }
-
     public static Date formattedDate(String dateInString){
         def formatter = new SimpleDateFormat("dd/mm/yyyy");
         Date date = formatter.parse(dateInString);
