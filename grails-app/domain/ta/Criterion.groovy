@@ -5,5 +5,6 @@ class Criterion {
     static constraints = {
         description unique: true, blank : false, nullable : false
     }
+
 }
 

@@ -85,7 +85,41 @@ class EvaluationController {
             return
         }
 
+        String[] todos = evaluationInstance.value.split(",")
+        log.info(todos[0])
         evaluationInstance.save flush:true
+
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.created.message', args: [message(code: 'evaluation.label', default: 'Evaluation'), evaluationInstance.id])
+                redirect evaluationInstance
+            }
+            '*' { respond evaluationInstance, [status: CREATED] }
+        }
+    }
+
+    @Transactional
+    def saveAll(Evaluation evaluationInstance){
+        if (evaluationInstance == null) {
+            notFound()
+            return
+        }
+
+        if (evaluationInstance.hasErrors()) {
+            respond evaluationInstance.errors, view:'create'
+            return
+        }
+
+        String[] todos = evaluationInstance.value.split(",")
+        List<Evaluation> listEvaluation = new LinkedList<Evaluation>()
+
+        StudentController student = new StudentController()
+        for(int i = 0; i < todos.size(); i++){
+            Evaluation newEvaluation = new Evaluation(evaluationInstance.origin, todos[i], evaluationInstance.applicationDate, evaluationInstance.criterion)
+            newEvaluation.save flush: true
+            listEvaluation.add(newEvaluation)
+        }
+        student.addEvaluationsToAllStudents(listEvaluation)
 
         request.withFormat {
             form multipartForm {

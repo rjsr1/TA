@@ -13,6 +13,11 @@ class Student {
         //criterionsAndEvaluations nullable : false;
     }
 
+    static mapping = {
+        sort "login"
+        sort login: "asc"
+    }
+
     public void addEvaluation(Evaluation evaluationInstance, String criterionName, String evaluationOrigin){
         if(this.criterionsAndEvaluations != null) {
             for (int i = 0; i < this.criterionsAndEvaluations.size(); i++) {

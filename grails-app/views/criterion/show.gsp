@@ -23,11 +23,11 @@
 			</g:if>
 			<ol class="property-list criterion">
 			
-				<g:if test="${criterionInstance?.name}">
+				<g:if test="${criterionInstance?.description}">
 				<li class="fieldcontain">
-					<span id="name-label" class="property-label"><g:message code="criterion.name.label" default="Name" /></span>
+					<span id="description-label" class="property-label"><g:message code="criterion.description.label" default="Description" /></span>
 					
-						<span class="property-value" aria-labelledby="name-label"><g:fieldValue bean="${criterionInstance}" field="name"/></span>
+						<span class="property-value" aria-labelledby="description-label"><g:fieldValue bean="${criterionInstance}" field="description"/></span>
 					
 				</li>
 				</g:if>

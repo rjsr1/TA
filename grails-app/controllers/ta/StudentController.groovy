@@ -19,11 +19,16 @@ class StudentController {
         params.max = Math.min(max ?: 10, 100)
         respond Student.list(params), model:[studentInstanceCount: Student.count()]
     }
-    public boolean addEvaluationsToAllStudents(String criterionName, Evaluation evaluationInstance){
-        for(Student student : Student.findAll()){
-            student.addEvaluation(evaluationInstance);
-            student.save flush : true
+    public boolean addEvaluationsToAllStudents(Evaluation evaluationList){
+        List<Student> students = Student.list();
+        for(int i = 0; i < students.size(); i++){
+            students.get(i).addEvaluation(evaluationList.get(i))
+            students.get(i).save flush: true
         }
+        /*for(Student student : Student.list()){
+            student.addEvaluation(evaluationInstance.get(i));
+            student.save flush : true
+        }*/
         return true
     }
 
