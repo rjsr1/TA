@@ -1,5 +1,7 @@
+import pages.StudentConsultPage
 import ta.Student
 import steps.StudentConsultTestDataAndOperations
+
 /**
  * Created by joao on 02/06/16.
 */
@@ -24,7 +26,7 @@ Given(~/^the student "([^"]*)" with login "([^"]*)" is not registered in the sys
 }
 
 When(~/^I search for "([^"]*)"$/) { String login ->
-    globalStudent = StudentConsultTestDataAndOperations.searchStudent(login)
+    globalStudent = StudentConsultTestDataAndOperations.lookForStudent()Student(login)
 }
 
 Then(~/^the system will not return anything$/) { ->
@@ -32,6 +34,7 @@ Then(~/^the system will not return anything$/) { ->
 }
 
 //GUI
+String global
 
 Given(~/^I'm on the "([^"]*)" page$/) { String pageName ->
     to StudentConsultPage
@@ -40,14 +43,16 @@ Given(~/^I'm on the "([^"]*)" page$/) { String pageName ->
 
 And(~/^I see the student "([^"]*)" with login "([^"]*)" in the list of students$/) { String nome, String login ->
     at StudentConsultPage
+    page.fillStudentSearch(global)
+    page.selectSearch()
 }
 
 When(~/^I request the student information$/) { ->
     at StudentConsultPage
-    StudentConsultPage.clickStudent()
+    page.selectStudent()
 }
 
 Then(~/^all the student average evaluation in all criteria will appear in the screen$/) { ->
     at StudentConsultPage
-    StudentConsultPage.showStudentDetails()
+    page.showStudentDetails()
 }

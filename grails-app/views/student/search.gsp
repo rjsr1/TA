@@ -35,8 +35,10 @@
             <g:message code="student.search.label" default="login" />
 
         </label>
-        <g:textField name="search_input" required="" value="Insert login here" size="70"/>
-        <g:submitButton name="search" class="" value="${message(code: 'default.button.search.label', default: 'Search')}" />
+        <g:form url="[resource:login, action:'search']" >
+            <g:textField name="search_input" required="" value="Insert login here" size="70"/>
+                <g:submitButton name="search" class="search" value="${message(code: 'default.button.search.label', default: 'Search')}" size = "20" />
+        </g:form>
 </div>
 
 <div id="list-student" class="content scaffold-list" role="main">
@@ -57,12 +59,12 @@
         </tr>
         </thead>
         <tbody>
-        <g:each in="${studentInstanceList}" status="i" var="studentInstance">
+        <g:each in="${studentInstance}" status="i" var="studentInstance">
             <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
                 <td><g:link action="show" id="${studentInstance.id}">${fieldValue(bean: studentInstance, field: "name")}</g:link></td>
 
-                <td>${fieldValue(bean: studentInstance, field: "login")}</td>
+                <td>${fieldValue(bean: ${studentInstance}, field: "nome")}</td>
 
                 <!-- td com as a média do aluno -->
 
