@@ -257,6 +257,12 @@ div#search{
 	display: flex;
 }
 
+div#search_student{
+	padding-left: 2em;
+	padding-right: 2em;
+	display: flex;
+}
+
 input#search_input{
 	position: relative;
 	margin: auto;

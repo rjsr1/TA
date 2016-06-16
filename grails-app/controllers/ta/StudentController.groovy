@@ -136,7 +136,6 @@ class StudentController {
 
     public Student searchStudent(){
         def studentInstance = Student.findByLogin(params)
-        def list = [Student:studentInstance]
         return studentInstance
     }
 
@@ -153,8 +152,19 @@ class StudentController {
     }
 
     def search(){
-        respond view: "search"
+        render view: "search"
     }
+
+    def consult(){
+        def list = Student.findByLogin(params.login)
+        if (list == null) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'student.label', default: 'Student'), params.id])
+            render view: "search", model: [studentInstanceList:[], studentInstanceCount: 0]
+        }else {
+            render view: "search", model: [studentInstanceList:list, studentInstanceCount: list.count()]
+        }
+    }
+
     @Transactional
     def save(Student studentInstance) {
         if (studentInstance == null) {
