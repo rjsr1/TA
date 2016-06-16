@@ -231,4 +231,34 @@ class StudentController {
         def student = Student.findByLogin(params)
         return student
     }
+
+    public void groupSave(List<Student> group){
+        for(int i=0; i<group.size(); i++){
+            group.get(i).save flush: true;
+        }
+    }
+
+    def saveGroup(){
+        String group = params.name
+        String[] students = group.split(";")
+        for (int i = 0; i < students.size(); i++){
+            List<String> token1 = students[i].tokenize(':')
+            String info = token1.get(0)
+            List<String> token2 = info.tokenize('(')
+            String name = token2.get(0)
+            String login = token2.get(1)
+            Student novo = new Student(name, login)
+
+            if(Student.findByLogin(novo.getLogin()) == null) {
+                novo.save flush: true
+            }
+        }
+        flash.message = message(code: 'default.created.message', args: [message(code: students.length, 'student.label', default: 'Student')])
+        redirect action:"index", method:"GET"
+    }
+
+    def createGroup(){
+        respond view: 'createGroup'
+    }
+
 }

@@ -33,8 +33,8 @@
 
         <label id="search-label" for="login">
             <g:message code="student.search.label" default="login" />
-
         </label>
+
         <g:textField name="search_input" required="" value="Insert login here" size="70"/>
         <g:submitButton name="search" class="" value="${message(code: 'default.button.search.label', default: 'Search')}" />
 </div>
