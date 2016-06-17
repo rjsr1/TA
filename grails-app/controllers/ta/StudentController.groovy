@@ -158,7 +158,7 @@ class StudentController {
 
     def consult(){
         def auxList = Student.list()
-        def studentList = auxList.findAll {it.name.contains(params.consult)}
+        def studentList = auxList.findAll {it.name.toLowerCase().contains(params.consult.toLowerCase()) || it.login.toLowerCase().contains(params.consult.toLowerCase())}
         if(studentList == null){
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'student.label', default: 'Student'), params.id])
             render view: "search", model: [studentInstanceList:[], studentInstanceCount: 0]
