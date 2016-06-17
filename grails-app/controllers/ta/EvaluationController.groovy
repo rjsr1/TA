@@ -99,8 +99,8 @@ class EvaluationController {
     }
 
     @Transactional
-    def saveAll(Evaluation evaluationInstance){
-        if (evaluationInstance == null) {
+    def saveAll() {
+        /*if (evaluationInstance == null) {
             notFound()
             return
         }
@@ -108,26 +108,29 @@ class EvaluationController {
         if (evaluationInstance.hasErrors()) {
             respond evaluationInstance.errors, view:'create'
             return
-        }
-
-        String[] todos = evaluationInstance.value.split(",")
+        }*/
+        //def teste = Evaluation.getAll(evaluationInstance.list('value'))
+        //def teste = params.allList
+        def teste = params.list('value')
+        //String[] todos = evaluationInstance.value.split(",")
         List<Evaluation> listEvaluation = new LinkedList<Evaluation>()
 
         StudentController student = new StudentController()
-        for(int i = 0; i < todos.size(); i++){
-            Evaluation newEvaluation = new Evaluation(evaluationInstance.origin, todos[i], evaluationInstance.applicationDate, evaluationInstance.criterion)
+        for(int i = 0; i < teste.size(); i++){
+            Evaluation newEvaluation = new Evaluation(params.origin, teste.get(i)/*todos[i]*/, params.applicationDate, params.criterion.id)
             newEvaluation.save flush: true
             listEvaluation.add(newEvaluation)
         }
         student.addEvaluationsToAllStudents(listEvaluation)
 
-        request.withFormat {
+        /*request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'evaluation.label', default: 'Evaluation'), evaluationInstance.id])
                 redirect evaluationInstance
             }
             '*' { respond evaluationInstance, [status: CREATED] }
-        }
+        }*/
+        redirect action:"index", method:"GET"
     }
 
     def edit(Evaluation evaluationInstance) {

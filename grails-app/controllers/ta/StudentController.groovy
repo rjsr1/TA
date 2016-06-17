@@ -19,7 +19,7 @@ class StudentController {
         params.max = Math.min(max ?: 10, 100)
         respond Student.list(params), model:[studentInstanceCount: Student.count()]
     }
-    public boolean addEvaluationsToAllStudents(Evaluation evaluationList){
+    public boolean addEvaluationsToAllStudents(LinkedList<Evaluation> evaluationList){
         List<Student> students = Student.list();
         for(int i = 0; i < students.size(); i++){
             students.get(i).addEvaluation(evaluationList.get(i))

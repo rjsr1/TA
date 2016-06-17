@@ -18,15 +18,26 @@ class Student {
         sort login: "asc"
     }
 
-    public void addEvaluation(Evaluation evaluationInstance, String criterionName, String evaluationOrigin){
-        if(this.criterionsAndEvaluations != null) {
+    public void addEvaluation(Evaluation evaluationInstance){
+        if(this.findEvaluationByCriterion(evaluationInstance.getCriterion().getDescription()) != null) {
             for (int i = 0; i < this.criterionsAndEvaluations.size(); i++) {
                 if (this.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(evaluationInstance.criterion.description)) {
                     this.criterionsAndEvaluations.get(i).addEvaluation(evaluationInstance);
                     return;
                 }
             }
+        }else{
+            EvaluationsByCriterion newEvByCrit = new EvaluationsByCriterion(evaluationInstance.criterion);
+            newEvByCrit.addEvaluation(evaluationInstance);
+            newEvByCrit.save flush : true;
+            this.criterionsAndEvaluations.add(newEvByCrit);
+            return;
         }
+        def evaluationsByCriterion = new EvaluationsByCriterion(evaluationInstance.getCriterion())
+        evaluationsByCriterion.addEvaluation(evaluationInstance)
+        this.criterionsAndEvaluations.add(evaluationsByCriterion)
+
+        /*
         Criterion criterionCreated = Criterion.findByDescription(criterionName)
 
         List<Evaluation> evaluationWithCriterion = Evaluation.findAllByCriterion(criterionCreated)
@@ -40,11 +51,12 @@ class Student {
         def evaluationsByCriterionController = new EvaluationsByCriterionController()
         evaluationsByCriterionController.params << [criterion : criterionCreated]
         EvaluationsByCriterion evaluationsByCriterionCreated = evaluationsByCriterionController.createAndSaveEvaluationsByCriterion()
-        evaluationsByCriterionCreated.addEvaluation(/*evaluationInstance*/finalEvaluation)
+        evaluationsByCriterionCreated.addEvaluation(*//*evaluationInstance*//*finalEvaluation)
 
         this.criterionsAndEvaluations.add(evaluationsByCriterionCreated)
 
         evaluationsByCriterionController.response.reset()
+        */
     }
 
     public void addNewEvaluation(String criterionName, String evaluationOrigin){

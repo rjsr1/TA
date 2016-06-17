@@ -40,7 +40,39 @@
 					
 				</li>
 				</g:if>
-			
+
+				<div id="list-evaluation" class="content scaffold-list" role="main">
+					<h1><g:message code="default.list.label" args="[entityName]" /></h1>
+					<g:if test="${flash.message}">
+						<div class="message" role="status">${flash.message}</div>
+					</g:if>
+					<table>
+						<thead>
+						<tr>
+
+							<g:sortableColumn property="criterion" title="${message(code: 'evaluation.origin.label', default: 'Criterion')}" />
+
+							<g:sortableColumn property="media" title="${message(code: 'evaluation.value.label', default: 'Media')}" />
+
+						</tr>
+						</thead>
+						<tbody>
+						<g:each in="${studentInstance?.criterionsAndEvaluations}" status="i" var="evaluationInstance">
+							<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+
+								<td>${fieldValue(bean: evaluationInstance, field: "media")}</td>
+
+								<td>${fieldValue(bean: evaluationInstance, field: "media")}</td>
+
+							</tr>
+						</g:each>
+						</tbody>
+					</table>
+					<div class="pagination">
+						<g:paginate total="${evaluationInstanceCount ?: 0}" />
+					</div>
+				</div>
+
 			</ol>
 			<g:form url="[resource:studentInstance, action:'delete']" method="DELETE">
 				<fieldset class="buttons">
