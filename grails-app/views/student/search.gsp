@@ -32,12 +32,12 @@
 <div id="search_student" class="content scaffold-search" role="main">
         <g:form controller="student" action="consult">
             <div id="search_student" class="fieldcontain ${hasErrors(bean: studentInstance, field: 'login', 'error')} required">
-                <label for="login">
-                    <g:message code="student.login.label" default="Login" />
+                <label for="consult">
+                    <g:message code="student.login.label" default="Consulta" />
                     <span class="required-indicator">*</span>
                 </label>
                 <!-- <g:textField name="login" required="" value="${studentInstance?.login}"/> -->
-                <g:textField name="login" required="" size="50"/>
+                <g:textField name="consult" required="" size="50"/>
                 <g:submitButton name="search" class="search" value="${message(code: 'default.button.search.label', default: 'Search')}" size = "20" />
             </div>
         </g:form>

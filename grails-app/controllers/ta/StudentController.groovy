@@ -1,6 +1,7 @@
 package ta
 
 import java.text.SimpleDateFormat
+import java.lang.*
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -156,12 +157,13 @@ class StudentController {
     }
 
     def consult(){
-        def list = Student.findByLogin(params.login)
-        if (list == null) {
+        def auxList = Student.list()
+        def studentList = auxList.findAll {it.name.contains(params.consult)}
+        if(studentList == null){
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'student.label', default: 'Student'), params.id])
             render view: "search", model: [studentInstanceList:[], studentInstanceCount: 0]
-        }else {
-            render view: "search", model: [studentInstanceList:list, studentInstanceCount: list.count()]
+        } else {
+            render view: "search", model: [studentInstanceList:studentList, studentInstanceCount: studentList.size()]
         }
     }
 
