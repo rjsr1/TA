@@ -23,10 +23,10 @@ class EvaluationsByCriterion {
 
     public void addEvaluation(Evaluation evaluationInstance) {
         this.evaluations.add(evaluationInstance);
-        this.media = media();
+        this.media = doMedia();
     }
 
-    public double media(){
+    public double doMedia(){
         double mediaCriterio = 0;
         double tempMedia = 0;
         int qtdEvaluations = 0;

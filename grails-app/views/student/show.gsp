@@ -50,19 +50,19 @@
 						<thead>
 						<tr>
 
-							<g:sortableColumn property="criterion" title="${message(code: 'evaluation.origin.label', default: 'Criterion')}" />
+							<g:sortableColumn property="criterion" title="${message(code: 'evaluation.criterion.label', default: 'Criterion')}" />
 
 							<g:sortableColumn property="media" title="${message(code: 'evaluation.value.label', default: 'Media')}" />
 
 						</tr>
 						</thead>
 						<tbody>
-						<g:each in="${studentInstance?.criterionsAndEvaluations}" status="i" var="evaluationInstance">
+						<g:each in="${studentInstance}" status="i" var="evaluationInstance">
 							<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
-								<td>${fieldValue(bean: evaluationInstance, field: "media")}</td>
+								<td>${fieldValue(bean: evaluationInstance, field: "criterionsAndEvaluations.criterion.description")}</td>
 
-								<td>${fieldValue(bean: evaluationInstance, field: "media")}</td>
+								<td>${fieldValue(bean: evaluationInstance, field: "criterionsAndEvaluations.media")}</td>
 
 							</tr>
 						</g:each>
