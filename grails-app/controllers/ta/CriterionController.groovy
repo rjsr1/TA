@@ -1,8 +1,6 @@
 package ta
 
-
 import java.text.SimpleDateFormat
-
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 

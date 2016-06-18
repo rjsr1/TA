@@ -2,7 +2,6 @@ package ta
 
 class Criterion {
     String description
-
     static constraints = {
         description unique: true, blank : false, nullable : false
     }
@@ -11,4 +10,3 @@ class Criterion {
         this.description = description;
     }
 }
-
