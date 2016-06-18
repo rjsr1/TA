@@ -28,15 +28,18 @@
 <div id="search-header">
     <h1>Search by login</h1>
 </div>
-
-<div id="search" class="content scaffold-search" role="main">
-
-        <label id="search-label" for="login">
-            <g:message code="student.search.label" default="login" />
-        </label>
-
-        <g:textField name="search_input" required="" value="Insert login here" size="70"/>
-        <g:submitButton name="search" class="" value="${message(code: 'default.button.search.label', default: 'Search')}" />
+<div id="search_student" class="content scaffold-search" role="main">
+        <g:form controller="student" action="consult">
+            <div id="search_student" class="fieldcontain ${hasErrors(bean: studentInstance, field: 'login', 'error')} required">
+                <label for="consult">
+                    <g:message code="student.login.label" default="Consulta" />
+                    <span class="required-indicator">*</span>
+                </label>
+                <!-- <g:textField name="login" required="" value="${studentInstance?.login}"/> -->
+                <g:textField name="consult" required="" size="50"/>
+                <g:submitButton name="search" class="search" value="${message(code: 'default.button.search.label', default: 'Search')}" size = "20" />
+            </div>
+        </g:form>
 </div>
 
 <div id="list-student" class="content scaffold-list" role="main">
@@ -63,9 +66,7 @@
                 <td><g:link action="show" id="${studentInstance.id}">${fieldValue(bean: studentInstance, field: "name")}</g:link></td>
 
                 <td>${fieldValue(bean: studentInstance, field: "login")}</td>
-
                 <!-- td com as a média do aluno -->
-
             </tr>
         </g:each>
         </tbody>

@@ -1,6 +1,7 @@
 package ta
 
 import java.text.SimpleDateFormat
+import java.lang.*
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -113,15 +114,12 @@ class StudentController {
             studentInstance.save flush: true
             return true
         }
-        return false
     }
-
     public Student createAndSaveStudent(){
         Student student = new Student(params)
-        if(Student.findByLogin(student.getLogin()) == null) {
-            student.save flush: true
+        if(Student.findByLogin(student.login) == null) {
+            student.save(flush: true)
         }
-        return student
     }
 
     def addEvaluation(Student studentInstance, Evaluation evaluationInstance){
@@ -135,8 +133,17 @@ class StudentController {
             student.criterionsAndEvaluations.add(criterionInstance)
             save(student)
         }
+    }*/
+
+    public Student searchStudent(){
+        def studentInstance = Student.findByLogin(params)
+        return studentInstance
     }
-*/
+
+    public Student createStudent(){
+        return new Student(params)
+    }
+
     def show(Student studentInstance) {
         respond studentInstance
     }
@@ -146,8 +153,20 @@ class StudentController {
     }
 
     def search(){
-        respond view: 'search'
+        render view: "search"
     }
+
+    def consult(){
+        def auxList = Student.list()
+        def studentList = auxList.findAll {it.name.toLowerCase().contains(params.consult.toLowerCase()) || it.login.toLowerCase().contains(params.consult.toLowerCase())}
+        if(studentList == null){
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'student.label', default: 'Student'), params.id])
+            render view: "search", model: [studentInstanceList:[], studentInstanceCount: 0]
+        } else {
+            render view: "search", model: [studentInstanceList:studentList, studentInstanceCount: studentList.size()]
+        }
+    }
+
     @Transactional
     def save(Student studentInstance) {
         if (studentInstance == null) {
@@ -227,10 +246,10 @@ class StudentController {
         }
     }
 
-    public Student searchStudent (){
-        def student = Student.findByLogin(params)
-        return student
-    }
+//    public Student searchStudent (){
+//        def student = Student.findByLogin(params)
+//        return student
+//    }
 
     public void groupSave(List<Student> group){
         for(int i=0; i<group.size(); i++){
@@ -260,5 +279,4 @@ class StudentController {
     def createGroup(){
         respond view: 'createGroup'
     }
-
 }
