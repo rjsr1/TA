@@ -17,6 +17,7 @@ class EvaluationController {
     }
 
     def show(Evaluation evaluationInstance) {
+        List<Student> l = Student.list()
         respond evaluationInstance
     }
 
@@ -61,6 +62,40 @@ class EvaluationController {
             }
             '*' { respond evaluationInstance, [status: CREATED] }
         }
+    }
+
+    @Transactional
+    def saveAll() {
+        /*if (evaluationInstance == null) {
+            notFound()
+            return
+        }
+
+        if (evaluationInstance.hasErrors()) {
+            respond evaluationInstance.errors, view:'create'
+            return
+        }*/
+        //def teste = Evaluation.getAll(evaluationInstance.list('value'))
+        //def teste = params.allList
+        def teste = params.list('value')
+        //String[] todos = evaluationInstance.value.split(",")
+        List<Evaluation> listEvaluation = new LinkedList<Evaluation>()
+
+        StudentController student = new StudentController()
+        for(int i = 0; i < teste.size(); i++){
+            Evaluation newEvaluation = new Evaluation(params.origin, teste.get(i)/*todos[i]*/, params.applicationDate, params.criterion.id)
+            newEvaluation.save flush: true
+            listEvaluation.add(newEvaluation)
+        }
+        student.addEvaluationsToAllStudents(listEvaluation)
+        /*request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.created.message', args: [message(code: 'evaluation.label', default: 'Evaluation'), evaluationInstance.id])
+                redirect evaluationInstance
+            }
+            '*' { respond evaluationInstance, [status: CREATED] }
+        }*/
+        redirect action:"index", method:"GET"
     }
 
     def edit(Evaluation evaluationInstance) {

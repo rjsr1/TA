@@ -11,11 +11,11 @@ class Evaluation {
         criterion nullable : false
     }
 
-    public Evaluation(String origin, String value, Date applicationDate, Criterion criterion){
+    public Evaluation(String origin, String value, Date applicationDate, String criterion){
         this.origin = origin;
         this.value = value;
         this.applicationDate = applicationDate;
-        this.criterion = criterion;
+        this.criterion = Criterion.findById(Long.parseLong(criterion));
     }
 
     public boolean compatibleTo(Evaluation evaluationInstance){

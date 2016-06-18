@@ -1,5 +1,7 @@
 package ta
 
+import org.apache.ivy.core.settings.Validatable
+
 import java.text.SimpleDateFormat
 
 import static org.springframework.http.HttpStatus.*
@@ -19,10 +21,14 @@ class StudentController {
         params.max = Math.min(max ?: 10, 100)
         respond Student.list(params), model:[studentInstanceCount: Student.count()]
     }
-    public boolean addEvaluationsToAllStudents(String criterionName, Evaluation evaluationInstance){
-        for(Student student : Student.findAll()){
-            student.addEvaluation(evaluationInstance);
-            student.save flush : true
+    public boolean addEvaluationsToAllStudents(LinkedList<Evaluation> evaluationList){
+        //List<Student> students = Student.list();
+        for(int i = 0; i < Student.list().size(); i++){
+            Student.list().get(i).addEvaluation(evaluationList.get(i))
+            Student.list().get(i).save (
+                flush: true,
+                failOnError: true
+            )
         }
         return true
     }
@@ -50,7 +56,7 @@ class StudentController {
 
 
     public void addCriterionToAllStudent(String description){
-        def students = Students.findAll();
+        def students = Student.findAll();
         for(int i =0; i<students.size();i++){
             def evCriterion = new EvaluationsByCriterion(Criterion.findByDescription(description));
             Student student = students.get(i);
@@ -138,7 +144,9 @@ class StudentController {
     }
 */
     def show(Student studentInstance) {
-        respond studentInstance
+        List<Student> l = Student.list()
+        Student s = Student.findByLogin(studentInstance.login)
+        respond s
     }
 
     def create() {

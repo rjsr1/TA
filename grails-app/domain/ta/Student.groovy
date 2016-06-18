@@ -6,7 +6,7 @@ class Student {
     String name;
     String login;
     double average;
-    List<EvaluationsByCriterion> criterionsAndEvaluations
+    List<EvaluationsByCriterion> criterionsAndEvaluations = new LinkedList<EvaluationsByCriterion>();
 
     static constraints = {
         name blank : false
@@ -17,7 +17,7 @@ class Student {
     public Student(String name, String login){
         this.name = name;
         this.login = login;
-        this.criterionsAndEvaluations = new LinkedList<>();
+        //this.criterionsAndEvaluations = new LinkedList<EvaluationsByCriterion>();
     }
 
     public void calcMedia() {
@@ -42,12 +42,30 @@ class Student {
         }
     }
 
-    public void addEvaluation(Evaluation evaluationInstance){
+    /*public void addEvaluation(Evaluation evaluationInstance){
         for(int i = 0; i< this.criterionsAndEvaluations.size(); i++){
             if(this.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(evaluationInstance.criterion.description)){
                 this.criterionsAndEvaluations.get(i).addEvaluation(evaluationInstance);
             }
         }
+    }*/
+
+    public void addEvaluation(Evaluation evaluationInstance){
+        if(this.findEvaluationByCriterion(evaluationInstance.getCriterion().getDescription()) != null) {
+            for (int i = 0; i < this.criterionsAndEvaluations.size(); i++) {
+                if (this.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(evaluationInstance.criterion.description)) {
+                    this.criterionsAndEvaluations.get(i).addEvaluation(evaluationInstance)
+                }
+            }
+        }else {
+            EvaluationsByCriterion newEvByCrit = new EvaluationsByCriterion(evaluationInstance.criterion)
+            newEvByCrit.addEvaluation(evaluationInstance)
+            newEvByCrit.save(flush: true)
+            this.criterionsAndEvaluations.add(newEvByCrit)
+        }
+        /*def evaluationsByCriterion = new EvaluationsByCriterion(evaluationInstance.getCriterion())
+        evaluationsByCriterion.addEvaluation(evaluationInstance)
+        this.criterionsAndEvaluations.add(evaluationsByCriterion)*/
     }
 
 
