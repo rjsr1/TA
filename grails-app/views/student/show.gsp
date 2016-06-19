@@ -57,12 +57,12 @@
 				</tr>
 				</thead>
 				<tbody>
-				<g:each in="${studentInstance?.criterionsAndEvaluations}" status="i" var="criterionsAndEvaluations">
+				<g:each in="${studentInstance?.criteriaAndEvaluations}" status="i" var="criteriaAndEvaluations">
 						<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 							​
-							<td>${fieldValue(bean: criterionsAndEvaluations, field: "criterion.description")}</td>
+							<td>${fieldValue(bean: criteriaAndEvaluations, field: "criterion.description")}</td>
 							​
-							<td>${fieldValue(bean: criterionsAndEvaluations, field: "media")}</td>
+							<td>${fieldValue(bean: criteriaAndEvaluations, field: "criterionAverage")}</td>
 							​
 						</tr>
 				</g:each>

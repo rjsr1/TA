@@ -89,7 +89,7 @@ class EvaluationDataAndOperations{
         def found = false;
         for(Student student : Student.findAll()){
             def counter = 0
-            student.each(student.criterionsAndEvaluations){
+            student.each(student.criteriaAndEvaluations){
                 if(criterionName == student.criterions.get(counter).name){
                     def studentCriterions = student.getCriterions().get(counter);
                     def counter2 = 0;

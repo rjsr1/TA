@@ -139,7 +139,7 @@ class StudentController {
 
 /*    def addCriterion(Criterion criterionInstance){
         for(Student student : Student.findAll()){
-            student.criterionsAndEvaluations.add(criterionInstance)
+            student.criteriaAndEvaluations.add(criterionInstance)
             save(student)
         }
     }*/
@@ -154,9 +154,7 @@ class StudentController {
     }
 
     def show(Student studentInstance) {
-        List<Student> l = Student.list()
-        Student s = Student.findByLogin(studentInstance.login)
-        respond s
+        respond studentInstance
     }
 
     def create() {

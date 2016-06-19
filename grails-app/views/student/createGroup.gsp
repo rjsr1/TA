@@ -22,19 +22,20 @@
         <li><g:link class="list" action="index"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
     </ul>
 </div>
-<div id="create-student" class="content scaffold-create" role="main">
+<div id="create-group" class="content scaffold-create" role="main">
     <h1><g:message code="default.createGroup.label" args="[entityName]" /></h1>
+    <h2 id="create-group-h2">To import a group of students, use the following format: <span style="color: hotpink">Student Name (login :: gitHubLogin);</span></h2>
     <g:if test="${flash.message}">
         <div class="message" role="status">${flash.message}</div>
     </g:if>
-    <!--g:include controller="student" action="groupSave"/-->
     <g:form url="[action:'saveGroup']" >
-        <div class="fieldcontain required">
+        <div id="create-group-input">
 
             <label for="name">
-                <g:message code="student.name.label" default="Name" />
+                <g:message code="student.name.label" default="Formatted input" />
+                <span class="required-indicator">*</span>
             </label>
-            <g:textField name="name" required="" value=""/>
+            <g:textField name="name" required="" value="" size="60"/>
 
         </div>
         <fieldset class="buttons">

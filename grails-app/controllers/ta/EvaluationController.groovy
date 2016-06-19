@@ -17,7 +17,6 @@ class EvaluationController {
     }
 
     def show(Evaluation evaluationInstance) {
-        List<Student> l = Student.list()
         respond evaluationInstance
     }
 
