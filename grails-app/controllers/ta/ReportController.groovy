@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND
 import static org.springframework.http.HttpStatus.OK
 
 class ReportController {
+    //static boolean needsUpdate
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -17,8 +18,8 @@ class ReportController {
    }
 
     def createSaveResetResponse(){
-        create()
-        save(flush: true)
+        def report = new Report(params)
+        report.save(flush: true)
         response.reset()
     }
 
@@ -26,10 +27,15 @@ class ReportController {
         respond new Report(params)
     }
 
-    public void addStudentToReport(String login, String nome){
-        Report repo = findByName(nome)
-        repo.addStudentToReport(login,nome)
-        respond update(repo)
+    public void addStudentToReport(Student student, Report reportInstance){
+        if(reportInstance!=null){
+            //Student student = Student.findByLogin(studentLogin)
+            //Report report = findByName(reportName)
+            reportInstance.students.add(student)
+            reportInstance.save(flush: true)
+            redirect action: "index", method: "GET"
+            flash.message = message(code: 'default.updated.message', args:[message(code: 'Report.label', default: 'Report'), reportInstance.id])
+        }
     }
 
     public boolean saveRep(Report relatorio){
@@ -104,8 +110,8 @@ class ReportController {
         return Report.findByName(nome)
     }
 
-    def edit(Student studentInstance) {
-        respond studentInstance
+    def edit(Report reportInstance) {
+        respond reportInstance
     }
 
     protected void notFound() {

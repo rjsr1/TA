@@ -16,7 +16,7 @@ class ReportsDataAndOperations {
 
     public static boolean checkCondition(String loginA, String evalType){
        def contS = new StudentController()
-       double aux = contS.checkPorcentageEvaluationStudent(evalType,loginA)
+       double aux = contS.checkPercentageEvaluationStudent(evalType,loginA)
         if(aux>=0.7){
             needsUpdate = true
         }else{

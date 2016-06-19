@@ -26,6 +26,12 @@
 					
 						<g:sortableColumn property="name" title="${message(code: 'report.name.label', default: 'Name')}" />
 					
+						<g:sortableColumn property="tipo" title="${message(code: 'report.tipo.label', default: 'Tipo')}" />
+					
+						<g:sortableColumn property="avaliacao" title="${message(code: 'report.avaliacao.label', default: 'Avaliacao')}" />
+					
+						<g:sortableColumn property="valor" title="${message(code: 'report.valor.label', default: 'Valor')}" />
+					
 					</tr>
 				</thead>
 				<tbody>
@@ -33,6 +39,12 @@
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
 						<td><g:link action="show" id="${reportInstance.id}">${fieldValue(bean: reportInstance, field: "name")}</g:link></td>
+					
+						<td>${fieldValue(bean: reportInstance, field: "tipo")}</td>
+					
+						<td>${fieldValue(bean: reportInstance, field: "avaliacao")}</td>
+					
+						<td>${fieldValue(bean: reportInstance, field: "valor")}</td>
 					
 					</tr>
 				</g:each>

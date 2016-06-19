@@ -128,3 +128,4 @@ stacktrace.log
 /target/
 .idea/workspace.xml
 GebConfig.groovy
+.slcache/*

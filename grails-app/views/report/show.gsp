@@ -32,7 +32,59 @@
 				</li>
 				</g:if>
 			
+				<g:if test="${reportInstance?.tipo}">
+				<li class="fieldcontain">
+					<span id="tipo-label" class="property-label"><g:message code="report.tipo.label" default="Tipo" /></span>
+					
+						<span class="property-value" aria-labelledby="tipo-label"><g:fieldValue bean="${reportInstance}" field="tipo"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${reportInstance?.avaliacao}">
+				<li class="fieldcontain">
+					<span id="avaliacao-label" class="property-label"><g:message code="report.avaliacao.label" default="Avaliacao" /></span>
+					
+						<span class="property-value" aria-labelledby="avaliacao-label"><g:fieldValue bean="${reportInstance}" field="avaliacao"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${reportInstance?.valor}">
+				<li class="fieldcontain">
+					<span id="valor-label" class="property-label"><g:message code="report.valor.label" default="Valor" /></span>
+					
+						<span class="property-value" aria-labelledby="valor-label"><g:fieldValue bean="${reportInstance}" field="valor"/></span>
+					
+				</li>
+				</g:if>
+			
 			</ol>
+
+			<table>
+				<thead>
+				<tr>
+
+					<g:sortableColumn property="name" title="${message(code: 'student.name.label', default: 'Name')}" />
+
+					<g:sortableColumn property="login" title="${message(code: 'student.login.label', default: 'Login')}" />
+
+
+				</tr>
+				</thead>
+				<tbody>
+				<g:each in="${reportInstance?.students}" status="i" var="studentInstance">
+					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+
+						<td><g:link action="show" id="${studentInstance.id}">${fieldValue(bean: studentInstance, field: "name")}</g:link></td>
+
+						<td>${fieldValue(bean: studentInstance, field: "login")}</td>
+
+					</tr>
+				</g:each>
+				</tbody>
+			</table>
+
 			<g:form url="[resource:reportInstance, action:'delete']" method="DELETE">
 				<fieldset class="buttons">
 					<g:link class="edit" action="edit" resource="${reportInstance}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
