@@ -6,17 +6,25 @@ import geb.Page
  * Created by joao on 19/05/16.
  */
 class StudentConsultPage extends Page {
-    static url = "/TA/student/index"
+    static url = "/TA/student/search"
 
     static at = {
         title ==~ /Consult Student/
     }
 
-    def static clickStudent(){
-        $("input", name:"pesquisar").click()
+    def static fillStudentSearch(login){
+        $("form").title = login
     }
 
-    def static showStudentDetails(text){
-        $("form").title = text
+    def static selectSearch(){
+        $("input", name: "search").click()
+    }
+
+    def static selectStudent(){
+
+    }
+
+    def static showStudentDetails(){
+
     }
 }

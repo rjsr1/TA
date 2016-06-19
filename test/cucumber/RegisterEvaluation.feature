@@ -1,3 +1,4 @@
+@ignore
 Feature: Register evaluation
 	As a teacher
 	I want to register evaluation

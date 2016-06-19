@@ -1,6 +1,9 @@
 package ta
 
+import org.apache.ivy.core.settings.Validatable
+
 import java.text.SimpleDateFormat
+import java.lang.*
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -10,102 +13,113 @@ class StudentController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    public static Date formattedDate(String dateInString){
+    public static Date formattedDate(String dateInString) {
         def formatter = new SimpleDateFormat("dd/mm/yyyy");
         Date date = formatter.parse(dateInString);
         return date;
     }
+
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Student.list(params), model:[studentInstanceCount: Student.count()]
+        respond Student.list(params), model: [studentInstanceCount: Student.count()]
     }
-    public boolean addEvaluationsToAllStudents(String criterionName, Evaluation evaluationInstance){
-        for(Student student : Student.findAll()){
-            student.addEvaluation(evaluationInstance);
-            student.save flush : true
+
+    public boolean addEvaluationsToAllStudents(LinkedList<Evaluation> evaluationList) {
+        //List<Student> students = Student.list();
+        for (int i = 0; i < Student.list().size(); i++) {
+            Student.list().get(i).addEvaluation(evaluationList.get(i))
+            Student.list().get(i).save(
+                    flush: true,
+                    failOnError: true
+            )
         }
         return true
     }
-    public boolean addEvaluationToAllStudents(){
+
+    public boolean addEvaluationToAllStudents() {
         def evaluationInstance = new Evaluation(params);
-        for(Student student : Student.findAll()){
+        for (Student student : Student.findAll()) {
             student.addEvaluation(evaluationInstance);
-            student.save flush : true
+            student.save flush: true
         }
         return true
     }
-    public void addEvaluationToStudent(String login){
+
+    public void addEvaluationToStudent(String login) {
         def student = Student.findByLogin(login);
         def evaluationInstance = new Evaluation(params);
         student.addEvaluation(evaluationInstance);
-        student.save flush : true
+        student.save flush: true
     }
 
 
-    public void addCriterionToAllStudent(String description){
+    public void addCriterionToAllStudent(String description) {
         def students = Student.findAll();
-        for(int i =0; i<students.size();i++){
+        for (int i = 0; i < students.size(); i++) {
             def evCriterion = new EvaluationsByCriterion(Criterion.findByDescription(description));
             Student student = students.get(i);
             student.addEvaluationsByCriterion(evCriterion)
         }
     }
 
-    public double checkPorcentageEvaluationStudent(String evalValue, String loginA){
+    public double checkPorcentageEvaluationStudent(String evalValue, String loginA) {
         def student = Student.findByLogin(loginA)
         def contE = 0
         def evaluationLists = student.criterionsAndEvaluations;
-        int tamanho =0;
-        for(int i=0; i<evaluationLists.size();i++){
+        int tamanho = 0;
+        for (int i = 0; i < evaluationLists.size(); i++) {
             List<Evaluation> evaluations = evaluationLists.get(i).evaluations;
-            for(int j = 0; j<evaluations.size();j++) {
+            for (int j = 0; j < evaluations.size(); j++) {
                 tamanho += evaluations.size();
                 if (evaluations.get(i).value == evalValue) {
                     contE++;
                 }
             }
         }
-        return contE/tamanho;
+        return contE / tamanho;
     }
 
 
-    public List<Evaluation> countStudentsEvaluated(String criterionName, String origin, String dateInString){
+    public List<Evaluation> countStudentsEvaluated(String criterionName, String origin, String dateInString) {
         List<Evaluation> returningValue = new LinkedList<>();
-        def evaluation = new Evaluation(origin,null,this.formattedDate(dateInString),criterionName);
+        def evaluation = new Evaluation(origin, null, this.formattedDate(dateInString), criterionName);
         def students = Student.findAll();
-        for(int i =0; i< students.size();i++){
+        for (int i = 0; i < students.size(); i++) {
             returningValue.add(students.get(i).findEvaluationByCriterion(criterionName).findSpecificEvaluation(evaluation))
         }
         return returningValue;
     }
 
-    public boolean checkRedundantEvaluationAllStudents(String criterionName,String origin,String dateInString){
-        def evaluation = new Evaluation(origin,null,this.formattedDate(dateInString),criterionName);
+    public boolean checkRedundantEvaluationAllStudents(String criterionName, String origin, String dateInString) {
+        def evaluation = new Evaluation(origin, null, this.formattedDate(dateInString), criterionName);
         List<Student> students = Student.findAll();
-        for(int i=0; i<students.size();i++){
+        for (int i = 0; i < students.size(); i++) {
             def evCriterion = students.get(i).findEvaluationByCriterion(criterionName);
-            if(evCriterion.findAll{it -> evCriterion.findSpecificEvaluation(evaluation)!= null}.size()>1){
+            if (evCriterion.findAll { it -> evCriterion.findSpecificEvaluation(evaluation) != null }.size() > 1) {
                 return false
             }
         }
         return true
     }
 
-    public boolean checkEvaluationsAllStudents(String criterionName, String origin, String dateInString){
-        def evaluation = new Evaluation(origin,null,this.formattedDate(dateInString),criterionName);
+    public boolean checkEvaluationsAllStudents(String criterionName, String origin, String dateInString) {
+        def evaluation = new Evaluation(origin, null, this.formattedDate(dateInString), criterionName);
         List<Student> students = Student.findAll()
-        for(int i =0; i<students.size();i++){
-            def evCriterion  = students.get(i).findEvaluationByCriterion(criterionName);
-            if(evCriterion.findSpecificEvaluation(evaluation) != null){
+        for (int i = 0; i < students.size(); i++) {
+            def evCriterion = students.get(i).findEvaluationByCriterion(criterionName);
+            if (evCriterion.findSpecificEvaluation(evaluation) != null) {
                 return true;
-            }else{
+            } else {
                 return false
             }
         }
     }
-    public int countAllStudents(){
+
+    public int countAllStudents() {
         return Student.findAll().size();
     }
+
+    /* COMENTADO POR RODRIGO CALEGARIO 28/05/16
     public boolean saveStudent(Student student){
         if(Student.findByLogin(student.login) ==null){
             student.save flush: true
@@ -114,25 +128,46 @@ class StudentController {
             return false
         }
     }
-    public Student createAndSaveStudent(){
+
+    */
+
+    public boolean saveStudent() {
+        def studentInstance = new Student(params);
+        if (Student.findByLogin(studentInstance.login) == null) {
+            studentInstance.save flush: true
+            return true
+        }
+        return false
+    }
+
+    public Student createAndSaveStudent() {
         Student student = new Student(params)
-        if(Student.findByLogin(student.getLogin()) == null) {
+        if (Student.findByLogin(student.getLogin()) == null) {
             student.save flush: true
         }
         return student
     }
 
-    def addEvaluation(Student studentInstance, String criterionName, Evaluation evaluationInstance){
+    def addEvaluation(Student studentInstance, String criterionName, Evaluation evaluationInstance) {
         def student = studentInstance;
         student.addEvaluation(evaluationInstance);
-        student.save flush : true
+        student.save flush: true
     }
 
-    def addCriterion(Criterion criterionInstance){
-        for(Student student : Student.findAll()){
-            student.criterions.add(criterionInstance);
+    def addCriterion(Criterion criterionInstance) {
+        for (Student student : Student.findAll()) {
+            student.criteriaAndEvaluations.add(criterionInstance)
             save(student)
         }
+    }
+
+    public Student searchStudent() {
+        def studentInstance = Student.findByLogin(params)
+        return studentInstance
+    }
+
+    public Student createStudent() {
+        return new Student(params)
     }
 
     def show(Student studentInstance) {
@@ -143,6 +178,23 @@ class StudentController {
         respond new Student(params)
     }
 
+    def search() {
+        render view: "search"
+    }
+
+    def consult() {
+        def auxList = Student.list()
+        def studentList = auxList.findAll {
+            it.name.toLowerCase().contains(params.consult.toLowerCase()) || it.login.toLowerCase().contains(params.consult.toLowerCase())
+        }
+        if (studentList == null) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'student.label', default: 'Student'), params.id])
+            render view: "search", model: [studentInstanceList: [], studentInstanceCount: 0]
+        } else {
+            render view: "search", model: [studentInstanceList: studentList, studentInstanceCount: studentList.size()]
+        }
+    }
+
     @Transactional
     def save(Student studentInstance) {
         if (studentInstance == null) {
@@ -151,11 +203,11 @@ class StudentController {
         }
 
         if (studentInstance.hasErrors()) {
-            respond studentInstance.errors, view:'create'
+            respond studentInstance.errors, view: 'create'
             return
         }
 
-        studentInstance.save flush:true
+        studentInstance.save flush: true
 
         request.withFormat {
             form multipartForm {
@@ -178,18 +230,18 @@ class StudentController {
         }
 
         if (studentInstance.hasErrors()) {
-            respond studentInstance.errors, view:'edit'
+            respond studentInstance.errors, view: 'edit'
             return
         }
 
-        studentInstance.save flush:true
+        studentInstance.save flush: true
 
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'student.label', default: 'Student'), studentInstance.id])
                 redirect studentInstance
             }
-            '*'{ respond studentInstance, [status: OK] }
+            '*' { respond studentInstance, [status: OK] }
         }
     }
 
@@ -201,14 +253,14 @@ class StudentController {
             return
         }
 
-        studentInstance.delete flush:true
+        studentInstance.delete flush: true
 
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.deleted.message', args: [message(code: 'student.label', default: 'Student'), studentInstance.id])
-                redirect action:"index", method:"GET"
+                redirect action: "index", method: "GET"
             }
-            '*'{ render status: NO_CONTENT }
+            '*' { render status: NO_CONTENT }
         }
     }
 
@@ -218,7 +270,43 @@ class StudentController {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'student.label', default: 'Student'), params.id])
                 redirect action: "index", method: "GET"
             }
-            '*'{ render status: NOT_FOUND }
+            '*' { render status: NOT_FOUND }
         }
     }
+
+//    public Student searchStudent (){
+//        def student = Student.findByLogin(params)
+//        return student
+//    }
+
+    public void groupSave(List<Student> group) {
+        for (int i = 0; i < group.size(); i++) {
+            group.get(i).save flush: true;
+        }
+    }
+
+    def saveGroup() {
+        String group = params.name
+        String[] students = group.split(";")
+        for (int i = 0; i < students.size(); i++) {
+            List<String> token1 = students[i].tokenize(':')
+            String info = token1.get(0)
+            List<String> token2 = info.tokenize('(')
+            String name = token2.get(0)
+            String login = token2.get(1)
+            Student novo = new Student(name, login)
+            novo.calcMedia()
+
+            if (Student.findByLogin(novo.getLogin()) == null) {
+                novo.save flush: true
+            }
+        }
+        flash.message = message(code: 'default.created.message', args: [message(code: students.length, 'student.label', default: 'Student')])
+        redirect action: "index", method: "GET"
+    }
+
+    def createGroup() {
+        respond view: 'createGroup'
+    }
+
 }

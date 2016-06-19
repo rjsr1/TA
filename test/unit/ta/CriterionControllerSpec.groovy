@@ -5,9 +5,9 @@ package ta
 import grails.test.mixin.*
 import spock.lang.*
 
-@TestFor(EvaluationController)
-@Mock(Evaluation)
-class EvaluationControllerSpec extends Specification {
+@TestFor(CriterionController)
+@Mock(Criterion)
+class CriterionControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
@@ -21,8 +21,8 @@ class EvaluationControllerSpec extends Specification {
             controller.index()
 
         then:"The model is correct"
-            !model.evaluationInstanceList
-            model.evaluationInstanceCount == 0
+            !model.criterionInstanceList
+            model.criterionInstanceCount == 0
     }
 
     void "Test the create action returns the correct model"() {
@@ -30,7 +30,7 @@ class EvaluationControllerSpec extends Specification {
             controller.create()
 
         then:"The model is correctly created"
-            model.evaluationInstance!= null
+            model.criterionInstance!= null
     }
 
     void "Test the save action correctly persists an instance"() {
@@ -38,25 +38,25 @@ class EvaluationControllerSpec extends Specification {
         when:"The save action is executed with an invalid instance"
             request.contentType = FORM_CONTENT_TYPE
             request.method = 'POST'
-            def evaluation = new Evaluation()
-            evaluation.validate()
-            controller.save(evaluation)
+            def criterion = new Criterion()
+            criterion.validate()
+            controller.save(criterion)
 
         then:"The create view is rendered again with the correct model"
-            model.evaluationInstance!= null
+            model.criterionInstance!= null
             view == 'create'
 
         when:"The save action is executed with a valid instance"
             response.reset()
             populateValidParams(params)
-            evaluation = new Evaluation(params)
+            criterion = new Criterion(params)
 
-            controller.save(evaluation)
+            controller.save(criterion)
 
         then:"A redirect is issued to the show action"
-            response.redirectedUrl == '/evaluation/show/1'
+            response.redirectedUrl == '/criterion/show/1'
             controller.flash.message != null
-            Evaluation.count() == 1
+            Criterion.count() == 1
     }
 
     void "Test that the show action returns the correct model"() {
@@ -68,11 +68,11 @@ class EvaluationControllerSpec extends Specification {
 
         when:"A domain instance is passed to the show action"
             populateValidParams(params)
-            def evaluation = new Evaluation(params)
-            controller.show(evaluation)
+            def criterion = new Criterion(params)
+            controller.show(criterion)
 
         then:"A model is populated containing the domain instance"
-            model.evaluationInstance == evaluation
+            model.criterionInstance == criterion
     }
 
     void "Test that the edit action returns the correct model"() {
@@ -84,11 +84,11 @@ class EvaluationControllerSpec extends Specification {
 
         when:"A domain instance is passed to the edit action"
             populateValidParams(params)
-            def evaluation = new Evaluation(params)
-            controller.edit(evaluation)
+            def criterion = new Criterion(params)
+            controller.edit(criterion)
 
         then:"A model is populated containing the domain instance"
-            model.evaluationInstance == evaluation
+            model.criterionInstance == criterion
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
@@ -98,28 +98,28 @@ class EvaluationControllerSpec extends Specification {
             controller.update(null)
 
         then:"A 404 error is returned"
-            response.redirectedUrl == '/evaluation/index'
+            response.redirectedUrl == '/criterion/index'
             flash.message != null
 
 
         when:"An invalid domain instance is passed to the update action"
             response.reset()
-            def evaluation = new Evaluation()
-            evaluation.validate()
-            controller.update(evaluation)
+            def criterion = new Criterion()
+            criterion.validate()
+            controller.update(criterion)
 
         then:"The edit view is rendered again with the invalid instance"
             view == 'edit'
-            model.evaluationInstance == evaluation
+            model.criterionInstance == criterion
 
         when:"A valid domain instance is passed to the update action"
             response.reset()
             populateValidParams(params)
-            evaluation = new Evaluation(params).save(flush: true)
-            controller.update(evaluation)
+            criterion = new Criterion(params).save(flush: true)
+            controller.update(criterion)
 
         then:"A redirect is issues to the show action"
-            response.redirectedUrl == "/evaluation/show/$evaluation.id"
+            response.redirectedUrl == "/criterion/show/$criterion.id"
             flash.message != null
     }
 
@@ -130,23 +130,23 @@ class EvaluationControllerSpec extends Specification {
             controller.delete(null)
 
         then:"A 404 is returned"
-            response.redirectedUrl == '/evaluation/index'
+            response.redirectedUrl == '/criterion/index'
             flash.message != null
 
         when:"A domain instance is created"
             response.reset()
             populateValidParams(params)
-            def evaluation = new Evaluation(params).save(flush: true)
+            def criterion = new Criterion(params).save(flush: true)
 
         then:"It exists"
-            Evaluation.count() == 1
+            Criterion.count() == 1
 
         when:"The domain instance is passed to the delete action"
-            controller.delete(evaluation)
+            controller.delete(criterion)
 
         then:"The instance is deleted"
-            Evaluation.count() == 0
-            response.redirectedUrl == '/evaluation/index'
+            Criterion.count() == 0
+            response.redirectedUrl == '/criterion/index'
             flash.message != null
     }
 }

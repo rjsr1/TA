@@ -12,7 +12,7 @@ class CriterionTestDataAndOperations {
     public static void createCriterion(String description) {
         def controller = new CriterionController()
         controller.params << [description: description]
-        boolean saved = controller.saveCriterion(controller.createCriterion())
+        controller.createAndSaveCriterion()
         controller.response.reset()
     }
 
@@ -21,9 +21,15 @@ class CriterionTestDataAndOperations {
         return false
     }
 
-    public static Criterion getCriterion(String desc) {
+    public static boolean compatibleInCriteria(String desc) {
         def controller = new CriterionController()
-        return controller.retrieveCriterion(desc)
+        controller.params << [description: desc]
+        return controller.compatibleInCriteria()
     }
 
+    public static Criterion getCriterion(String desc) {
+        def controller = new CriterionController()
+        controller.params << [description: desc]
+        return controller.retrieveCriterion()
+    }
 }

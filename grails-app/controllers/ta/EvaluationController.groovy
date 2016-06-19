@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
+import ta.Evaluation
 
 @Transactional(readOnly = true)
 class EvaluationController {
@@ -30,6 +31,9 @@ class EvaluationController {
 
     /*public Evaluation createEvaluation(String criterionName, String origin,String dateInString){
         def criterion = criterionName
+    /* COMENTADO POR CALEGARIO A PEDIDO DE DANILO
+    public Evaluation createEvaluation(String criterionName, String origin,String dateInString){
+        def criterion = Criterion.findByDescription(criterionName)
         def date = this.formattedDate(dateInString)
         Evaluation evaluation = new Evaluation(origin, null, date, criterion)
         evaluation.save flush : true
@@ -58,6 +62,40 @@ class EvaluationController {
             }
             '*' { respond evaluationInstance, [status: CREATED] }
         }
+    }
+
+    @Transactional
+    def saveAll() {
+        /*if (evaluationInstance == null) {
+            notFound()
+            return
+        }
+
+        if (evaluationInstance.hasErrors()) {
+            respond evaluationInstance.errors, view:'create'
+            return
+        }*/
+        //def teste = Evaluation.getAll(evaluationInstance.list('value'))
+        //def teste = params.allList
+        def teste = params.list('value')
+        //String[] todos = evaluationInstance.value.split(",")
+        List<Evaluation> listEvaluation = new LinkedList<Evaluation>()
+
+        StudentController student = new StudentController()
+        for(int i = 0; i < teste.size(); i++){
+            Evaluation newEvaluation = new Evaluation(params.origin, teste.get(i)/*todos[i]*/, params.applicationDate, params.criterion.id)
+            newEvaluation.save flush: true
+            listEvaluation.add(newEvaluation)
+        }
+        student.addEvaluationsToAllStudents(listEvaluation)
+        /*request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.created.message', args: [message(code: 'evaluation.label', default: 'Evaluation'), evaluationInstance.id])
+                redirect evaluationInstance
+            }
+            '*' { respond evaluationInstance, [status: CREATED] }
+        }*/
+        redirect action:"index", method:"GET"
     }
 
     def edit(Evaluation evaluationInstance) {

@@ -8,20 +8,11 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class CriterionController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Criterion.list(params), model:[criterionInstanceCount: Criterion.count()]
-    }
-
-    def addEvaluation(Criterion criterionInstance,Evaluation evaluationInstance){
-        criterionInstance.evaluations.add(evaluationInstance)
-        edit(criterionInstance)
-    }
-    public createCriterion(){
-        Criterion criterion = new Criterion(params)
-        criterion.save flush : true
     }
 
     def show(Criterion criterionInstance) {
@@ -30,6 +21,28 @@ class CriterionController {
 
     def create() {
         respond new Criterion(params)
+    }
+
+    public Criterion retrieveCriterion() {
+        def criterionInstance = new Criterion(params)
+        return Criterion.findByDescription(criterionInstance.description)
+    }
+
+    public boolean compatibleInCriteria() {
+        def criterionInstance = new Criterion(params)
+        Criterion c = Criterion.findByDescription(criterionInstance.description)
+        return criterionInstance.description.equals(c.description)
+    }
+
+    public createAndSaveCriterion() {
+        Criterion crit = new Criterion(params)
+        if(Criterion.findByDescription(crit.description) == null) {
+            crit.save(flush: true)
+        }
+    }
+
+    public List<Criterion> getCriteriaList() {
+        return Criterion.list()
     }
 
     @Transactional
@@ -48,7 +61,7 @@ class CriterionController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'Criterion.label', default: 'Criterion'), criterionInstance.id])
+                flash.message = message(code: 'default.created.message', args: [message(code: 'criterion.label', default: 'Criterion'), criterionInstance.id])
                 redirect criterionInstance
             }
             '*' { respond criterionInstance, [status: CREATED] }
@@ -104,7 +117,7 @@ class CriterionController {
     protected void notFound() {
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'Criterion.label', default: 'Criterion'), params.id])
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'criterion.label', default: 'Criterion'), params.id])
                 redirect action: "index", method: "GET"
             }
             '*'{ render status: NOT_FOUND }
