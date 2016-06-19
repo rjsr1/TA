@@ -1,31 +1,13 @@
 package ta
 
-<<<<<<< HEAD
-import grails.test.mixin.TestFor
-import spock.lang.Specification
-
-/**
- * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
- */
-@TestFor(EvaluationsByCriterionController)
-class EvaluationsByCriterionControllerSpec extends Specification {
-
-    def setup() {
-    }
-
-    def cleanup() {
-    }
-
-    void "test something"() {
-=======
 
 
 import grails.test.mixin.*
 import spock.lang.*
 
-@TestFor(EvaluationsByCriterionController)
-@Mock(EvaluationsByCriterion)
-class EvaluationsByCriterionControllerSpec extends Specification {
+@TestFor(StudentController)
+@Mock(Student)
+class StudentControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
@@ -39,8 +21,8 @@ class EvaluationsByCriterionControllerSpec extends Specification {
             controller.index()
 
         then:"The model is correct"
-            !model.evaluationsByCriterionInstanceList
-            model.evaluationsByCriterionInstanceCount == 0
+            !model.studentInstanceList
+            model.studentInstanceCount == 0
     }
 
     void "Test the create action returns the correct model"() {
@@ -48,7 +30,7 @@ class EvaluationsByCriterionControllerSpec extends Specification {
             controller.create()
 
         then:"The model is correctly created"
-            model.evaluationsByCriterionInstance!= null
+            model.studentInstance!= null
     }
 
     void "Test the save action correctly persists an instance"() {
@@ -56,25 +38,25 @@ class EvaluationsByCriterionControllerSpec extends Specification {
         when:"The save action is executed with an invalid instance"
             request.contentType = FORM_CONTENT_TYPE
             request.method = 'POST'
-            def evaluationsByCriterion = new EvaluationsByCriterion()
-            evaluationsByCriterion.validate()
-            controller.save(evaluationsByCriterion)
+            def student = new Student()
+            student.validate()
+            controller.save(student)
 
         then:"The create view is rendered again with the correct model"
-            model.evaluationsByCriterionInstance!= null
+            model.studentInstance!= null
             view == 'create'
 
         when:"The save action is executed with a valid instance"
             response.reset()
             populateValidParams(params)
-            evaluationsByCriterion = new EvaluationsByCriterion(params)
+            student = new Student(params)
 
-            controller.save(evaluationsByCriterion)
+            controller.save(student)
 
         then:"A redirect is issued to the show action"
-            response.redirectedUrl == '/evaluationsByCriterion/show/1'
+            response.redirectedUrl == '/student/show/1'
             controller.flash.message != null
-            EvaluationsByCriterion.count() == 1
+            Student.count() == 1
     }
 
     void "Test that the show action returns the correct model"() {
@@ -86,11 +68,11 @@ class EvaluationsByCriterionControllerSpec extends Specification {
 
         when:"A domain instance is passed to the show action"
             populateValidParams(params)
-            def evaluationsByCriterion = new EvaluationsByCriterion(params)
-            controller.show(evaluationsByCriterion)
+            def student = new Student(params)
+            controller.show(student)
 
         then:"A model is populated containing the domain instance"
-            model.evaluationsByCriterionInstance == evaluationsByCriterion
+            model.studentInstance == student
     }
 
     void "Test that the edit action returns the correct model"() {
@@ -102,11 +84,11 @@ class EvaluationsByCriterionControllerSpec extends Specification {
 
         when:"A domain instance is passed to the edit action"
             populateValidParams(params)
-            def evaluationsByCriterion = new EvaluationsByCriterion(params)
-            controller.edit(evaluationsByCriterion)
+            def student = new Student(params)
+            controller.edit(student)
 
         then:"A model is populated containing the domain instance"
-            model.evaluationsByCriterionInstance == evaluationsByCriterion
+            model.studentInstance == student
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
@@ -116,28 +98,28 @@ class EvaluationsByCriterionControllerSpec extends Specification {
             controller.update(null)
 
         then:"A 404 error is returned"
-            response.redirectedUrl == '/evaluationsByCriterion/index'
+            response.redirectedUrl == '/student/index'
             flash.message != null
 
 
         when:"An invalid domain instance is passed to the update action"
             response.reset()
-            def evaluationsByCriterion = new EvaluationsByCriterion()
-            evaluationsByCriterion.validate()
-            controller.update(evaluationsByCriterion)
+            def student = new Student()
+            student.validate()
+            controller.update(student)
 
         then:"The edit view is rendered again with the invalid instance"
             view == 'edit'
-            model.evaluationsByCriterionInstance == evaluationsByCriterion
+            model.studentInstance == student
 
         when:"A valid domain instance is passed to the update action"
             response.reset()
             populateValidParams(params)
-            evaluationsByCriterion = new EvaluationsByCriterion(params).save(flush: true)
-            controller.update(evaluationsByCriterion)
+            student = new Student(params).save(flush: true)
+            controller.update(student)
 
         then:"A redirect is issues to the show action"
-            response.redirectedUrl == "/evaluationsByCriterion/show/$evaluationsByCriterion.id"
+            response.redirectedUrl == "/student/show/$student.id"
             flash.message != null
     }
 
@@ -148,24 +130,23 @@ class EvaluationsByCriterionControllerSpec extends Specification {
             controller.delete(null)
 
         then:"A 404 is returned"
-            response.redirectedUrl == '/evaluationsByCriterion/index'
+            response.redirectedUrl == '/student/index'
             flash.message != null
 
         when:"A domain instance is created"
             response.reset()
             populateValidParams(params)
-            def evaluationsByCriterion = new EvaluationsByCriterion(params).save(flush: true)
+            def student = new Student(params).save(flush: true)
 
         then:"It exists"
-            EvaluationsByCriterion.count() == 1
+            Student.count() == 1
 
         when:"The domain instance is passed to the delete action"
-            controller.delete(evaluationsByCriterion)
+            controller.delete(student)
 
         then:"The instance is deleted"
-            EvaluationsByCriterion.count() == 0
-            response.redirectedUrl == '/evaluationsByCriterion/index'
+            Student.count() == 0
+            response.redirectedUrl == '/student/index'
             flash.message != null
->>>>>>> ArthurLapprand-master
     }
 }

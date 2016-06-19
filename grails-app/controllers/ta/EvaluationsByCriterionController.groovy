@@ -23,25 +23,6 @@ class EvaluationsByCriterionController {
         respond new EvaluationsByCriterion(params)
     }
 
-    public boolean saveEvaluationsByCriterion(EvaluationsByCriterion evaluationsByCriterion){
-        if(EvaluationsByCriterion.findByCriterion(evaluationsByCriterion.criterion) == null){
-            evaluationsByCriterion.save flush: true
-            return true
-        }else{
-            return false
-        }
-    }
-
-    public EvaluationsByCriterion createEvaluationsByCriterion(){
-        return new EvaluationsByCriterion(params)
-    }
-
-    public EvaluationsByCriterion createAndSaveEvaluationsByCriterion(){
-        EvaluationsByCriterion evaluationsByCriterion = new EvaluationsByCriterion(params)
-        saveEvaluationsByCriterion(evaluationsByCriterion)
-        return evaluationsByCriterion
-    }
-
     @Transactional
     def save(EvaluationsByCriterion evaluationsByCriterionInstance) {
         if (evaluationsByCriterionInstance == null) {

@@ -239,6 +239,61 @@ fieldset,
 	margin-left: 27%;
 }
 
+div#search-header {
+	padding-left: 2em;
+	padding-right: 2em;
+}
+
+div#search-header h1 {
+	border-bottom-style: solid;
+	border-bottom-width: thin;
+}
+
+div#search{
+	padding-left: 2em;
+	padding-right: 2em;
+	padding-top: 1em;
+	height: 2em;
+	display: flex;
+}
+
+div#search_student{
+	text-align: center;
+	padding-left: 2em;
+	padding-right: 2em;
+}
+
+div#create-group{
+	padding-left: 2em;
+	padding-right: 2em;
+}
+
+div#create-group-input{
+	text-align: center;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	padding-left: 2em;
+	padding-right: 2em;
+}
+
+h2#create-group-h2 {
+	text-align: center;
+	color: #48802c;
+	font-weight: normal;
+	font-size: 1em;
+	margin: 0.8em 1em 0.3em;
+	padding: 0 0.25em;
+}
+
+input#search_input{
+	position: relative;
+	margin: auto;
+}
+
+label#search-label{
+	margin: auto;
+}
+
 label {
 	cursor: pointer;
 	display: inline-block;
@@ -530,6 +585,11 @@ th:hover, tr:hover {
 	        box-shadow: 0 0 3px 1px #aaaaaa;
 	margin: 0.1em 0 0 0;
 	border: none;
+}
+
+.buttonsSearch{
+	margin: auto;
+
 }
 
 .buttons input,
