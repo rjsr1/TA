@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
+import ta.Evaluation
 
 @Transactional(readOnly = true)
 class EvaluationController {
@@ -28,16 +29,27 @@ class EvaluationController {
         return evaluation
     }
 
+<<<<<<< HEAD
     /*public Evaluation createEvaluation(String criterionName, String origin,String dateInString){
         def criterion = criterionName
+=======
+    /* COMENTADO POR CALEGARIO A PEDIDO DE DANILO
+    public Evaluation createEvaluation(String criterionName, String origin,String dateInString){
+        def criterion = Criterion.findByDescription(criterionName)
+>>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
         def date = this.formattedDate(dateInString)
         Evaluation evaluation = new Evaluation(origin, null, date, criterion)
         evaluation.save flush : true
         return evaluation;
+<<<<<<< HEAD
     }*/
+=======
+    }
+    */
+>>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
 
 
-        @Transactional
+    @Transactional
     def save(Evaluation evaluationInstance) {
         if (evaluationInstance == null) {
             notFound()
@@ -60,6 +72,21 @@ class EvaluationController {
         }
     }
 
+    @Transactional
+    def saveAll() {
+        def allValues = params.list('value')
+        List<Evaluation> listEvaluation = new LinkedList<Evaluation>()
+
+        StudentController student = new StudentController()
+        for(int i = 0; i < allValues.size(); i++){
+            Evaluation newEvaluation = new Evaluation(params.origin, allValues.get(i), params.applicationDate, params.criterion.id)
+            newEvaluation.save flush: true
+            listEvaluation.add(newEvaluation)
+        }
+        student.addEvaluationsToAllStudents(listEvaluation)
+        redirect action:"index", method:"GET"
+    }
+
     def edit(Evaluation evaluationInstance) {
         respond evaluationInstance
     }
@@ -78,6 +105,12 @@ class EvaluationController {
 
         evaluationInstance.save flush:true
 
+        StudentController sc = new StudentController()
+        sc.updateAllAverages()
+
+        EvaluationsByCriterionController ecc = new EvaluationsByCriterionController()
+        ecc.updateAllCriterionAverages()
+
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'Evaluation.label', default: 'Evaluation'), evaluationInstance.id])
@@ -95,7 +128,15 @@ class EvaluationController {
             return
         }
 
+        LinkedList<EvaluationsByCriterion> eccList = EvaluationsByCriterion.list()
+        for (int i = 0; i < eccList.size(); i++) {
+            eccList.get(i).removeFromEvaluations(evaluationInstance)
+        }
+
         evaluationInstance.delete flush:true
+
+        StudentController sc = new StudentController()
+        sc.updateAllAverages()
 
         request.withFormat {
             form multipartForm {

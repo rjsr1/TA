@@ -1,52 +1,58 @@
-package test.cucumber.steps
-
+import pages.StudentConsultPage
 import ta.Student
+import steps.StudentConsultTestDataAndOperations
 
 /**
- * Created by joao on 03/05/16.
- */
+ * Created by joao on 02/06/16.
+*/
 
-//Controller Scenario
-Student estudante;
+this.metaClass.mixin(cucumber.api.groovy.Hooks)
+this.metaClass.mixin(cucumber.api.groovy.EN)
 
-Given(~'^the student "([^"]*)"$ with login "([^"]*)"$ is not registered in the system'){
-    String nome, login ->
-        assert Student.findByLogin(login) != null
+Student globalStudent
+//Controller
+Given(~/^the student "([^"]*)" with login "([^"]*)" is registered in the system$/) { String nome, String login ->
+    StudentConsultTestDataAndOperations.createAndSaveStudent(nome, login)
+    assert Student.findByLogin(login) != null
 }
 
-When(~'^I search for "([^"]*)"$'){
-    String nome, login ->
-        Student.findByName(nome)
+Then(~/^the system will return the information about "([^"]*)"$/) { String login->
+    assert StudentConsultTestDataAndOperations.compatibleSearch(login)
 }
 
-Then(~'^the system will return the information about "([^"]*)"$'){
-    String nome ->
-        estudante  = Student.findByName(nome)
-        assert estudante.StudentConsultTestDataAndOperations.compatibleTo(estudante, nome)
+//Controller
+Given(~/^the student "([^"]*)" with login "([^"]*)" is not registered in the system$/) { String nome, String login ->
+    assert Student.findByLogin(login) == null
 }
 
-//GUI Scenario
+When(~/^I search for "([^"]*)"$/) { String login ->
+    globalStudent = StudentConsultTestDataAndOperations.lookForStudent()Student(login)
+}
 
-Given(~'^I am on the ([^"]*)"$ page'){
-    String pageName->
+Then(~/^the system will not return anything$/) { ->
+    assert globalStudent == null
+}
+
+//GUI
+String global
+
+Given(~/^I'm on the "([^"]*)" page$/) { String pageName ->
     to StudentConsultPage
     at StudentConsultPage
 }
 
-And(~'^I see the student ([^"]*)"$ with login ([^"]*)"$ in the list of students'){
-    String name, login ->
+And(~/^I see the student "([^"]*)" with login "([^"]*)" in the list of students$/) { String nome, String login ->
     at StudentConsultPage
-        page.findStudent(name, login)
+    page.fillStudentSearch(global)
+    page.selectSearch()
 }
 
-When(~'^I request the student information'){
-    ->
+When(~/^I request the student information$/) { ->
     at StudentConsultPage
-    page.select()
+    page.selectStudent()
 }
 
-Then(~'^all the student\'s average evaluation in all criteria will appear in the screen'){
-    ->
+Then(~/^all the student average evaluation in all criteria will appear in the screen$/) { ->
     at StudentConsultPage
     page.showStudentDetails()
 }

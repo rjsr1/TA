@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+@ignore
+>>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
 Feature: AddEvaluation
   As a teacher
   I want to evaluate each student by criteria
