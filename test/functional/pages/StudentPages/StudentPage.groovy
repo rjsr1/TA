@@ -19,4 +19,8 @@ class StudentPage extends Page {
         }
         return r
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> ArthurLapprand-master

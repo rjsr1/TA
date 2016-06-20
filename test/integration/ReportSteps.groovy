@@ -63,3 +63,5 @@ When(~/^I go to the Reports page$/) { ->
 Then(~/^the item "Reports" on the menu will show if there are new notifications$/) { ->
     ShowReportsPage.selectNotifications()
 }
+Then(~/^70% of the student "([^"]*)" evaluations are composed of "([^"]*)"$/) { int arg1, String arg2 ->
+}

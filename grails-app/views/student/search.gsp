@@ -29,16 +29,16 @@
     <h1>Search by login</h1>
 </div>
 <div class="content scaffold-search" role="main">
-        <g:form controller="student" action="consult">
-            <div id="search_student">
-                <label for="consult">
-                    <g:message code="student.login.label" default="Login" />
-                    <span class="required-indicator">*</span>
-                </label>
-                <g:textField name="consult" required="" size="50"/>
-                <g:submitButton name="search" value="${message(code: 'default.button.search.label', default: 'Search')}" size = "20" />
-            </div>
-        </g:form>
+    <g:form controller="student" action="consult">
+        <div id="search_student">
+            <label for="consult">
+                <g:message code="student.login.label" default="Login" />
+                <span class="required-indicator">*</span>
+            </label>
+            <g:textField name="consult" required="" size="50"/>
+            <g:submitButton name="search" value="${message(code: 'default.button.search.label', default: 'Search')}" size = "20" />
+        </div>
+    </g:form>
 </div>
 
 <div id="list-student" class="content scaffold-list" role="main">

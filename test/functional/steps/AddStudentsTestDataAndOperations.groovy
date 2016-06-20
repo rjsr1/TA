@@ -10,8 +10,14 @@ class AddStudentsTestDataAndOperations {
 
     static public void createStudent(String name, String login){
         def cont = new StudentController()
+<<<<<<< HEAD
+        //cont.params
+        cont.params << [name: name, login: login]
+        cont.save()
+=======
         cont.params << [name: name, login: login]
         cont.createAndSaveStudent()
+>>>>>>> ArthurLapprand-master
         cont.response.reset()
     }
 
