@@ -83,13 +83,12 @@ class EvaluationDataAndOperations{
         controller.response.reset();
     }
 
-    public static void createCriterionXandAddToStudents(){
+    public static void createCriterionX(){
         def controller = new CriterionController()
         controller.params << [description : "X"];
         controller.createCriterion()
         controller.response.reset();
-        def controller2 = new StudentController()
-        controller2.addCriterionToAllStudent("X");
+
     }
 
     public static boolean findEvaluationAndCount(String criterionName, String origin, String dateInString){
@@ -103,28 +102,23 @@ class EvaluationDataAndOperations{
     }
    
     public static boolean createEvaluation(String value, String criterionName, String origin, String dateInString){
+        if(value == null) return false;
         def applicationDate = formattedDate(dateInString)
         def cont = new StudentController()
         def cont2 = new EvaluationController();
-        cont2.params<<[value : value] <<[origin: origin] << [applicationDate : applicationDate];
-        Evaluation evaluation = cont2.createEvaluation()
-        cont.params<<[origin:origin,applicationDate : evaluation.applicationDate, criterion:evaluation.criterion, value : null]
-        def returningValue= cont.addEvaluationToAllStudents()
-        cont.response.reset()
-        cont2.response.reset()
-        return returningValue
+        def values = [value, value, value];
+        cont2.params<<[value : values] <<[origin: origin] << [applicationDate : applicationDate];
+        cont2.saveAll()
+        return true;
     }
-    public static boolean createEvaluationNoValue(String criterionName, String origin, String dateInString){
+    public static void createEvaluationNoValue(String criterionName, String origin, String dateInString){
         def applicationDate = formattedDate(dateInString)
         def cont = new StudentController()
         def cont2 = new EvaluationController();
-        cont2.params<<[value : null] <<[origin: origin] << [applicationDate : applicationDate];
+        def values = [null, null, null]
+        cont2.params<<[value : values] <<[origin: origin] << [applicationDate : applicationDate];
         Evaluation evaluation = cont2.createEvaluation()
-        cont.params<<[origin:origin,applicationDate : evaluation.applicationDate, criterion:evaluation.criterion, value : null]
-        def returningValue= cont.addEvaluationToAllStudents()
-        cont.response.reset()
-        cont2.response.reset()
-        return returningValue
+        cont2.saveAll();
     }
 
 

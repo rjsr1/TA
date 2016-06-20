@@ -72,7 +72,7 @@ Boolean stored = false;
 Given(~'^evaluations for every student on the "([^"]*)" criteria, originated from "([^"]*)" and dated from "([^"]*)" are already in the system$') {
     String criterionName, origin, dateInString ->
         EvaluationDataAndOperations.createStudents();
-        EvaluationDataAndOperations.createCriterionXandAddToStudents();
+        EvaluationDataAndOperations.createCriterionX();
         EvaluationDataAndOperations.createEvaluationNoValue(criterionName,origin,dateInString);
     assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName,origin, dateInString) == true
 }
@@ -141,7 +141,7 @@ Then(~'^all evaluations will be stored on the "([^"]*)" criterias history of eac
 Given(~/^there are no evaluations to all students to the "([^"]*)" criterion, originated from a "([^"]*)" and dated from "([^"]*)"$/) {
     String criterionName, origin, dateInString ->
     EvaluationDataAndOperations.createStudents();
-    EvaluationDataAndOperations.createCriterionXandAddToStudents();
+    EvaluationDataAndOperations.createCriterionX();
     assert EvaluationDataAndOperations.findEvaluationAndCount(criterionName,origin,dateInString);
 
 }
