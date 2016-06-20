@@ -32,17 +32,6 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${evaluationsByCriterionInstance?.evaluations}">
-				<li class="fieldcontain">
-					<span id="evaluations-label" class="property-label"><g:message code="evaluationsByCriterion.evaluations.label" default="Evaluations" /></span>
-					
-						<g:each in="${evaluationsByCriterionInstance.evaluations}" var="e">
-						<span class="property-value" aria-labelledby="evaluations-label"><g:link controller="evaluation" action="show" id="${e.id}">${e?.value?.encodeAsHTML()}</g:link></span>
-						</g:each>
-					
-				</li>
-				</g:if>
-			
 				<g:if test="${evaluationsByCriterionInstance?.criterionAverage}">
 				<li class="fieldcontain">
 					<span id="criterionAverage-label" class="property-label"><g:message code="evaluationsByCriterion.criterionAverage.label" default="Criterion Average" /></span>
@@ -53,6 +42,36 @@
 				</g:if>
 			
 			</ol>
+
+			<h1>Evaluations</h1>
+
+			<table>
+				<thead>
+				<tr>
+
+					<th>Origin</th>
+
+					<th>Date</th>
+
+					<th>Value</th>
+
+				</tr>
+				</thead>
+				<tbody>
+				<g:each in="${evaluationsByCriterionInstance?.evaluations}" status="i" var="evaluationInstance">
+					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+
+						<td>${fieldValue(bean: evaluationInstance, field: "origin")}</td>
+
+						<td>${fieldValue(bean: evaluationInstance, field: "applicationDate")}</td>
+
+						<td><g:link controller="evaluation" action="show" id="${evaluationInstance?.id}">${fieldValue(bean: evaluationInstance, field: "value")}</g:link></td>
+
+					</tr>
+				</g:each>
+				</tbody>
+			</table>
+
 			<g:form url="[resource:evaluationsByCriterionInstance, action:'delete']" method="DELETE">
 				<fieldset class="buttons">
 					<!-- <g:link class="edit" action="edit" resource="${evaluationsByCriterionInstance}"><g:message code="default.button.edit.label" default="Edit" /></g:link> -->

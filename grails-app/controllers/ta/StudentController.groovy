@@ -339,11 +339,12 @@ class StudentController {
             String login = token2.get(1)
             Student novo = new Student(name, login)
             novo.calcMedia()
+
+            if (Student.findByLogin(novo.getLogin()) == null) {
+                novo.save flush: true
+            }
         }
 
-        if (Student.findByLogin(novo.getLogin()) == null) {
-            novo.save flush: true
-        }
         flash.message = message(code: 'default.created.message', args: [message(code: students.length, 'student.label', default: 'Student')])
 
         redirect action: "index", method: "GET"

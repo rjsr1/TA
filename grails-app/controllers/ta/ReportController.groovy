@@ -35,14 +35,6 @@ class ReportController {
         }
     }
 
-    public boolean saveRep(Report relatorio){
-        if(relatorio.findByName(relatorio.name)==null){
-                notFound()
-                return false//não é para renderizar nenhuma view porque esses relatórios não são feitos pelo usuário, apenas mostrados
-        }
-        relatorio.save(flush: true)
-        return true
-    }
     def delete(Report reportInstance) {
 
         if (reportInstance == null) {
@@ -70,7 +62,7 @@ class ReportController {
         if(reportInstance.hasErrors()){
             respond reportInstance.errors, view:'show'
         }
-
+        reportInstance.fillReport()
         reportInstance.save(flush: true)
         request.withFormat {
             form multipartForm {
