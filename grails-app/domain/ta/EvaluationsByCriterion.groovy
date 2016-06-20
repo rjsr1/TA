@@ -21,11 +21,10 @@ class EvaluationsByCriterion {
 
     public void addEvaluation(Evaluation evaluationInstance) {
         addToEvaluations(evaluationInstance)
-        this.criterionAverage = doMedia();
+        doMedia();
     }
 
-    public double doMedia(){
-        double mediaCriterio = 0;
+    public void doMedia(){
         double tempMedia = 0;
         int qtdEvaluations = 0;
         for(int i = 0; i < evaluations.size(); i++){
@@ -35,8 +34,7 @@ class EvaluationsByCriterion {
             else tempMedia += 3
             qtdEvaluations++
         }
-        mediaCriterio = (tempMedia/qtdEvaluations);
-        return mediaCriterio;
+        this.criterionAverage = (tempMedia/qtdEvaluations);
     }
 
 

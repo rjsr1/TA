@@ -60,7 +60,7 @@
 				<g:each in="${studentInstance?.criteriaAndEvaluations}" status="i" var="criteriaAndEvaluations">
 						<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 							​
-							<td>${fieldValue(bean: criteriaAndEvaluations, field: "criterion.description")}</td>
+							<td><g:link controller="evaluationsByCriterion" action="show" id="${criteriaAndEvaluations.id}">${fieldValue(bean: criteriaAndEvaluations, field: "criterion.description")}</g:link></td>
 							​
 							<td>${fieldValue(bean: criteriaAndEvaluations, field: "criterionAverage")}</td>
 							​

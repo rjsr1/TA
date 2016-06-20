@@ -27,7 +27,27 @@
 				<li class="fieldcontain">
 					<span id="criterion-label" class="property-label"><g:message code="evaluationsByCriterion.criterion.label" default="Criterion" /></span>
 					
-						<span class="property-value" aria-labelledby="criterion-label"><g:link controller="criterion" action="show" id="${evaluationsByCriterionInstance?.criterion?.id}">${evaluationsByCriterionInstance?.criterion?.encodeAsHTML()}</g:link></span>
+						<span class="property-value" aria-labelledby="criterion-label"><g:link controller="criterion" action="show" id="${evaluationsByCriterionInstance?.criterion?.id}">${evaluationsByCriterionInstance?.criterion?.description?.encodeAsHTML()}</g:link></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${evaluationsByCriterionInstance?.evaluations}">
+				<li class="fieldcontain">
+					<span id="evaluations-label" class="property-label"><g:message code="evaluationsByCriterion.evaluations.label" default="Evaluations" /></span>
+					
+						<g:each in="${evaluationsByCriterionInstance.evaluations}" var="e">
+						<span class="property-value" aria-labelledby="evaluations-label"><g:link controller="evaluation" action="show" id="${e.id}">${e?.value?.encodeAsHTML()}</g:link></span>
+						</g:each>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${evaluationsByCriterionInstance?.criterionAverage}">
+				<li class="fieldcontain">
+					<span id="criterionAverage-label" class="property-label"><g:message code="evaluationsByCriterion.criterionAverage.label" default="Criterion Average" /></span>
+					
+						<span class="property-value" aria-labelledby="criterionAverage-label"><g:fieldValue bean="${evaluationsByCriterionInstance}" field="criterionAverage"/></span>
 					
 				</li>
 				</g:if>
@@ -35,7 +55,7 @@
 			</ol>
 			<g:form url="[resource:evaluationsByCriterionInstance, action:'delete']" method="DELETE">
 				<fieldset class="buttons">
-					<g:link class="edit" action="edit" resource="${evaluationsByCriterionInstance}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
+					<!-- <g:link class="edit" action="edit" resource="${evaluationsByCriterionInstance}"><g:message code="default.button.edit.label" default="Edit" /></g:link> -->
 					<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
 				</fieldset>
 			</g:form>

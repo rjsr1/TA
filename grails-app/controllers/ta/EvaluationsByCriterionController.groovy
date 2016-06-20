@@ -19,6 +19,20 @@ class EvaluationsByCriterionController {
         respond evaluationsByCriterionInstance
     }
 
+    def showEvaluationsByCriterion(EvaluationsByCriterion evalByCritInstance) {
+        for (int i = 0; i < evalByCritInstance.size(); i++) {
+            if (evalByCritInstance[i].criterion.description.equals(params.cri)) {
+                respond studentInstance.criteriaAndEvaluations
+            }
+        }
+    }
+
+    def updateAllCriterionAverages() {
+        EvaluationsByCriterion.list().each {
+            it.doMedia()
+        }
+    }
+
     def create() {
         respond new EvaluationsByCriterion(params)
     }

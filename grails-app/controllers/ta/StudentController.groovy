@@ -18,12 +18,19 @@ class StudentController {
         Date date = formatter.parse(dateInString);
         return date;
     }
+
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Student.list(params), model:[studentInstanceCount: Student.count()]
     }
+
+    def updateAllAverages() {
+         Student.list().each {
+            it.calcMedia()
+         }
+    }
+
     public boolean addEvaluationsToAllStudents(LinkedList<Evaluation> evaluationList){
-        //List<Student> students = Student.list();
         for(int i = 0; i < Student.list().size(); i++){
             Student.list().get(i).addEvaluation(evaluationList.get(i))
             Student.list().get(i).save (

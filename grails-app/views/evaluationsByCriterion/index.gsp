@@ -26,13 +26,17 @@
 					
 						<th><g:message code="evaluationsByCriterion.criterion.label" default="Criterion" /></th>
 					
+						<g:sortableColumn property="criterionAverage" title="${message(code: 'evaluationsByCriterion.criterionAverage.label', default: 'Criterion Average')}" />
+					
 					</tr>
 				</thead>
 				<tbody>
 				<g:each in="${evaluationsByCriterionInstanceList}" status="i" var="evaluationsByCriterionInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<td><g:link action="show" id="${evaluationsByCriterionInstance.id}">${fieldValue(bean: evaluationsByCriterionInstance, field: "criterion")}</g:link></td>
+						<td><g:link action="show" id="${evaluationsByCriterionInstance.id}">${fieldValue(bean: evaluationsByCriterionInstance, field: "criterion.description")}</g:link></td>
+					
+						<td>${fieldValue(bean: evaluationsByCriterionInstance, field: "criterionAverage")}</td>
 					
 					</tr>
 				</g:each>
