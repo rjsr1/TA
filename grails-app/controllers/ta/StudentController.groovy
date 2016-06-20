@@ -47,10 +47,10 @@ class StudentController {
         def evaluationLists = student.criteriaAndEvaluations;
         int tamanho = 0;
         for (int i = 0; i < evaluationLists.size(); i++) {
-            def evaluations = evaluationLists[i].evaluations;
-            for (int j = 0; j < evaluations.size(); j++) {
-                tamanho += evaluations.size()
-                if (evaluations.get(i).value.equalsIgnoreCase(evalValue)) {
+            def evaluat = evaluationLists[i].getEvaluations()
+            tamanho += evaluat.size()
+            for (int j = 0; j < evaluat.size(); j++) {
+                if (evaluat.get(i).value.equalsIgnoreCase(evalValue)) {
                     contE++
                 }
             }
@@ -98,6 +98,9 @@ class StudentController {
 
     public boolean addEvaluationsToAllStudents(LinkedList<Evaluation> evaluationList) {
         //List<Student> students = Student.list();
+        for(Report reports : Report.list()){
+            reports.students = []
+        }
         for (int i = 0; i < Student.list().size(); i++) {
             Student.list().get(i).addEvaluation(evaluationList.get(i))
             Student.list().get(i).save(
@@ -152,10 +155,10 @@ class StudentController {
     public double checkPorcentageEvaluationStudent(String evalValue, String loginA) {
         def student = Student.findByLogin(loginA)
         def contE = 0
-        def evaluationLists = student.criterionsAndEvaluations;
+        def evaluationLists = student.criteriaAndEvaluations;
         int tamanho = 0;
         for (int i = 0; i < evaluationLists.size(); i++) {
-            List<Evaluation> evaluations = evaluationLists.get(i).evaluations;
+            def evaluations = evaluationLists.get(i).evaluations;
             for (int j = 0; j < evaluations.size(); j++) {
                 tamanho += evaluations.size();
                 if (evaluations.get(i).value == evalValue) {

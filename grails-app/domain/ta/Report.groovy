@@ -2,7 +2,8 @@ package ta
 
 class Report {
     String name
-    List<Student> students
+    List students
+    static hasMany = [students: Student]
     String tipo
     double valor
     String avaliacao
@@ -10,7 +11,7 @@ class Report {
     public Report(String name, String tipo, double valor, String avaliacao){
         this.name = name
         this.tipo = tipo
-        this.students = new LinkedList<Student>()
+        this.students = []
         this.valor = valor
         this.avaliacao = avaliacao
 

@@ -29,11 +29,8 @@ class ReportController {
 
     public void addStudentToReport(Student student, Report reportInstance){
         if(reportInstance!=null){
-            //Student student = Student.findByLogin(studentLogin)
-            //Report report = findByName(reportName)
-            reportInstance.students.add(student)
+            reportInstance.addToStudents(student)
             reportInstance.save(flush: true)
-            redirect action: "index", method: "GET"
             flash.message = message(code: 'default.updated.message', args:[message(code: 'Report.label', default: 'Report'), reportInstance.id])
         }
     }

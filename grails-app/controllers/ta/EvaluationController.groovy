@@ -81,7 +81,7 @@ class EvaluationController {
 
         StudentController student = new StudentController()
         for(int i = 0; i < teste.size(); i++){
-            Evaluation newEvaluation = new Evaluation(params.origin, teste.get(i)/*todos[i]*/, params.applicationDate, params.criterion.id)
+            Evaluation newEvaluation = new Evaluation(params.origin, teste.get(i) as String/*todos[i]*/, params.applicationDate, params.criterion.id)
             newEvaluation.save flush: true
             listEvaluation.add(newEvaluation)
         }
