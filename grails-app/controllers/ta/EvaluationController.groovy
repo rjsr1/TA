@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
+import ta.Evaluation
 
 @Transactional(readOnly = true)
 class EvaluationController {
@@ -54,13 +55,15 @@ class EvaluationController {
         return evaluation
     }
 
-    public Evaluation createAndSaveEvaluation(String evaluationOrigin , String studentEvaluation , String evaluationDate){
-        def applicationDate = formattedDate(evaluationDate)
-        Criterion criterionCreated = new Criterion(params).save()
-        Evaluation evaluation = new Evaluation([origin : evaluationOrigin , value : studentEvaluation , applicationDate : applicationDate , criterion : criterionCreated])
-        saveEvaluation(evaluation)
-        return evaluation
+    /* COMENTADO POR CALEGARIO A PEDIDO DE DANILO
+    public Evaluation createEvaluation(String criterionName, String origin,String dateInString){
+        def criterion = Criterion.findByDescription(criterionName)
+        def date = this.formattedDate(dateInString)
+        Evaluation evaluation = new Evaluation(origin, null, date, criterion)
+        evaluation.save flush : true
+        return evaluation;
     }
+    */
 
     public Evaluation createAndSaveEvaluationWithoutParam(/*String evaluationDate*/){
         //def applicationDate = formattedDate(evaluationDate)
@@ -73,7 +76,7 @@ class EvaluationController {
         return evaluation
     }
 
-        @Transactional
+    @Transactional
     def save(Evaluation evaluationInstance) {
         if (evaluationInstance == null) {
             notFound()
@@ -100,36 +103,16 @@ class EvaluationController {
 
     @Transactional
     def saveAll() {
-        /*if (evaluationInstance == null) {
-            notFound()
-            return
-        }
-
-        if (evaluationInstance.hasErrors()) {
-            respond evaluationInstance.errors, view:'create'
-            return
-        }*/
-        //def teste = Evaluation.getAll(evaluationInstance.list('value'))
-        //def teste = params.allList
-        def teste = params.list('value')
-        //String[] todos = evaluationInstance.value.split(",")
+        def allValues = params.list('value')
         List<Evaluation> listEvaluation = new LinkedList<Evaluation>()
 
         StudentController student = new StudentController()
-        for(int i = 0; i < teste.size(); i++){
-            Evaluation newEvaluation = new Evaluation(params.origin, teste.get(i)/*todos[i]*/, params.applicationDate, params.criterion.id)
+        for(int i = 0; i < allValues.size(); i++){
+            Evaluation newEvaluation = new Evaluation(params.origin, allValues.get(i), params.applicationDate, params.criterion.id)
             newEvaluation.save flush: true
             listEvaluation.add(newEvaluation)
         }
         student.addEvaluationsToAllStudents(listEvaluation)
-
-        /*request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'evaluation.label', default: 'Evaluation'), evaluationInstance.id])
-                redirect evaluationInstance
-            }
-            '*' { respond evaluationInstance, [status: CREATED] }
-        }*/
         redirect action:"index", method:"GET"
     }
 
@@ -151,6 +134,12 @@ class EvaluationController {
 
         evaluationInstance.save flush:true
 
+        StudentController sc = new StudentController()
+        sc.updateAllAverages()
+
+        EvaluationsByCriterionController ecc = new EvaluationsByCriterionController()
+        ecc.updateAllCriterionAverages()
+
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'Evaluation.label', default: 'Evaluation'), evaluationInstance.id])
@@ -168,7 +157,15 @@ class EvaluationController {
             return
         }
 
+        LinkedList<EvaluationsByCriterion> eccList = EvaluationsByCriterion.list()
+        for (int i = 0; i < eccList.size(); i++) {
+            eccList.get(i).removeFromEvaluations(evaluationInstance)
+        }
+
         evaluationInstance.delete flush:true
+
+        StudentController sc = new StudentController()
+        sc.updateAllAverages()
 
         request.withFormat {
             form multipartForm {

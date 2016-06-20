@@ -26,12 +26,4 @@ class Evaluation {
             return false
         }
     }
-    public boolean compatibleToNoValue(Evaluation evaluationInstance){
-        if(this.origin.equals(evaluationInstance.getOrigin()) && this.applicationDate.compareTo(evaluationInstance.getApplicationDate())==0 && this.criterion.getDescription().equals(evaluationInstance.getCriterion().getDescription()))
-        {
-            return true
-        }else {
-            return false
-        }
-    }
 }

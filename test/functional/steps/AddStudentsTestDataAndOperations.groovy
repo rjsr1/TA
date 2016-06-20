@@ -4,14 +4,15 @@ import ta.Student
 import ta.StudentController
 
 /**
- * Created by rodrigocalegario on 4/28/16.
+ * Created by rodrigocalegario on 5/28/16.
  */
 
 class AddStudentsTestDataAndOperations {
+
     static public void createStudent(String name, String login){
         def cont = new StudentController()
         cont.params << [name: name, login: login]
-        cont.saveStudent()
+        cont.createAndSaveStudent()
         cont.response.reset()
     }
 
@@ -24,4 +25,5 @@ class AddStudentsTestDataAndOperations {
     static public int countStudent(){
         return Student.list().size()
     }
+
 }

@@ -10,4 +10,3 @@
 	<g:textField name="description" required="" value="${criterionInstance?.description}"/>
 
 </div>
-

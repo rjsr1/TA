@@ -1,7 +1,5 @@
 package ta
 
-
-
 import grails.test.mixin.*
 import spock.lang.*
 

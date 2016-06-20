@@ -19,27 +19,22 @@ class EvaluationsByCriterionController {
         respond evaluationsByCriterionInstance
     }
 
-    def create() {
-        respond new EvaluationsByCriterion(params)
-    }
-
-    public boolean saveEvaluationsByCriterion(EvaluationsByCriterion evaluationsByCriterion){
-        if(EvaluationsByCriterion.findByCriterion(evaluationsByCriterion.criterion) == null){
-            evaluationsByCriterion.save flush: true
-            return true
-        }else{
-            return false
+    def showEvaluationsByCriterion(EvaluationsByCriterion evalByCritInstance) {
+        for (int i = 0; i < evalByCritInstance.size(); i++) {
+            if (evalByCritInstance[i].criterion.description.equals(params.cri)) {
+                respond studentInstance.criteriaAndEvaluations
+            }
         }
     }
 
-    public EvaluationsByCriterion createEvaluationsByCriterion(){
-        return new EvaluationsByCriterion(params)
+    def updateAllCriterionAverages() {
+        EvaluationsByCriterion.list().each {
+            it.doMedia()
+        }
     }
 
-    public EvaluationsByCriterion createAndSaveEvaluationsByCriterion(){
-        EvaluationsByCriterion evaluationsByCriterion = new EvaluationsByCriterion(params)
-        saveEvaluationsByCriterion(evaluationsByCriterion)
-        return evaluationsByCriterion
+    def create() {
+        respond new EvaluationsByCriterion(params)
     }
 
     @Transactional

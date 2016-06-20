@@ -35,7 +35,6 @@ crashlytics-build.properties
 .gradle
 bin/
 tmp/
-*.tmp
 *.bak
 *.swp
 *~.nib
@@ -105,8 +104,6 @@ local.properties
 
 ####### Java ignore #######
 
-*.class
-
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
@@ -120,10 +117,25 @@ hs_err_pid*
 
 ###### Others ##########
 .settings
-stacktrace.log
 /*.log
 /*DB.*
 /cobertura.ser
 .DS_Store
 /target/
 .idea/workspace.xml
+GebConfig.groovy
+grails-app/conf/hibernate/
+grails-app/migrations/
+grails-app/services/
+grails-app/taglib/
+grails-app/utils/
+lib/
+scripts/
+src/
+test/integration/
+test/unit/
+web-app/META-INF/
+web-app/css/
+web-app/images/
+web-app/js/
+.slcache/

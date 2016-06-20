@@ -1,11 +1,10 @@
 package pages
 
-/**
- * Created by rodrigocalegario on 5/2/16.
- */
-
 import geb.Page
 
+/**
+ * Created by rodrigocalegario on 5/28/16.
+ */
 class AddStudentsPage extends Page{
 
     static url = "/TA/student/create"
@@ -14,9 +13,9 @@ class AddStudentsPage extends Page{
         title ==~ /Create Student/
     }
 
-    def fillStudentDetails(String login, String name) {
-        $("form").login = login
+    def fillStudentDetails(String name, String login) {
         $("form").name = name
+        $("form").login = login
     }
 
     def selectAddStudent() {
