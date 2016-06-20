@@ -65,12 +65,12 @@ class EvaluationController {
 
     @Transactional
     def saveAll() {
-        def teste = params.list('value')
+        def allValues = params.list('value')
         List<Evaluation> listEvaluation = new LinkedList<Evaluation>()
 
         StudentController student = new StudentController()
-        for(int i = 0; i < teste.size(); i++){
-            Evaluation newEvaluation = new Evaluation(params.origin, teste.get(i), params.applicationDate, params.criterion.id)
+        for(int i = 0; i < allValues.size(); i++){
+            Evaluation newEvaluation = new Evaluation(params.origin, allValues.get(i), params.applicationDate, params.criterion.id)
             newEvaluation.save flush: true
             listEvaluation.add(newEvaluation)
         }
@@ -114,6 +114,19 @@ class EvaluationController {
     @Transactional
     def delete(Evaluation evaluationInstance) {
 
+        EvaluationsByCriterion.list().each {
+            it.evaluations.list().each {
+
+            }
+        }
+
+        /*
+        LinkedList<EvaluationsByCriterion> l = EvaluationsByCriterion.list()
+        for (int i = 0; i < l.size(); i++) {
+            LinkedList<EvaluationsByCriterion>
+            if (l.evaluations)
+        }
+        */
         if (evaluationInstance == null) {
             notFound()
             return

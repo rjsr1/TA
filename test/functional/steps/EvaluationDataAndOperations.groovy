@@ -119,31 +119,16 @@ class EvaluationDataAndOperations{
         return false;
     }
 
-    public static boolean createEvaluation(String criterionName, String origin, String dateInString){
+    public static boolean createEvaluation(String value, String criterionName, String origin, String dateInString){
+        if(value == null) return false;
         def applicationDate = formattedDate(dateInString)
         def cont = new StudentController()
         def cont2 = new EvaluationController();
-        cont2.params<<[value : "--"] <<[origin: origin] << [applicationDate : applicationDate];
-        Evaluation evaluation = cont2.createEvaluation()
-        def returningValue= cont.addEvaluations(criterionName,Evaluation)
-        cont.response.reset()
-        cont2.response.reset()
-        return returningValue
+        def values = [value, value, value];
+        cont2.params<<[value : values] <<[origin: origin] << [applicationDate : applicationDate];
+        cont2.saveAll()
+        return true;
     }
-    public static boolean createEvaluationNoValue(String criterionName, String origin, String dateInString){
-        def applicationDate = formattedDate(dateInString)
-        def cont = new StudentController()
-        def cont2 = new EvaluationController();
-        cont2.params<<[value : null] <<[origin: origin] << [applicationDate : applicationDate];
-        Evaluation evaluation = cont2.createEvaluation(criterionName,origin,dateInString)
-        cont.params<<[origin:origin,applicationDate : evaluation.applicationDate, Criterion:evaluation.criterion, value : null]
-        def returningValue= cont.addEvaluations()
-        cont.response.reset()
-        cont2.response.reset()
-        return returningValue
-    }
-
-
     public static boolean checkEvaluationAllStudents(String criterionName,String origin,String dateInString){
         def cont = new StudentController()
         return cont.checkEvaluationsAllStudents(criterionName,origin,dateInString)
@@ -153,7 +138,6 @@ class EvaluationDataAndOperations{
         def cont = new StudentController()
         return cont.checkRedundantEvaluationAllStudents(criterionName,origin,dateInString)
     }
-
 
     public static boolean createStudent(String login, String name){
         def cont = new StudentController()
