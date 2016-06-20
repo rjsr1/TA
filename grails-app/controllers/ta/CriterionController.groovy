@@ -101,6 +101,15 @@ class CriterionController {
             return
         }
 
+        LinkedList<EvaluationsByCriterion> l = EvaluationsByCriterion.findAllByCriterion(criterionInstance)
+        for (int i = 0; i < l.size(); i++) {
+            LinkedList<Evaluation> e = l.get(i).evaluations
+            for (int j = 0; j < e.size(); j++) {
+                l.get(i).removeFromEvaluations(e.get(j))
+            }
+            l.get(i).delete(flush: true)
+        }
+
         criterionInstance.delete flush:true
 
         request.withFormat {

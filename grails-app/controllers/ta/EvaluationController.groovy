@@ -114,25 +114,20 @@ class EvaluationController {
     @Transactional
     def delete(Evaluation evaluationInstance) {
 
-        EvaluationsByCriterion.list().each {
-            it.evaluations.list().each {
-
-            }
-        }
-
-        /*
-        LinkedList<EvaluationsByCriterion> l = EvaluationsByCriterion.list()
-        for (int i = 0; i < l.size(); i++) {
-            LinkedList<EvaluationsByCriterion>
-            if (l.evaluations)
-        }
-        */
         if (evaluationInstance == null) {
             notFound()
             return
         }
 
+        LinkedList<EvaluationsByCriterion> eccList = EvaluationsByCriterion.list()
+        for (int i = 0; i < eccList.size(); i++) {
+            eccList.get(i).removeFromEvaluations(evaluationInstance)
+        }
+
         evaluationInstance.delete flush:true
+
+        StudentController sc = new StudentController()
+        sc.updateAllAverages()
 
         request.withFormat {
             form multipartForm {
