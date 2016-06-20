@@ -7,6 +7,7 @@ import ta.Criterion
 import ta.CriterionController
 import ta.Evaluation
 import ta.EvaluationController
+import ta.EvaluationsByCriterion
 import ta.Student
 
 import java.text.SimpleDateFormat
@@ -68,8 +69,11 @@ class EvaluationDataAndOperations{
         Criterion criterion = new Criterion(desc);
         controller.save(criterion)
         controller.response.reset();
-        def controller2 = new StudentController()
-        controller2.addCriterionToAllStudent(desc);
+        //def controller2 = new StudentController()
+        def EvaluationsByCriterion ec = new EvaluationsByCriterion(criterion)
+        for(Student student : Student.list()){
+            student.criterionsAndEvaluations.add(ec)
+        }
     }
 
 

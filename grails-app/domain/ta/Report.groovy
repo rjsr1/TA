@@ -2,18 +2,37 @@ package ta
 
 class Report {
     String name
-    List<Student> students
+    List students
+    static hasMany = [students: Student]
+    String tipo
+    double valor
+    String avaliacao
 
-    def Report findByName(String name){
-        for(Report relatorio : relatorio.findAll()){
+    public Report(String name, String tipo, double valor, String avaliacao){
+        this.name = name
+        this.tipo = tipo
+        this.students = []
+        this.valor = valor
+        this.avaliacao = avaliacao
+
+    }
+    /*def Report findByName(String name){
+        for(Report relatorio : Report.findAll()){
             if(relatorio.name == name){
               return relatorio
             }
         }
-    }
+    }*/
 
     static constraints = {
         name unique : true
         name nullable : false
+        tipo inList: ["Porcentagem","Média"], nullable: false
+        avaliacao inList: ["MA", "MPA", "MANA"]
+    }
+
+    static mapping ={
+        sort "name"
+        sort name:"asc"
     }
 }

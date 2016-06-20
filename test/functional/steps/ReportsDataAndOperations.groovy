@@ -1,7 +1,9 @@
 package steps
 
 import ta.EvaluationController
+import ta.Evaluation
 import ta.Report
+import ta.Criterion
 import ta.ReportController
 import ta.StudentController
 
@@ -10,25 +12,29 @@ import ta.StudentController
  * Created by Milena Carneiro on 07/05/2016.
  */
 class ReportsDataAndOperations {
+    static boolean needsUpdate
 
-    public static boolean checkCondition(String loginA, String evalType, String crit){
+    public static boolean checkCondition(String loginA, String evalType){
        def contS = new StudentController()
-       //falta implementar, sei disso, mas irei dizer como faz :D
-
-        /*double totalE =
-                (ReportsDataAndOperations.countType(evalType)/ReportsDataAndOperations.count())*100
-        if(totalE>=70){
-            return true
-        }*/
+       double aux = contS.checkPercentageEvaluationStudent(evalType,loginA)
+        if(aux>=0.7){
+            needsUpdate = true
+        }else{
+            needsUpdate = false
+        }
+        return needsUpdate
     }
+
 //#if($the report "" is updated)
     public static boolean checkUpdate(String relatorio){
         def rel = findByName(relatorio)
         def contro = new ReportController()
-        contro.update(rel)
+        if(needsUpdate) contro.update(rel)
         if(rel==null){
             return false
         }else if(!rel.save(flush: true)){
+            return false
+        }else if(!needsUpdate){
             return false
         }else{
             return true
@@ -54,4 +60,14 @@ class ReportsDataAndOperations {
             return false
         }
     }
+
+    public static void addEvalToStudent(String login, String origin, String eval, String data, String criteName){
+        def controS = new StudentController()
+        def controE = new EvaluationController()
+        Date dat = controE.formattedDate(data)
+        Criterion crit = Criterion.findByDescription(criteName)
+        controE.params << [origin: origin, value: eval, applicationDate: dat, criterion: crit]
+        controS.addEvaluationToStudent(login)
+    }
+
 }

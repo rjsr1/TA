@@ -55,6 +55,7 @@
 				<td>${fieldValue(bean: studentInstance, field: "login")}</td>
 
 				<td>
+
 					<div class="fieldcontain ${hasErrors(bean: evaluationInstance, field: 'value', 'error')} required">
 						<label for="value">
 							<g:message code="evaluation.value.label" default="Value" />
@@ -63,6 +64,7 @@
 						<g:select name="value" from="${evaluationInstance.constraints.value.inList}" required="" value="${evaluationInstance?.value}" valueMessagePrefix="evaluation.value"/>
 
 					</div>
+
 				</td>
 
 			</tr>

@@ -121,6 +121,9 @@ hs_err_pid*
 /*DB.*
 /cobertura.ser
 .DS_Store
+/target/
+.idea/workspace.xml
+GebConfig.groovy
 grails-app/conf/hibernate/
 grails-app/migrations/
 grails-app/services/

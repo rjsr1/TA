@@ -8,6 +8,6 @@ environments {
             System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
             new ChromeDriver(); }
     }
+    quitCachedDriverOnShutdown = false
 }
 
-quitCachedDriverOnShutdown = false

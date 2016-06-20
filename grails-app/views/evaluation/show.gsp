@@ -41,6 +41,15 @@
 				</li>
 				</g:if>
 			
+				<g:if test="${evaluationInstance?.criterion}">
+				<li class="fieldcontain">
+					<span id="criterion-label" class="property-label"><g:message code="evaluation.criterion.label" default="Criterion" /></span>
+					
+						<span class="property-value" aria-labelledby="criterion-label"><g:link controller="criterion" action="show" id="${evaluationInstance?.criterion?.id}">${evaluationInstance?.criterion?.description?.encodeAsHTML()}</g:link></span>
+					
+				</li>
+				</g:if>
+			
 				<g:if test="${evaluationInstance?.applicationDate}">
 				<li class="fieldcontain">
 					<span id="applicationDate-label" class="property-label"><g:message code="evaluation.applicationDate.label" default="Application Date" /></span>
