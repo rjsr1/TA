@@ -17,12 +17,12 @@ Feature: Add Student
 
 #Cenário Controler
   Scenario: Register a student twice
-    Given the student "Roberto Alves" with login "ra" is registered in the system
-    When I register "Roberto Alves" with login "ra"
-    Then the system does not register "Roberto Alves" with login "ra"
+    Given the student "Josefo Alalcario" with login "ja" is registered in the system
+    When I register "Josefo Alalcario" with login "ja"
+    Then the system does not register "Josefo Alalcario" with login "ja"
 
 #Cenário GUI
   Scenario: Error message when registering a student twice
     Given  I am in the add student page
-    When I add the "Roberto Alves" with login "ra"
-    Then I can't see the name of "Roberto Alves" and the login "ra" in the list of students
+    When I add the "Mocamba Marim" with login "mm"
+    Then I can't see the name of "Mocamba Marim" and the login "mm" in the list of students

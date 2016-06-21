@@ -15,13 +15,8 @@ Before () {
 }
 
 After () {
-<<<<<<< HEAD
     Report.list().each { relatorio ->
         relatorio.delete(flush: true)
-=======
-    Vaga.list().each { vaga ->
-        vaga.delete(flush:true)
->>>>>>> 399b655284b0cf25700ea5b4a77c1f3fb45ec05b
     }
     scenarioInterceptor.destroy ()
     bindingUpdater.remove ()

@@ -1,5 +1,5 @@
 #Arthur Lapprand
-@ignore
+
 Feature: Add Criterion
   As the teacher
   I want to be able to register new criteria

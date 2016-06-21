@@ -45,8 +45,8 @@ Then(~'^I can see the name of "([^"]*)" and the login "([^"]*)" in the list of s
 def countStudent
 
 Given(~'^the student "([^"]*)" with login "([^"]*)" is registered in the system$') { String name, String login ->
-    countStudent = AddStudentsTestDataAndOperations.countStudent()
     AddStudentsTestDataAndOperations.createStudent(name, login)
+    countStudent = AddStudentsTestDataAndOperations.countStudent()
     assert Student.findByLogin(login) != null
 }
 
