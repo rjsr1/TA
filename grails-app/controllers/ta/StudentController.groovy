@@ -247,6 +247,12 @@ class StudentController {
         student.save flush: true
     }
 
+    def addEvaluation2(String login, Evaluation evaluationInstance) {
+        def student = Student.findByLogin(login)
+        student.addEvaluation(evaluationInstance)
+        student.save flush: true
+    }
+
 /*    def addCriterion(Criterion criterionInstance){
         for(Student student : Student.findAll()){
 =======
@@ -262,6 +268,12 @@ class StudentController {
         def studentInstance = Student.findByLogin(params)
         return studentInstance
     }
+
+    public Student searchStudent2(String login){
+        def studentInstance = Student.findByLogin(login)
+        return studentInstance
+    }
+
 
     public Student createStudent() {
         return new Student(params)

@@ -66,14 +66,11 @@ class EvaluationDataAndOperations{
 
     public static void createCritAndAddToStudents(String desc){
         def controller = new CriterionController()
-        Criterion criterion = new Criterion(desc);
-        controller.save(criterion)
-        controller.response.reset();
+        controller.params << [description : desc]
+        Criterion criterion = controller.createAndSaveCriterion2()
+        controller.response.reset()
         //def controller2 = new StudentController()
-        def EvaluationsByCriterion ec = new EvaluationsByCriterion(criterion)
-        for(Student student : Student.list()){
-            student.criterionsAndEvaluations.add(ec)
-        }
+
     }
 
 
@@ -119,13 +116,13 @@ class EvaluationDataAndOperations{
         return false;
     }
 
-    public static boolean createEvaluation(String criterionName, String origin, String dateInString){
+    public static boolean createEvaluation(String loginA, String eval, String criterionName, String origin, String dateInString){
         def applicationDate = formattedDate(dateInString)
         def cont = new StudentController()
         def cont2 = new EvaluationController();
-        cont2.params<<[value : "--"] <<[origin: origin] << [applicationDate : applicationDate];
+        cont2.params<<[value : eval] <<[origin: origin] << [applicationDate : applicationDate]  << [criterion: Criterion.findByDescription(criterionName)]
         Evaluation evaluation = cont2.createEvaluation()
-        def returningValue= cont.addEvaluations(criterionName,Evaluation)
+        def returningValue= cont.addEvaluation2(loginA,evaluation)
         cont.response.reset()
         cont2.response.reset()
         return returningValue
