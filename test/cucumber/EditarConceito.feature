@@ -11,19 +11,19 @@ Scenario: Edit evaluation of a student
   Then the system stores the modification in the student with login "ma2"
 
 #Controller Scenario
-Scenario: Remove evaluation of a student
-  Given there is a student with the following informations: student "Marcos Antonio", login "ma2", has a "MANA" evaluation in the criterion "X", from "Prova 2", date "11/11/11"
-  When I delete the "MANA" evaluation in the criterion "X", from "Prova 2", date "11/11/11", from student "Marcos Antonio", login "ma2"
-  Then the system deletes the evaluation
+#Scenario: Remove evaluation of a student
+#  Given there is a student with the following informations: student "Marcos Antonio", login "ma2", has a "MANA" evaluation in the criterion "X", from "Prova 2", date "11/11/11"
+#  When I delete the "MANA" evaluation in the criterion "X", from "Prova 2", date "11/11/11", from student "Marcos Antonio", login "ma2"
+#  Then the system deletes the evaluation
 
 #Controller Scenario
-Scenario: Edit an evaluation for a non existent one
-  Given there is a student with the following informations: student "Marcos Antonio", login "ma2", has a "MANA" evaluation in the criterion "X", from "Prova 2", date "11/11/11"
-  When I modify the "MANA" evaluation to "10" in the criterion "X", from "Prova 2", date "11/11/11", from student "Marcos Antonio", login "ma2"
-  Then the system do nothing
+#Scenario: Edit an evaluation for a non existent one
+#  Given there is a student with the following informations: student "Marcos Antonio", login "ma2", has a "MANA" evaluation in the criterion "X", from "Prova 2", date "11/11/11"
+#  When I modify the "MANA" evaluation to "10" in the criterion "X", from "Prova 2", date "11/11/11", from student "Marcos Antonio", login "ma2"
+#  Then the system do nothing
 
 #GUI Scenario
-Scenario: Edit an evaluation for a existent one
-  Given I see the student "Lapprand Calegario", login "noob", has a "MANA" evaluation in the criterion "Texto", from "Test", date "11/11/11"
-  When I request the system to modify the evaluation "MANA" to "MA" in the criterion "Texto", from "Test", date "11/11/11", from student "Lapprand Calegario", login "noob"
-  Then I can see the evaluation "MA" in the criterion "Texto", from "Test", date "11/11/11", from student "Lapprand Calegario", login "noob"
+#Scenario: Edit an evaluation for a existent one
+#  Given I see the student "Lapprand Calegario", login "noob", has a "MANA" evaluation in the criterion "Texto", from "Test", date "11/11/11"
+#  When I request the system to modify the evaluation "MANA" to "MA" in the criterion "Texto", from "Test", date "11/11/11", from student "Lapprand Calegario", login "noob"
+#  Then I can see the evaluation "MA" in the criterion "Texto", from "Test", date "11/11/11", from student "Lapprand Calegario", login "noob"
