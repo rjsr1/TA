@@ -120,14 +120,26 @@ class CriterionController {
             return
         }
 
-        LinkedList<EvaluationsByCriterion> l = EvaluationsByCriterion.findAllByCriterion(criterionInstance)
-        for (int i = 0; i < l.size(); i++) {
-            LinkedList<Evaluation> e = l.get(i).evaluations
-            for (int j = 0; j < e.size(); j++) {
-                l.get(i).removeFromEvaluations(e.get(j))
+        LinkedList<Student> students = Student.list()
+        for (int i = 0; i < students.size(); i++) {
+            LinkedList<EvaluationsByCriterion> l = students.get(i).getCriteriaAndEvaluations()
+            for (int j = 0; j < l.size(); j++) {
+                if (l.get(j).criterion.id == criterionInstance.id) {
+                    LinkedList<Evaluation> e = l.get(j).evaluations
+                    for (int k = 0; k < e.size(); k++) {
+                        e.get(k).delete()
+                    }
+                }
             }
-            l.get(i).delete(flush: true)
+            for (int j = 0; j < l.size(); j++) {
+                if (l.get(j).criterion.id == criterionInstance.id) {
+                    students.get(i).removeFromCriteriaAndEvaluations(l.get(j))
+                    l.get(j).delete()
+                }
+            }
         }
+        StudentController sc = new StudentController()
+        sc.updateAllAverages()
 
         criterionInstance.delete flush:true
 
