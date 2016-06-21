@@ -97,7 +97,6 @@ class StudentController {
         }
         return true
     }
-<<<<<<< HEAD
     def addEvaToStudents(String criterionName, LinkedList<Evaluation> evaluations){
 
         Student.listOrderByLogin().each { Student student ->
@@ -108,24 +107,12 @@ class StudentController {
     public boolean addEvaluationToAllStudents() {
         def evaluationInstance = new Evaluation(params);
         Student.findAll().each { Student student ->
-=======
-
-    public boolean addEvaluationToAllStudents() {
-        def evaluationInstance = new Evaluation(params);
-        for (Student student : Student.findAll()) {
->>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
             student.addEvaluation(evaluationInstance);
             student.save flush: true
         }
         return true
     }
-<<<<<<< HEAD
-    //PARA TESTE- CUCUMBER
     public void addEvaluationToStudent(String login){
-=======
-
-    public void addEvaluationToStudent(String login) {
->>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
         def student = Student.findByLogin(login);
         def evaluationInstance = new Evaluation(params);
         student.addEvaluation(evaluationInstance);
@@ -140,26 +127,15 @@ class StudentController {
     }
 
 
-<<<<<<< HEAD
-    public void addCriterionToAllStudent(String description){
-        def students = Student.findAll();
-        for(int i =0; i<students.size();i++){
-=======
+
     public void addCriterionToAllStudent(String description) {
         def students = Student.findAll();
         for (int i = 0; i < students.size(); i++) {
->>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
             def evCriterion = new EvaluationsByCriterion(Criterion.findByDescription(description));
             Student student = students.get(i);
             student.addEvaluationsByCriterion(evCriterion)
         }
     }
-
-<<<<<<< HEAD
-    public List<Evaluation> countStudentsEvaluated(String criterionName, String origin, String dateInString){
-        List<Evaluation> returningValue = new LinkedList<>();
-        def evaluation = new Evaluation(origin,null,this.formattedDate(dateInString),criterionName);
-=======
 
     public double checkPorcentageEvaluationStudent(String evalValue, String loginA) {
         def student = Student.findByLogin(loginA)
@@ -182,7 +158,6 @@ class StudentController {
     public List<Evaluation> countStudentsEvaluated(String criterionName, String origin, String dateInString) {
         List<Evaluation> returningValue = new LinkedList<>();
         def evaluation = new Evaluation(origin, null, this.formattedDate(dateInString), criterionName);
->>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
         def students = Student.findAll();
         for (int i = 0; i < students.size(); i++) {
             returningValue.add(students.get(i).findEvaluationByCriterion(criterionName).findSpecificEvaluation(evaluation))
@@ -190,13 +165,8 @@ class StudentController {
         return returningValue;
     }
 
-<<<<<<< HEAD
     public boolean checkRedundantEvaluationAllStudents(String criterionName,String origin,String dateInString){
         def evaluation = new Evaluation(origin,null,this.formattedDate(dateInString),criterionName);
-=======
-    public boolean checkRedundantEvaluationAllStudents(String criterionName, String origin, String dateInString) {
-        def evaluation = new Evaluation(origin, null, this.formattedDate(dateInString), criterionName)
->>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
         List<Student> students = Student.findAll();
         for (int i = 0; i < students.size(); i++) {
             def evCriterion = students.get(i).findEvaluationByCriterion(criterionName);
@@ -207,7 +177,7 @@ class StudentController {
         return true
     }
 
-<<<<<<< HEAD
+
     public boolean checkEvaluationsAllStudents(String criterionName, String origin, String dateInString){
        def evaluation = new Evaluation(origin,null,this.formattedDate(dateInString),criterionName);
        List<Student> students = Student.findAll()
@@ -216,19 +186,7 @@ class StudentController {
            return evCriterion.findSpecificEvaluation(evaluation) != null
        }
         return false;
-=======
-    public boolean checkEvaluationsAllStudents(String criterionName, String origin, String dateInString) {
-        def evaluation = new Evaluation(origin, null, this.formattedDate(dateInString), criterionName);
-        List<Student> students = Student.findAll()
-        for (int i = 0; i < students.size(); i++) {
-            def evCriterion = students.get(i).findEvaluationByCriterion(criterionName);
-            if (evCriterion.findSpecificEvaluation(evaluation) != null) {
-                return true;
-            } else {
-                return false
-            }
-        }
->>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
+
     }
 
     public int countAllStudents() {
@@ -246,14 +204,6 @@ class StudentController {
     public Student createAndSaveStudent(){
         Student student = new Student(params)
         if(Student.findByLogin(student.getLogin()) == null) {
-            student.save flush: true
-        }
-        return student
-    }
-
-    public Student createAndSaveStudent() {
-        Student student = new Student(params)
-        if (Student.findByLogin(student.getLogin()) == null) {
             student.save flush: true
         }
         return student

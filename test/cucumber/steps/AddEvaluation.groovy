@@ -16,10 +16,6 @@ this.metaClass.mixin(cucumber.api.groovy.EN)
 String criterionNameGlobal, originGlobal;
 String dateGlobal;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
 /*Then(~'^the evaluation criterion with name "([^"]*)" is properly stored in the system$') { String criterionName ->
     assert EvaluationCriterion.findByName(criterionName) != null
 }*/
@@ -29,10 +25,6 @@ Given there are no evaluations to all students to the "X" criterion, dated from 
         When I want to evaluate all students to a the "X" criteria, without a specific origin and dated from "28/03/2016".
         Then all evaluations will not be stored in on the "X" criterion history of each student*/
 //////////////////////////////////
-<<<<<<< HEAD
-=======
-
->>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
 
 //////////////////////////////////
 
@@ -41,18 +33,7 @@ Given evaluations for every student on the "X" criteria, originated form "Test" 
    When I want to evaluate all students on the "X" criteria, originated from "Test" and dated from "28/03/2016"
    Then all the marks will not be stored in on the "X" criteria's history of each student*/
 Boolean stored = false;
-Given(~'^evaluations for every student on the "([^"]*)" criteria, originated from "([^"]*)" and dated from "([^"]*)" are already in the system$') {
-    String criterionName, origin, dateInString ->
-        EvaluationDataAndOperations.createStudents();
-        EvaluationDataAndOperations.createCriterionX();
-<<<<<<< HEAD
-        EvaluationDataAndOperations.createEvaluationNoValue(criterionName, origin, dateInString);
-        assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName, origin, dateInString) == true
-=======
-        EvaluationDataAndOperations.createEvaluationNoValue(criterionName,origin,dateInString);
-        assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName,origin, dateInString) == true
->>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
-}
+
 
 /*Scenario: Error related to add a  evaluation
 Given I am at the "Add concept" screen
@@ -119,11 +100,7 @@ Given(~/^there are no evaluations to all students to the "([^"]*)" criterion, or
     String criterionName, origin, dateInString ->
         EvaluationDataAndOperations.createStudents();
         EvaluationDataAndOperations.createCriterionX();
-<<<<<<< HEAD
         assert EvaluationDataAndOperations.findEvaluationAndCount(criterionName, origin, dateInString);
-=======
-        assert EvaluationDataAndOperations.findEvaluationAndCount(criterionName,origin,dateInString);
->>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
 
 }
 When(~/^I want to evaluate all students to the "([^"]*)" criterion, originated from a "([^"]*)" and dated from "([^"]*)"\.$/) {
@@ -132,19 +109,11 @@ When(~/^I want to evaluate all students to the "([^"]*)" criterion, originated f
         criterionNameGlobal = criterionName
         originGlobal = origin
         String value = "--";
-<<<<<<< HEAD
         EvaluationDataAndOperations.createEvaluation(value, criterionName, origin, dateInString)
 
 }
 Then(~/^all the evaluations will be stored in on the "([^"]*)" criterion history of each student$/) {
     String criterionName -> assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName, originGlobal, dateGlobal)
-=======
-        EvaluationDataAndOperations.createEvaluation(value,criterionName,origin,dateInString)
-
-}
-Then(~/^all the evaluations will be stored in on the "([^"]*)" criterion history of each student$/) {
-    String criterionName -> assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName,originGlobal,dateGlobal)
->>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
 
 }
 ///
@@ -152,8 +121,14 @@ Given(~/^there are no evaluations to all students to the "([^"]*)" criterion,$/)
     String criterionName, dateInString ->
         EvaluationDataAndOperations.createStudents();
         EvaluationDataAndOperations.createCriterionXandAddToStudents();
-<<<<<<< HEAD
         assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName, "--", dateInString) == false
+}
+Given(~'^evaluations for every student on the "([^"]*)" criteria, originated from "([^"]*)" and dated from "([^"]*)" are already in the system$') {
+    String criterionName, origin, dateInString ->
+        EvaluationDataAndOperations.createStudents();
+        EvaluationDataAndOperations.createCriterionX();
+        EvaluationDataAndOperations.createEvaluationNoValue(criterionName, origin, dateInString);
+        assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName, origin, dateInString) == true
 }
 When(~/^I want to evaluate all students to a the "([^"]*)" criteria, without a specific origin and dated from "([^"]*)"\.$/) { String criterionName, dateInString ->
     EvaluationDataAndOperations.createEvaluation("--", criterionName, '--', dateInString)
@@ -162,22 +137,10 @@ When(~/^I want to evaluate all students to a the "([^"]*)" criteria, without a s
 }
 Then(~/^all evaluations will not be stored in on the "([^"]*)" criterion history of each student$/) { String criterionName ->
     assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName, "--", dateGlobal) == false
-=======
-        assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName,"--",dateInString) == false
-}
-When(~/^I want to evaluate all students to a the "([^"]*)" criteria, without a specific origin and dated from "([^"]*)"\.$/) { String criterionName, dateInString ->
-    EvaluationDataAndOperations.createEvaluation("--",criterionName,'--',dateInString)
-    criterionNameGlobal = criterionName
-    dateGlobal = dateInString;
-}
-Then(~/^all evaluations will not be stored in on the "([^"]*)" criterion history of each student$/) {  String criterionName ->
-    assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName,"--",dateGlobal) == false
->>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
 }
 ///
 When(~/^I want to add a mark to all students to a the "([^"]*)" criteria, originated from "([^"]*)" and dated from "([^"]*)"$/) {
     String criterionName, origin, dateInString ->
-<<<<<<< HEAD
         stored = EvaluationDataAndOperations.createEvaluation("--", criterionName, origin, dateInString);
         dateGlobal = dateInString;
         originGlobal = origin;
@@ -254,17 +217,6 @@ Then(~/^I can see the evaluation valued "([^"]*)" in the criterion "([^"]*)", fr
         assert page.confirmEvaluation(criterionName, evaluationOrigin, evaluationDate)
 }
 
-=======
-        stored = EvaluationDataAndOperations.createEvaluation("--",criterionName,origin,dateInString);
-        dateGlobal = dateInString;
-        originGlobal = origin;
-        assert EvaluationDataAndOperations.createEvaluation(null,criterionName,origin,dateInString) == false
-}
-Then(~/^all the marks will not be stored in on the "([^"]*)" criteria's history of each student$/) {
-    String criterionName->
-        assert EvaluationDataAndOperations.checkEvaluationRedundantAllStudents(criterionName,originGlobal,dateGlobal)
-}
->>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
 /*
 Given(~/^I am at the "([^"]*)" screen$/) { String arg1 ->
     // Write code here that turns the phrase above into concrete actions

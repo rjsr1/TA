@@ -17,22 +17,12 @@ class Student {
     public Student(String name, String login){
         this.name = name;
         this.login = login;
-<<<<<<< HEAD
         this.criterionsAndEvaluations = new LinkedList<>();
         def criterions = Criterion.findAll()
         for(int i =0; i < criterions.size();i++){
             EvaluationsByCriterion crit = new EvaluationsByCriterion(criterions.get(i));
             this.criterionsAndEvaluations.add(crit)
         }
-    }
-
-
-    public void addEvaluation(Evaluation evaluationInstance){
-        for(int i = 0; i< this.criterionsAndEvaluations.size(); i++){
-            if(this.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(evaluationInstance.criterion)){
-                this.criterionsAndEvaluations.get(i).addEvaluation(evaluationInstance);
-=======
-        this.criteriaAndEvaluations = [];
     }
 
     public void calcMedia() {
@@ -73,7 +63,6 @@ class Student {
                 if (this.criteriaAndEvaluations[i].getCriterion().getDescription().equals(evaluationInstance.criterion.description)) {
                     this.criteriaAndEvaluations[i].addEvaluation(evaluationInstance)
                 }
->>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
             }
         }else {
             EvaluationsByCriterion newEvByCrit = new EvaluationsByCriterion(evaluationInstance.criterion)
@@ -86,15 +75,10 @@ class Student {
 
 
     public void deleteEvaluation(Evaluation evaluationInstance){
-<<<<<<< HEAD
-        for(int i = 0; i< this.criterionsAndEvaluations.size(); i++){
-            if(this.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(evaluationInstance.criterion)){
-                this.criterionsAndEvaluations.get(i).deleteEvaluation(evaluationInstance);
-=======
+
         for(int i = 0; i< this.criteriaAndEvaluations.size(); i++){
             if(this.criteriaAndEvaluations[i].getCriterion().getDescription().equals(evaluationInstance.criterion.description)){
                 this.criteriaAndEvaluations[i].deleteEvaluation(evaluationInstance);
->>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
             }
         }
     }
@@ -116,19 +100,12 @@ class Student {
     }
 
     public boolean evaluationExist(Evaluation evaluationInstance){
-<<<<<<< HEAD
-        for(int i = 0; i<this.criterionsAndEvaluations.size();i++){
-            if(this.criterionsAndEvaluations.get(i).getCriterion().getDescription().equals(evaluationInstance.getCriterion())){
-                List<Evaluation> evaluationsForThisCriterion = this.criterionsAndEvaluations.get(i).evaluations;
-                for (int j = 0; j < evaluationsForThisCriterion.size(); j++) {
-                    if (evaluationsForThisCriterion.compatibleTo(evaluationInstance)) {
-=======
+
         for(int i = 0; i<this.criteriaAndEvaluations.size(); i++){
             if(this.criteriaAndEvaluations[i].getCriterion().getDescription().equals(evaluationInstance.getCriterion().getDescription())){
                 List<Evaluation> evaluationsForThisCriterion = this.criteriaAndEvaluations[i].evaluations;
                 for(int j=0; j<evaluationsForThisCriterion.size();j++){
                     if(evaluationsForThisCriterion.compatibleTo(evaluationInstance)){
->>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
                         return true
                     }
                 }

@@ -29,26 +29,6 @@ class EvaluationController {
         return evaluation
     }
 
-<<<<<<< HEAD
-    /*public Evaluation createEvaluation(String criterionName, String origin,String dateInString){
-        def criterion = criterionName
-=======
-    /* COMENTADO POR CALEGARIO A PEDIDO DE DANILO
-    public Evaluation createEvaluation(String criterionName, String origin,String dateInString){
-        def criterion = Criterion.findByDescription(criterionName)
->>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
-        def date = this.formattedDate(dateInString)
-        Evaluation evaluation = new Evaluation(origin, null, date, criterion)
-        evaluation.save flush : true
-        return evaluation;
-<<<<<<< HEAD
-    }*/
-=======
-    }
-    */
->>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
-
-
     @Transactional
     def save(Evaluation evaluationInstance) {
         if (evaluationInstance == null) {

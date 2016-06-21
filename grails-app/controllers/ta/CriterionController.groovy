@@ -13,18 +13,12 @@ class CriterionController {
         respond Criterion.list(params), model:[criterionInstanceCount: Criterion.count()]
     }
 
-<<<<<<< HEAD
-    def addEvaluation(Criterion criterionInstance,Evaluation evaluationInstance){
-        criterionInstance.evaluations.add(evaluationInstance)
-        edit(criterionInstance)
-    }
     public createCriterion(){
         Criterion criterion = new Criterion(params)
         criterion.save flush : true
     }
 
-=======
->>>>>>> 49046cce259c367cf3df2ee6e9e160019f0268ed
+
     def show(Criterion criterionInstance) {
         respond criterionInstance
     }
