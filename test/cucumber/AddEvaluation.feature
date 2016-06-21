@@ -22,17 +22,5 @@ Feature: AddEvaluation
   Scenario: Add evaluation to all students
     Given I see the student "Rodrigo", login "rcac" and the criterion "X"
     When I request the system to add the evaluation valued "MANA" in the criterion "X", from "Test", date "28/03/2016"
-    Then I can see the evaluation valued "MANA" in the criterion "X", from "([^"]*)", date "([^"]*)" in the evaluation screen
-
-  Scenario: Import evaluations
-    Given I organized all evaluations for the "X" criteron originated from "Midterm", dated from "31/03/2016" in a spreedsheet
-    When I want to import all evaluations from the spreedsheet to add to all students "X" criterias history, originated from "Midterm" and dated from "31/03/2016"
-    Then all the marks will be stored in on the "X" criteria's history of each student
-
-
-  Scenario: Import repeated evaluations
-    Given I organized all evaluations for the "X" criteria originated from "Midterm", dated from "31/03/2016" in a spreedsheet
-    And there already are evaluations for the "X" criteria, originated from "Midterm" and dated from "31/03/2016" in the system
-    When I want to import all evaluations from the spreedsheet to add to all students "X" criterias history, originated from "Midterm" and dated from "31/03/2016"
-    Then all the evaluations will not be stored in on the "X" criteria's history of each student
+    Then I can see the evaluation valued "MANA" in the criterion "X", from "Test", date "28/03/2016" in the evaluation screen
 

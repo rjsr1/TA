@@ -1,4 +1,4 @@
-package steps
+/*package steps
 
 import pages.EvaluationCriterionPages.CreateEvaluationCriterionPage
 import pages.EvaluationCriterionPages.EvaluationCriterionPage
@@ -36,7 +36,7 @@ When(~'^I create an evaluation criterion with name "([^"]*)"2$') { String criter
 Then(~'^the evaluation criterion with name "([^"]*)" was not stored in the system$') { String criterionName ->
     assert EvaluationCriterion.findByName(criterionName) != null && !saved
 }
-*/
+
 
 //////////////////////////////////
 Given(~'^the system does not have an evaluation criterion with name "([^"]*)"2$') { String criterionName ->
@@ -48,7 +48,7 @@ And(~'^the student "([^"]*)" with login "([^"]*)" is registered in the system$')
     EvaluateStudentTestDataAndOperations.createStudent(studentLogin, studentName)
     assert Student.findByLogin(studentLogin) != null
 }
-*/
+
 
 When(~'^I create an evaluation criterion with name "([^"]*)"3$') { String criterionName ->
     EvaluateStudentTestDataAndOperations.createEvaluationCriterion(criterionName)
@@ -117,4 +117,4 @@ Then(~'^I am should see the Students page with a new column named "([^"]*)"$') {
     at StudentPage
 
     assert criterionName == criterionSaved
-}
+}*/

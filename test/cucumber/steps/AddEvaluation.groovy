@@ -1,9 +1,6 @@
 package steps
 
 import cucumber.api.PendingException
-import pages.EvaluationCriterionPages.CreateEvaluationCriterionPage
-import pages.EvaluationCriterionPages.EvaluationCriterionPage
-import pages.StudentPages.CreateStudentPage
 import pages.StudentPages.StudentPage
 import ta.Evaluation
 import ta.Student
@@ -99,7 +96,7 @@ Then(~'^all evaluations will be stored on the "([^"]*)" criterias history of eac
 Given(~/^there are no evaluations to all students to the "([^"]*)" criterion, originated from a "([^"]*)" and dated from "([^"]*)"$/) {
     String criterionName, origin, dateInString ->
         EvaluationDataAndOperations.createStudents();
-        EvaluationDataAndOperations.createCriterionX();
+        EvaluationDataAndOperations.createCriterionX(criterionName);
         assert EvaluationDataAndOperations.findEvaluationAndCount(criterionName, origin, dateInString);
 
 }
@@ -120,16 +117,10 @@ Then(~/^all the evaluations will be stored in on the "([^"]*)" criterion history
 Given(~/^there are no evaluations to all students to the "([^"]*)" criterion,$/) {
     String criterionName, dateInString ->
         EvaluationDataAndOperations.createStudents();
-        EvaluationDataAndOperations.createCriterionXandAddToStudents();
+        EvaluationDataAndOperations.createCriterionXs(criterionName);
         assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName, "--", dateInString) == false
 }
-Given(~'^evaluations for every student on the "([^"]*)" criteria, originated from "([^"]*)" and dated from "([^"]*)" are already in the system$') {
-    String criterionName, origin, dateInString ->
-        EvaluationDataAndOperations.createStudents();
-        EvaluationDataAndOperations.createCriterionX();
-        EvaluationDataAndOperations.createEvaluationNoValue(criterionName, origin, dateInString);
-        assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName, origin, dateInString) == true
-}
+
 When(~/^I want to evaluate all students to a the "([^"]*)" criteria, without a specific origin and dated from "([^"]*)"\.$/) { String criterionName, dateInString ->
     EvaluationDataAndOperations.createEvaluation("--", criterionName, '--', dateInString)
     criterionNameGlobal = criterionName
@@ -139,6 +130,13 @@ Then(~/^all evaluations will not be stored in on the "([^"]*)" criterion history
     assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName, "--", dateGlobal) == false
 }
 ///
+Given(~'^evaluations for every student on the "([^"]*)" criteria, originated from "([^"]*)" and dated from "([^"]*)" are already in the system$') {
+    String criterionName, origin, dateInString ->
+        EvaluationDataAndOperations.createStudents();
+        EvaluationDataAndOperations.createCriterionX(criterionName);
+        EvaluationDataAndOperations.createEvaluationNoValue(criterionName, origin, dateInString);
+        assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName, origin, dateInString) == true
+}
 When(~/^I want to add a mark to all students to a the "([^"]*)" criteria, originated from "([^"]*)" and dated from "([^"]*)"$/) {
     String criterionName, origin, dateInString ->
         stored = EvaluationDataAndOperations.createEvaluation("--", criterionName, origin, dateInString);
@@ -154,8 +152,8 @@ Then(~/^all the marks will not be stored in on the "([^"]*)" criteria's history 
 String studentNameGlobal, studentLoginGlobal;
 Given(~/^I see the student "([^"]*)", login "([^"]*)" and the criterion "([^"]*)"$/) {
     String studentName, studentLogin, criterionName ->
-        to AddStudentPage
-        at AddStudentPage
+        to AddStudentsPage
+        at AddStudentsPage
         studentLoginGlobal = studentLogin;
         studentNameGlobal = studentName;
         page.fillStudentDetails(studentName, studentLogin)

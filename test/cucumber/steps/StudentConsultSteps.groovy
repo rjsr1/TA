@@ -8,7 +8,7 @@ import steps.StudentConsultTestDataAndOperations
 
 this.metaClass.mixin(cucumber.api.groovy.Hooks)
 this.metaClass.mixin(cucumber.api.groovy.EN)
-
+/*
 Student globalStudent
 //Controller
 Given(~/^the student "([^"]*)" with login "([^"]*)" is registered in the system$/) { String nome, String login ->
@@ -55,4 +55,4 @@ When(~/^I request the student information$/) { ->
 Then(~/^all the student average evaluation in all criteria will appear in the screen$/) { ->
     at StudentConsultPage
     page.showStudentDetails()
-}
+}*/

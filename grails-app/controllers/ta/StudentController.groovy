@@ -157,10 +157,11 @@ class StudentController {
 
     public List<Evaluation> countStudentsEvaluated(String criterionName, String origin, String dateInString) {
         List<Evaluation> returningValue = new LinkedList<>();
-        def evaluation = new Evaluation(origin, null, this.formattedDate(dateInString), criterionName);
+        def evaluation = new Evaluation(origin, "--", this.formattedDate(dateInString), Criterion.findByDescription(criterionName));
         def students = Student.findAll();
         for (int i = 0; i < students.size(); i++) {
-            returningValue.add(students.get(i).findEvaluationByCriterion(criterionName).findSpecificEvaluation(evaluation))
+            EvaluationsByCriterion evByCrit = students.get(i).findEvaluationByCriterion(criterionName);
+            if(evByCrit!=null)returningvalue.evByCrit.findSpecificEvaluation(evaluation);
         }
         return returningValue;
     }
