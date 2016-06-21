@@ -33,13 +33,7 @@ Given evaluations for every student on the "X" criteria, originated form "Test" 
    When I want to evaluate all students on the "X" criteria, originated from "Test" and dated from "28/03/2016"
    Then all the marks will not be stored in on the "X" criteria's history of each student*/
 Boolean stored = false;
-Given(~'^evaluations for every student on the "([^"]*)" criteria, originated from "([^"]*)" and dated from "([^"]*)" are already in the system$') {
-    String criterionName, origin, dateInString ->
-        EvaluationDataAndOperations.createStudents();
-        EvaluationDataAndOperations.createCriterionX();
-        EvaluationDataAndOperations.createEvaluationNoValue(criterionName, origin, dateInString);
-        assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName, origin, dateInString) == true
-}
+
 
 /*Scenario: Error related to add a  evaluation
 Given I am at the "Add concept" screen
@@ -128,6 +122,13 @@ Given(~/^there are no evaluations to all students to the "([^"]*)" criterion,$/)
         EvaluationDataAndOperations.createStudents();
         EvaluationDataAndOperations.createCriterionXandAddToStudents();
         assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName, "--", dateInString) == false
+}
+Given(~'^evaluations for every student on the "([^"]*)" criteria, originated from "([^"]*)" and dated from "([^"]*)" are already in the system$') {
+    String criterionName, origin, dateInString ->
+        EvaluationDataAndOperations.createStudents();
+        EvaluationDataAndOperations.createCriterionX();
+        EvaluationDataAndOperations.createEvaluationNoValue(criterionName, origin, dateInString);
+        assert EvaluationDataAndOperations.checkEvaluationAllStudents(criterionName, origin, dateInString) == true
 }
 When(~/^I want to evaluate all students to a the "([^"]*)" criteria, without a specific origin and dated from "([^"]*)"\.$/) { String criterionName, dateInString ->
     EvaluationDataAndOperations.createEvaluation("--", criterionName, '--', dateInString)
