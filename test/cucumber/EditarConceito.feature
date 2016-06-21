@@ -1,4 +1,3 @@
-@ignore
 Feature: Edit Evaluation
   As a teacher
   I want to edit the given evaluations with respect to various criteria
