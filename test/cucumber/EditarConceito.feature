@@ -1,4 +1,3 @@
-@ignore
 Feature: Edit Evaluation
   As a teacher
   I want to edit the given evaluations with respect to various criteria
@@ -23,7 +22,7 @@ Scenario: Edit an evaluation for a non existent one
   Then the system do nothing
 
 #GUI Scenario
-Scenario: Edit an evaluation for a non existent one
-  Given I see the student "Marcos Antonio", login "ma2", has a "MANA" evaluation in the criterion "X", from "Prova 2", date "11/11/11"
-  When I request the system to modify the evaluation "MANA" to "10" in the criterion "X", from "Prova 2", date "11/11/11", from student "Marcos Antonio", login "ma2"
-  Then an error message related to the evaluation appear
+Scenario: Edit an evaluation for a existent one
+  Given I see the student "Lapprand Calegario", login "noob", has a "MANA" evaluation in the criterion "Texto", from "Test", date "11/11/11"
+  When I request the system to modify the evaluation "MANA" to "MA" in the criterion "Texto", from "Test", date "11/11/11", from student "Lapprand Calegario", login "noob"
+  Then I can see the evaluation "MA" in the criterion "Texto", from "Test", date "11/11/11", from student "Lapprand Calegario", login "noob"

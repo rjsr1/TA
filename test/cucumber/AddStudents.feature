@@ -17,9 +17,9 @@ Feature: Add Student
 
 #Cenário Controler
   Scenario: Register a student twice
-    Given the student "Roberto Alves" with login "ra" is registered in the system
-    When I register "Roberto Alves" with login "ra"
-    Then the system does not register "Roberto Alves" with login "ra"
+    Given the student "Robertinho Alves" with login "raz" is registered in the system
+    When I register "Robertinho Alves" with login "raz"
+    Then the system does not register "Robertinho Alves" with login "raz"
 
 #Cenário GUI
   Scenario: Error message when registering a student twice

@@ -1,6 +1,10 @@
 import cucumber.api.PendingException
 import pages.EditEvaluationPage
-import pages.StudentPages.CreateStudentPage
+//import pages.StudentPages.CreateStudentPage
+import pages.AddStudentsPage
+import pages.StudentPages.StudentPage
+import pages.CriterionPages.CriterionPage
+import pages.CreateCriterionPage
 import steps.EvaluationDataAndOperations
 import ta.Student
 
@@ -65,34 +69,89 @@ Scenario: Edit an evaluation for a non existent one
 
 Given(~'^I see the student "([^"]*)", login "([^"]*)", has a "([^"]*)" evaluation in the criterion "([^"]*)", from "([^"]*)", date "([^"]*)"$'){
     String studentName, studentLogin, studentEvaluation, criterionName, evaluationOrigin, evaluationDate ->
-        to CreateStudentPage
-        at CreateStudentPage
+        to AddStudentsPage
+        at AddStudentsPage
 
         page.fillStudentDetails(studentName, studentLogin)
-        page.selectCreateStudent()
+        page.selectAddStudent()
 
-        to AddEvaluationToStudentPage
-        at AddEvaluationToStudentPage
+        to StudentPage
+
+        assert page.confirmStudent(studentName, studentLogin)
+
+        to CreateCriterionPage
+        at CreateCriterionPage
+
+        page.fillCriterionDetails(criterionName)
+        page.selectCreateCriterion()
+
+        to CriterionPage
+
+        assert page.confirmCriterion(criterionName)
+
+        to AddEvaluationPage
+        at AddEvaluationPage
 
         //date = formattedDate(criterionDate)
         page.fillEvaluationDetails(criterionName, evaluationOrigin, evaluationDate, studentEvaluation)
         page.selectAddEvaluationToStudent()
+
+        to EvaluationPage
+
+        assert page.confirmEvaluation(criterionName, evaluationOrigin, evaluationDate, studentEvaluation)
 }
 
 When(~'^I request the system to modify the evaluation "([^"]*)" to "([^"]*)" in the criterion "([^"]*)", from "([^"]*)", date "([^"]*)", from student "([^"]*)", login "([^"]*)"$'){
     String oldEvaluation, newEvaluation, criterionName, evaluationOrigin, evaluationDate, studentName, studentLogin ->
+        to ListStudentPage
+        at ListStudentPage
+
+        page.selectStudent(studentName, studentLogin)
+
+        to StudentPage
+
+        assert page.confirmStudent(studentName, studentLogin)
+        page.selectCriterion(criterionName)
+
+        to CriterionPage
+
+        assert page.confirmCriterion(criterionName)
+        page.selectEvaluation(evaluationOrigin, evaluationDate, oldEvaluation)
+
+        to EvaluationPage
+
+        assert page.confirmEvaluation(criterionName, evaluationOrigin, evaluationDate, oldEvaluation)
+
         to EditEvaluationPage
         at EditEvaluationPage
 
         //date = formattedDate(criterionDate)
-        page.fillEvaluationFromStudentDetails(studentName, studentLogin, criterionName, evaluationOrigin, evaluationDate, oldEvaluation, newEvaluation)
+        page.fillEvaluationFromStudentDetails(criterionName, evaluationOrigin, evaluationDate, newEvaluation)
         page.selectUpdateEvaluationFromStudent()
+
+        to EvaluationPage
+
+        assert page.confirmEvaluation(criterionName, evaluationOrigin, evaluationDate, newEvaluation)
 }
 
-Then(~'^an error message related to the evaluation appear$'){
-    ->
-    to EditEvaluationPage
-    at EditEvaluationPage
+Then(~'^I can see the evaluation "([^"]*)" in the criterion "([^"]*)", from "([^"]*)", date "([^"]*)", from student "([^"]*)", login "([^"]*)"$'){
+    String newEvaluation, criterionName, evaluationOrigin, evaluationDate, studentName, studentLogin ->
+        to ListStudentPage
+        at ListStudentPage
 
-    page.showErrorMessage("Invalid Evaluation")
+        page.selectStudent(studentName, studentLogin)
+
+        to StudentPage
+
+        assert page.confirmStudent(studentName, studentLogin)
+        page.selectCriterion(criterionName)
+
+        to CriterionPage
+
+        assert page.confirmCriterion(criterionName)
+        page.selectEvaluation(evaluationOrigin, evaluationDate, newEvaluation)
+
+        to EvaluationPage
+
+        assert page.confirmEvaluation(criterionName, evaluationOrigin, evaluationDate, newEvaluation)
 }
