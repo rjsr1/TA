@@ -3,7 +3,8 @@
  */
 
 
-import pages.CreateCriterionPage
+import pages.AddGroupCriteriaPage
+import pages.CriterionPages.CriterionPage
 import pages.ShowCriterionPage
 import steps.CriterionTestDataAndOperations
 import cucumber.api.groovy.EN
@@ -71,34 +72,35 @@ And I finalize the criteria registration
 Then I should see the "C3" criterion available on the criteria list
 And I should see the "C4" criterion available on the criteria list
 */
-//Given(~'^I am at the Add Group of Criteria page$') {
-//    String desc ->
-//        to CreateCriterionPage
-//        at CreateCriterionPage
-//        page.createCriterion(desc)
-//        at ShowCriterionPage
-//}
-//
-//And(~'^the criterion "([^"]*)" does not exist$') { ->
-//    to CreateCriterionPage
-//    at CreateCriterionPage
-//}
-//
-//When(~'^I fill the field Nome with the name "([^"]*)"$') {
-//    String desc ->
-//        at CreateCriterionPage
-//        page.createCriterion(desc)
-//}
-//
-//And(~'^I finalize the criteria registration$') { ->
-//    to CreateCriterionPage
-//    at CreateCriterionPage
-//}
-//
-//Then(~'^I should see the "([^"]*)" criterion available on the criteria list$') { ->
-//    at CreateCriterionPage
-//    assert page.checkForErrors()
-//}
+Given(~'^the criterion "([^"]*)" does not exist$') {
+    String description ->
+        to CriterionPage
+        at CriterionPage
+
+        assert !page.confirmCriterion(description)
+}
+
+And(~'^I am at the Add Group of Criteria page$') { ->
+    to AddGroupCriteriaPage
+    at AddGroupCriteriaPage
+}
+
+When(~'^I fill the field Nome with the name "([^"]*)"$') {
+    String description ->
+        page.fillGroupCriteriaDetails(description)
+}
+
+And(~'^I finalize the criteria registration$') { ->
+    page.selectAddGroupCriteria()
+}
+
+Then(~'^I should see the "([^"]*)" criterion available on the criteria list$') {
+    String description ->
+        to CriterionPage
+        at CriterionPage
+
+        assert page.confirmCriterion(description)
+}
 ///*
 //#Controller Scenario
 //Scenario: Register a criterion that already exists
