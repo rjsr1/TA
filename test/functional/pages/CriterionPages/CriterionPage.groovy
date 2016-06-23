@@ -19,4 +19,11 @@ class CriterionPage extends Page {
         }
         return r
     }
+
+    boolean confirmEqualCriteria(int qtCriteria){
+        boolean r = false
+        if($("tr").find("td").allElements().size() == qtCriteria)
+            r = true
+        return r
+    }
 }

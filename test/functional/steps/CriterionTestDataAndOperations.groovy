@@ -44,4 +44,12 @@ class CriterionTestDataAndOperations {
         controller.saveGroup()
         controller.response.reset()
     }
+
+    public static int checkNumbersDescription(String description){
+        return Criterion.findAllByDescription(description).size()
+    }
+
+    public static int countCriteria(){
+        return Criterion.list().size()
+    }
 }

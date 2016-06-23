@@ -9,7 +9,7 @@ class CriterionController {
     static allowedMethods = [update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
+        params.max = Math.min(max ?: 100, 100)
         respond Criterion.list(params), model:[criterionInstanceCount: Criterion.count()]
     }
 
