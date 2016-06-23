@@ -98,12 +98,36 @@ class StudentController {
         return true
     }
 
+    public void addEvaluationsToStudentTests(String studentLogin, LinkedList<Evaluation> evaluationList){
+        for (int i = 0; i < Student.list().size(); i++) {
+            if(Student.list().get(i).login.equals(studentLogin)){
+                Student.list().get(i).addEvaluation(evaluationList.get(0))
+                Student.list().get(i).save(
+                        flush: true,
+                        failOnError: true
+                )
+            }
+        }
+    }
+
+    public boolean evaluationTests(String studentLogin, String evaluationOrigin){
+        def evaluation = Evaluation.findByOrigin(evaluationOrigin)
+        List<Evaluation> listEval = new LinkedList<Evaluation>()
+        listEval.add(evaluation)
+        //addEvaluationsToAllStudents(studentLogin, listEval)
+        addEvaluationsToStudentTests(studentLogin, listEval)
+    }
+
     public boolean addEvaluationToAllStudents() {
         def evaluationInstance = new Evaluation(params);
         for (Student student : Student.findAll()) {
             student.addEvaluation(evaluationInstance);
             student.save flush: true
         }
+        /*for(Student student : Student.list()){
+            student.addEvaluation(evaluationInstance.get(i));
+            student.save flush : true
+        }*/
         return true
     }
 
@@ -121,6 +145,13 @@ class StudentController {
         student.save flush: true
     }
 
+    public void addEvaluationTests(String studentLogin, String criterionName, String evaluationOrigin){
+        Student student = Student.findByLogin(studentLogin)
+        Evaluation evaluation = Evaluation.findByCriterion(Criterion.findByDescription(criterionName))
+        //student.addEvaluation(null, criterionName, evaluationOrigin)
+        student.addEvaluation(evaluation)
+        student.save flush : true
+    }
 
     public void addCriterionToAllStudent(String description) {
         def students = Student.findAll();
@@ -185,7 +216,23 @@ class StudentController {
         }
     }
 
-    public int countAllStudents() {
+    public boolean updateEvaluation(String studentLogin, String newEvaluation, String criterionName, String evaluationOrigin){
+        Student updatedStudent = Student.findByLogin(studentLogin)
+        for(int i = 0; i < updatedStudent.criteriaAndEvaluations.size(); i++){
+            if(updatedStudent.criteriaAndEvaluations.get(i).getCriterion().getDescription().equals(criterionName)){
+                List<Evaluation> evaluationsInCriterion = updatedStudent.criteriaAndEvaluations.get(i).getEvaluations();
+                for(int j = 0; j < evaluationsInCriterion.size(); j++){
+                    //if(evaluationsInCriterion.get(j) != null) {
+                        if (evaluationsInCriterion.get(j).getOrigin().equals(evaluationOrigin)) {
+                            evaluationsInCriterion.get(j).setValue(newEvaluation)
+                        }
+                    //}
+                }
+            }
+        }
+    }
+
+    public int countAllStudents(){
         return Student.findAll().size();
     }
 
@@ -198,9 +245,26 @@ class StudentController {
         return false
     }
 
-    public Student createAndSaveStudent() {
-        Student student = new Student(params)
-        if (Student.findByLogin(student.getLogin()) == null) {
+    @Transactional
+    def createAndSaveStudent() {
+        Student studentInstance = new Student(params)
+        if (Student.findByLogin(studentInstance.getLogin()) == null) {
+            if (studentInstance.hasErrors()) {
+                respond studentInstance.errors, view: 'create'
+                return
+            }
+            if(!studentInstance.save(flush: true)){
+                render(view: "create", model: [studentInstance: studentInstance])
+                return
+            }
+            flash.message = message(code: 'default.created.message', args: [message(code: 'student.label', default: 'Student'), studentInstance.id])
+            redirect(action: "show", id: studentInstance.id)
+        }
+    }
+
+    public Student createAndSaveStudent2(String studentName, String studentLogin){
+        Student student = new Student(studentName, studentLogin)
+        if(Student.findByLogin(studentLogin) == null){
             student.save flush: true
         }
         return student
@@ -223,6 +287,11 @@ class StudentController {
 
     def show(Student studentInstance) {
         respond studentInstance
+    }
+
+    public Student getStudent(String studentLogin){
+        Student studentFound = Student.findByLogin(studentLogin)
+        return studentFound
     }
 
     def create() {

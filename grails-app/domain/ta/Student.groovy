@@ -14,6 +14,11 @@ class Student {
         login unique : true, blank:false;
     }
 
+    static mapping = {
+        sort "login"
+        sort login: "asc"
+    }
+
     public Student(String name, String login){
         this.name = name;
         this.login = login;
@@ -66,6 +71,27 @@ class Student {
             this.addToCriteriaAndEvaluations(newEvByCrit)
         }
         this.calcMedia()
+
+        /*
+        Criterion criterionCreated = Criterion.findByDescription(criterionName)
+
+        List<Evaluation> evaluationWithCriterion = Evaluation.findAllByCriterion(criterionCreated)
+        Evaluation finalEvaluation
+        for(int i = 0; i < evaluationWithCriterion.size(); i++){
+            if(evaluationWithCriterion.get(i).getOrigin().equals(evaluationOrigin)){
+                finalEvaluation = evaluationWithCriterion.get(i)
+            }
+        }
+
+        def evaluationsByCriterionController = new EvaluationsByCriterionController()
+        evaluationsByCriterionController.params << [criterion : criterionCreated]
+        EvaluationsByCriterion evaluationsByCriterionCreated = evaluationsByCriterionController.createAndSaveEvaluationsByCriterion()
+        evaluationsByCriterionCreated.addEvaluation(*//*evaluationInstance*//*finalEvaluation)
+
+        this.criterionsAndEvaluations.add(evaluationsByCriterionCreated)
+
+        evaluationsByCriterionController.response.reset()
+        */
     }
 
 
@@ -78,7 +104,6 @@ class Student {
     }
 
     public EvaluationsByCriterion findEvaluationByCriterion(String criterionName){
-
         for(int i =0; i<this.criteriaAndEvaluations.size(); i++){
             if(this.criteriaAndEvaluations[i].getCriterion().getDescription().equals(criterionName)){
                 return this.criteriaAndEvaluations[i];
@@ -98,9 +123,9 @@ class Student {
             if(this.criteriaAndEvaluations[i].getCriterion().getDescription().equals(evaluationInstance.getCriterion().getDescription())){
                 List<Evaluation> evaluationsForThisCriterion = this.criteriaAndEvaluations[i].evaluations;
                 for(int j=0; j<evaluationsForThisCriterion.size();j++){
-                    if(evaluationsForThisCriterion.compatibleTo(evaluationInstance)){
-                        return true
-                    }
+                    //if(evaluationsForThisCriterion.compatibleTo(evaluationInstance)){
+                    //    return true
+                    //}
                 }
             }
         }

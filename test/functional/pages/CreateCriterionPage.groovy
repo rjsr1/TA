@@ -20,6 +20,14 @@ class CreateCriterionPage extends Page {
         $("input", name: "create").click()
     }
 
+    def fillCriterionDetails(String desc){
+        $("form").description = desc
+    }
+
+    def selectCreateCriterion(){
+        $("input", name: "create").click()
+    }
+
     def boolean checkForErrors() {
         return $("ul", class: "errors").isDisplayed()
     }

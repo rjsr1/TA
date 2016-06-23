@@ -39,7 +39,6 @@ class EvaluationsByCriterion {
         this.criterionAverage = (tempMedia/qtdEvaluations);
     }
 
-
     /*  ------------------------
       | MÉTODOS USADOS EM TESTES |
         ------------------------  */
