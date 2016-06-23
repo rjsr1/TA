@@ -62,6 +62,7 @@ Then(~'^I can\'t see the name of "([^"]*)" and the login "([^"]*)" in the list o
 
 When(~'^I send a text with "([^"]*)"$') { String group ->
     AddStudentsTestDataAndOperations.createGroup(group)
+    countStudent = AddStudentsTestDataAndOperations.countStudent()
 }
 
 Given(~'^I am in the create group page$') { ->

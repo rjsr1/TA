@@ -394,21 +394,41 @@ class StudentController {
         }
     }
 
+    public String espacoBranco(String texto){
+        if (texto.contains("Milena")){
+            boolean b = true
+        }
+        for (int i = 0; i < texto.length(); i++){
+            char a = texto.charAt(i)
+            if(texto.charAt(i) == 160) {
+                texto = texto.substring(i+1)
+            }else{
+                break
+            }
+        }
+        for (int i = texto.length()-1; i > 0; i--){
+            char a = texto.charAt(i)
+            if(texto.charAt(i) == 32) {
+                texto = texto.substring(0, texto.length()-1)
+            }else{
+                break
+            }
+        }
+        return texto
+    }
+
     def saveGroup() {
         String group = params.name
         String[] students = group.split(";")
         for (int i = 0; i < students.size(); i++) {
             List<String> token1 = students[i].tokenize(':')
+            if(token1.size() <= 1) break
             String info = token1.get(0)
             List<String> token2 = info.tokenize('(')
             String name = token2.get(0)
-            char nn = name.charAt(0)
-            if(name.charAt(0) == 160) {
-                name = name.substring(1)
-            }
-            name = name.substring(0, name.length()-1)
+            name = espacoBranco(name)
             String login = token2.get(1)
-            login = login.substring(0, login.length()-1)
+            login = login.replaceAll(" ","")
             Student novo = new Student(name, login)
             novo.calcMedia()
 
@@ -417,10 +437,10 @@ class StudentController {
             }
         }
 
-        flash.message = message(code: 'default.created.message', args: [message(code: students.length, 'student.label', default: 'Student')])
-
         redirect action: "index", method: "GET"
     }
+
+
 
     def createGroup() {
         respond view: 'createGroup'

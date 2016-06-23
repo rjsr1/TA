@@ -38,6 +38,21 @@ Feature: Add Student
 #Cenario GUI
   Scenario: See the new group of students in the list
     Given I am in the create group page
-    When I add the text "João Adherval (jacb :: joaoadherval); Milena Cabral (mscc :: Milechwan)"
-    Then I can see the name of "João Adherval" and the login "jacb" in the list of students
-    And I can see the name of "Milena Cabral" and the login "mscc" in the list of students
+    When I add the text "Danilo Ribeiro (dlr4 :: DLRibeiro); Arthur Lapprand (abl3 :: ArthurLapprand)"
+    Then I can see the name of "Danilo Ribeiro" and the login "dlr4" in the list of students
+    And I can see the name of "Arthur Lapprand" and the login "abl3" in the list of students
+
+#Cenario Controller
+  Scenario: Register a student twice in a group of student
+    Given the student "Felipe Bormann" with login "fhab" is not registered in the system
+    And the student "Arthur Jorge" with login "anew" is registered in the system
+    When I send a text with "Felipe Bormann (fhab :: fbormann); Arthur Jorge (anew :: ajew)"
+    Then the student "Felipe Bormann" with login "fhab" is saved in the system
+    And the system does not register "Arthur Jorge" with login "anew"
+
+##Cenario GUI
+#  Scenario: Register a student twice in a group of student in list
+#    Given I am in the create group page
+#    When I add the text "Milton Vasconcelos (mvgn :: miltongneto); Otávio Vera Cruz (ovcg :: ovcg)"
+#    Then I can see the name of "Milton Vasconcelos" and the login "mvgn" in the list of students
+#    And I can't see the name of "Otávio Vera Cruz" and the login "ovcg" in the list of students

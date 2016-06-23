@@ -8,9 +8,9 @@ import geb.Page
 class AddGroupStudentPage extends Page{
     static url = "/TA/student/createGroup"
 
-//    static at =  {
-//        title ==~ /Create Student/
-//    }
+    static at =  {
+        title ==~ /Create Student/
+    }
 
     def fillGroupStudentDetails(String text) {
         $("form").name = text
