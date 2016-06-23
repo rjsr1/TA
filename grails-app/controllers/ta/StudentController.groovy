@@ -13,11 +13,7 @@ class StudentController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    public static Date formattedDate(String dateInString) {
-        def formatter = new SimpleDateFormat("dd/mm/yyyy");
-        Date date = formatter.parse(dateInString);
-        return date;
-    }
+    //formattedDate foi removido pois ele estava no EvaluationController
 
     def index(Integer max) {
         params.max = Math.min(max ?: 100, 100)
@@ -70,11 +66,8 @@ class StudentController {
             media += student.average
         }
         media = media / Student.list().size()
-        if (mediaAluno >= media) {
-            return true
-        } else {
-            return false
-        }
+        return mediaAluno >= media
+        // foi feita uma refatoraçao para simplificar
     }
 
     public boolean addEvaluationsToAllStudents(LinkedList<Evaluation> evaluationList) {
@@ -183,7 +176,7 @@ class StudentController {
 
     public List<Evaluation> countStudentsEvaluated(String criterionName, String origin, String dateInString) {
         List<Evaluation> returningValue = new LinkedList<>();
-        def evaluation = new Evaluation(origin, null, this.formattedDate(dateInString), criterionName);
+        def evaluation = new Evaluation(origin, null, EvaluationController.formattedDate(dateInString), criterionName);
         def students = Student.findAll();
         for (int i = 0; i < students.size(); i++) {
             returningValue.add(students.get(i).findEvaluationByCriterion(criterionName).findSpecificEvaluation(evaluation))
@@ -192,7 +185,7 @@ class StudentController {
     }
 
     public boolean checkRedundantEvaluationAllStudents(String criterionName, String origin, String dateInString) {
-        def evaluation = new Evaluation(origin, null, this.formattedDate(dateInString), criterionName)
+        def evaluation = new Evaluation(origin, null, EvaluationController.formattedDate(dateInString), criterionName)
         List<Student> students = Student.findAll();
         for (int i = 0; i < students.size(); i++) {
             def evCriterion = students.get(i).findEvaluationByCriterion(criterionName);
@@ -204,15 +197,12 @@ class StudentController {
     }
 
     public boolean checkEvaluationsAllStudents(String criterionName, String origin, String dateInString) {
-        def evaluation = new Evaluation(origin, null, this.formattedDate(dateInString), criterionName);
+        def evaluation = new Evaluation(origin, null, EvaluationController.formattedDate(dateInString), criterionName);
         List<Student> students = Student.findAll()
         for (int i = 0; i < students.size(); i++) {
             def evCriterion = students.get(i).findEvaluationByCriterion(criterionName);
-            if (evCriterion.findSpecificEvaluation(evaluation) != null) {
-                return true;
-            } else {
-                return false
-            }
+            return evCriterion.findSpecificEvaluation(evaluation) != null
+            //foi feita uma refatoraçao para simplificar
         }
     }
 
@@ -399,11 +389,7 @@ class StudentController {
     }
 
     public String espacoBranco(String texto){
-        if (texto.contains("Milena")){
-            boolean b = true
-        }
         for (int i = 0; i < texto.length(); i++){
-            char a = texto.charAt(i)
             if(texto.charAt(i) == 160) {
                 texto = texto.substring(i+1)
             }else{
@@ -411,7 +397,6 @@ class StudentController {
             }
         }
         for (int i = texto.length()-1; i > 0; i--){
-            char a = texto.charAt(i)
             if(texto.charAt(i) == 32) {
                 texto = texto.substring(0, texto.length()-1)
             }else{
