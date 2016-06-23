@@ -45,7 +45,7 @@ class EvaluationDataAndOperations{
         return null;
     }*/
 
-    public static void createStudents(int i){
+    public static boolean createStudents(int i){
         def controller = new StudentController();
         String students;
         switch(i) {
@@ -60,10 +60,12 @@ class EvaluationDataAndOperations{
         controller.params <<[name: students];
         controller.saveGroup();
         controller.response.reset();
+        return true
     }
 
-    public static void createCriterion(String criterionName){
+    public static boolean createCriterion(String criterionName){
         CriterionTestDataAndOperations.createCriterion(criterionName);
+        return true
     }
 
     public static void createCritAndAddToStudents(String desc){
@@ -152,8 +154,10 @@ class EvaluationDataAndOperations{
         def list = Student.list().size();
         def values = []
         def evaluationList = Evaluation.list();
-        list.each {values.add(value)};
-        cont2.params<<[value : values] <<[origin: origin] << [applicationDate : applicationDate] <<[criterion : Criterion.findByDescription(criterionName)];
+        for(int i = 0; i<list;i++){
+            values.add(value)
+        }
+        cont2.params<<[value : values, origin: origin, applicationDate : applicationDate, criterion : Criterion.findByDescription(criterionName)];
         cont2.saveAll()
         return true;
     }

@@ -4,7 +4,7 @@ import pages.StudentPages.StudentPage
 import ta.Evaluation
 import ta.Student
 import steps.EvaluationDataAndOperations
-
+import pages.*
 this.metaClass.mixin(cucumber.api.groovy.Hooks)
 this.metaClass.mixin(cucumber.api.groovy.EN)
 
@@ -115,7 +115,7 @@ Then(~/^all the evaluations will be stored in on the "([^"]*)" criterion history
 }
 ///
 Given(~/^there are no evaluations to all students to the "([^"]*)" criterion,$/) {
-    String criterionName, dateInString ->
+    String criterionName ->
         assert EvaluationDataAndOperations.createStudents(2);
         assert EvaluationDataAndOperations.createCriterion(criterionName);
         numberOfEvaluationsBeforeStep = EvaluationDataAndOperations.numberOfEvaluationsBeforeTest()
@@ -135,7 +135,7 @@ Given(~'^evaluations for every student on the "([^"]*)" criteria, originated fro
     String criterionName, origin, dateInString ->
         EvaluationDataAndOperations.createStudents(5);
         EvaluationDataAndOperations.createCriterion(criterionName);
-        EvaluationDataAndOperations.createEvaluation("MA",criterionName, origin, dateInString);
+        EvaluationDataAndOperations.createEvaluation("MANA",criterionName, origin, dateInString);
         numberOfEvaluationsBeforeStep = EvaluationDataAndOperations.numberOfEvaluationsBeforeTest();
         assert EvaluationDataAndOperations.checkEvaluationAllStudents(numberOfEvaluationsBeforeStep, "same") == true
 }
@@ -143,11 +143,11 @@ When(~/^I want to add a mark to all students to a the "([^"]*)" criteria, origin
     String criterionName, origin, dateInString ->
         dateGlobal = dateInString;
         originGlobal = origin;
-        assert EvaluationDataAndOperations.createEvaluation("MA", criterionName, origin, dateInString) == false
+        EvaluationDataAndOperations.createEvaluation("MANA", criterionName, origin, dateInString) == false
 }
 Then(~/^all the marks will not be stored in on the "([^"]*)" criteria's history of each student$/) {
     String criterionName ->
-        assert EvaluationDataAndOperations.checkEvaluationRedundantAllStudents(criterionName, originGlobal, dateGlobal)
+        assert EvaluationDataAndOperations.checkEvaluationAllStudents(numberOfEvaluationsBeforeStep, "same")
 }
 
 String studentNameGlobal, studentLoginGlobal;
