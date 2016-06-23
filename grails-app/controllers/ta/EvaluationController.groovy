@@ -11,9 +11,35 @@ class EvaluationController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    public static Date formattedDate(String dateInString){
+        def formatter = new SimpleDateFormat("dd/mm/yyyy");
+        Date date = formatter.parse(dateInString);
+        return date;
+    }
+
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Evaluation.list(params), model:[evaluationInstanceCount: Evaluation.count()]
+    }
+
+    /*public boolean createEvaluation(String criterionName, String evaluationOrigin, String evaluationDate, String studentEvaluation){
+        def applicationDate = formattedDate(evaluationDate)
+        //createEvaluation([origin: evaluationOrigin, value: ])
+        cont2.params<<[value : "--"] <<[origin: origin] << [applicationDate : applicationDate];
+        Evaluation evaluation = cont2.createEvaluation()
+        def returningValue= cont.addEvaluations(criterionName,Evaluation)
+        cont.response.reset()
+        cont2.response.reset()
+        return returningValue
+    }*/
+
+    public boolean saveEvaluation(Evaluation evaluation){
+        if(Evaluation.findByCriterion(evaluation.criterion) == null && Evaluation.findByOrigin(evaluation.origin) == null){
+            evaluation.save flush: true
+            return true
+        }else{
+            return false
+        }
     }
 
     def show(Evaluation evaluationInstance) {
@@ -39,8 +65,18 @@ class EvaluationController {
     }
     */
 
+    public Evaluation createAndSaveEvaluationWithoutParam(/*String evaluationDate*/){
+        //def applicationDate = formattedDate(evaluationDate)
+        //params << [applicationDate: applicationDate]
+        Evaluation evaluation = new Evaluation(params)
+        //saveStudent(student)
+        //if(Evaluation.findByLogin(evaluation.get()) == null) {
+            evaluation.save flush: true
+        //}
+        return evaluation
+    }
 
-        @Transactional
+    @Transactional
     def save(Evaluation evaluationInstance) {
         if (evaluationInstance == null) {
             notFound()
@@ -52,6 +88,8 @@ class EvaluationController {
             return
         }
 
+        String[] todos = evaluationInstance.value.split(",")
+        log.info(todos[0])
         evaluationInstance.save flush:true
 
         request.withFormat {
@@ -61,6 +99,21 @@ class EvaluationController {
             }
             '*' { respond evaluationInstance, [status: CREATED] }
         }
+    }
+
+    @Transactional
+    def saveAll() {
+        def allValues = params.list('value')
+        List<Evaluation> listEvaluation = new LinkedList<Evaluation>()
+
+        StudentController student = new StudentController()
+        for(int i = 0; i < allValues.size(); i++){
+            Evaluation newEvaluation = new Evaluation(params.origin, allValues.get(i), params.applicationDate, params.criterion.id)
+            newEvaluation.save flush: true
+            listEvaluation.add(newEvaluation)
+        }
+        student.addEvaluationsToAllStudents(listEvaluation)
+        redirect action:"index", method:"GET"
     }
 
     def edit(Evaluation evaluationInstance) {
@@ -81,6 +134,12 @@ class EvaluationController {
 
         evaluationInstance.save flush:true
 
+        StudentController sc = new StudentController()
+        sc.updateAllAverages()
+
+        EvaluationsByCriterionController ecc = new EvaluationsByCriterionController()
+        ecc.updateAllCriterionAverages()
+
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'Evaluation.label', default: 'Evaluation'), evaluationInstance.id])
@@ -98,7 +157,15 @@ class EvaluationController {
             return
         }
 
+        LinkedList<EvaluationsByCriterion> eccList = EvaluationsByCriterion.list()
+        for (int i = 0; i < eccList.size(); i++) {
+            eccList.get(i).removeFromEvaluations(evaluationInstance)
+        }
+
         evaluationInstance.delete flush:true
+
+        StudentController sc = new StudentController()
+        sc.updateAllAverages()
 
         request.withFormat {
             form multipartForm {
@@ -117,10 +184,5 @@ class EvaluationController {
             }
             '*'{ render status: NOT_FOUND }
         }
-    }
-    public static Date formattedDate(String dateInString){
-        def formatter = new SimpleDateFormat("dd/mm/yyyy");
-        Date date = formatter.parse(dateInString);
-        return date;
     }
 }

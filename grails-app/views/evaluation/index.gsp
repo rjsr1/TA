@@ -23,10 +23,12 @@
 			<table>
 			<thead>
 					<tr>
-					
+
 						<g:sortableColumn property="origin" title="${message(code: 'evaluation.origin.label', default: 'Origin')}" />
 					
 						<g:sortableColumn property="value" title="${message(code: 'evaluation.value.label', default: 'Value')}" />
+					
+						<th><g:message code="evaluation.criterion.label" default="Criterion" /></th>
 					
 						<g:sortableColumn property="applicationDate" title="${message(code: 'evaluation.applicationDate.label', default: 'Application Date')}" />
 					
@@ -39,6 +41,8 @@
 						<td><g:link action="show" id="${evaluationInstance.id}">${fieldValue(bean: evaluationInstance, field: "origin")}</g:link></td>
 					
 						<td>${fieldValue(bean: evaluationInstance, field: "value")}</td>
+					
+						<td>${fieldValue(bean: evaluationInstance, field: "criterion.description")}</td>
 					
 						<td><g:formatDate date="${evaluationInstance.applicationDate}" /></td>
 					

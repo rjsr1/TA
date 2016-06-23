@@ -1,22 +1,35 @@
 package ta
 
-import java.text.SimpleDateFormat
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
 class CriterionController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Criterion.list(params), model:[criterionInstanceCount: Criterion.count()]
     }
 
-    def addEvaluation(Criterion criterionInstance,Evaluation evaluationInstance){
+    /*def addEvaluation(Criterion criterionInstance,Evaluation evaluationInstance){
         criterionInstance.evaluations.add(evaluationInstance)
         edit(criterionInstance)
+    }*/
+
+    public Criterion createCriterion(){
+        Criterion criterion = new Criterion(params)
+        return criterion
+    }
+
+    public boolean saveCriterion(Criterion criterion){
+        if(Criterion.findByDescription(criterion.description) == null){
+            criterion.save flush: true
+            return true
+        }else{
+            return false
+        }
     }
 
     def show(Criterion criterionInstance) {
@@ -25,6 +38,28 @@ class CriterionController {
 
     def create() {
         respond new Criterion(params)
+    }
+
+    public Criterion retrieveCriterion() {
+        def criterionInstance = new Criterion(params)
+        return Criterion.findByDescription(criterionInstance.description)
+    }
+
+    public boolean compatibleInCriteria() {
+        def criterionInstance = new Criterion(params)
+        Criterion c = Criterion.findByDescription(criterionInstance.description)
+        return criterionInstance.description.equals(c.description)
+    }
+
+    public createAndSaveCriterion() {
+        Criterion crit = new Criterion(params)
+        if(Criterion.findByDescription(crit.description) == null) {
+            crit.save(flush: true)
+        }
+    }
+
+    public List<Criterion> getCriteriaList() {
+        return Criterion.list()
     }
 
     @Transactional
@@ -43,7 +78,7 @@ class CriterionController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'Criterion.label', default: 'Criterion'), criterionInstance.id])
+                flash.message = message(code: 'default.created.message', args: [message(code: 'criterion.label', default: 'Criterion'), criterionInstance.id])
                 redirect criterionInstance
             }
             '*' { respond criterionInstance, [status: CREATED] }
@@ -85,6 +120,27 @@ class CriterionController {
             return
         }
 
+        LinkedList<Student> students = Student.list()
+        for (int i = 0; i < students.size(); i++) {
+            LinkedList<EvaluationsByCriterion> l = students.get(i).getCriteriaAndEvaluations()
+            for (int j = 0; j < l.size(); j++) {
+                if (l.get(j).criterion.id == criterionInstance.id) {
+                    LinkedList<Evaluation> e = l.get(j).evaluations
+                    for (int k = 0; k < e.size(); k++) {
+                        e.get(k).delete()
+                    }
+                }
+            }
+            for (int j = 0; j < l.size(); j++) {
+                if (l.get(j).criterion.id == criterionInstance.id) {
+                    students.get(i).removeFromCriteriaAndEvaluations(l.get(j))
+                    l.get(j).delete()
+                }
+            }
+        }
+        StudentController sc = new StudentController()
+        sc.updateAllAverages()
+
         criterionInstance.delete flush:true
 
         request.withFormat {
@@ -99,16 +155,10 @@ class CriterionController {
     protected void notFound() {
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'Criterion.label', default: 'Criterion'), params.id])
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'criterion.label', default: 'Criterion'), params.id])
                 redirect action: "index", method: "GET"
             }
             '*'{ render status: NOT_FOUND }
         }
-    }
-
-    public static Date formattedDate(String dateInString){
-        def formatter = new SimpleDateFormat("dd/mm/yyyy");
-        Date date = formatter.parse(dateInString);
-        return date;
     }
 }

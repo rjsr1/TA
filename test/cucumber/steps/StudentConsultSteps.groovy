@@ -11,10 +11,10 @@
 //
 //Student globalStudent
 ////Controller
-////Given(~/^the student "([^"]*)" with login "([^"]*)" is registered in the system$/) { String nome, String login ->
-////    StudentConsultTestDataAndOperations.createAndSaveStudent(nome, login)
-////    assert Student.findByLogin(login) != null
-////}
+//Given(~/^the student "([^"]*)" with login "([^"]*)" is registered in the system$/) { String nome, String login ->
+//    StudentConsultTestDataAndOperations.createAndSaveStudent(nome, login)
+//    assert Student.findByLogin(login) != null
+//}
 //
 //Then(~/^the system will return the information about "([^"]*)"$/) { String login->
 //    assert StudentConsultTestDataAndOperations.compatibleSearch(login)

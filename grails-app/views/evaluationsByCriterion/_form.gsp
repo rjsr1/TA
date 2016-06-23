@@ -11,3 +11,21 @@
 
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: evaluationsByCriterionInstance, field: 'evaluations', 'error')} required">
+	<label for="evaluations">
+		<g:message code="evaluationsByCriterion.evaluations.label" default="Evaluations" />
+		<span class="required-indicator">*</span>
+	</label>
+	<g:select name="evaluations" from="${ta.Evaluation.list()}" multiple="multiple" optionKey="id" size="5" required="" value="${evaluationsByCriterionInstance?.evaluations*.id}" class="many-to-many"/>
+
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: evaluationsByCriterionInstance, field: 'criterionAverage', 'error')} required">
+	<label for="criterionAverage">
+		<g:message code="evaluationsByCriterion.criterionAverage.label" default="Criterion Average" />
+		<span class="required-indicator">*</span>
+	</label>
+	<g:field name="criterionAverage" value="${fieldValue(bean: evaluationsByCriterionInstance, field: 'criterionAverage')}" required=""/>
+
+</div>
+

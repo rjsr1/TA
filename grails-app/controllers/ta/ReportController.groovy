@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND
 import static org.springframework.http.HttpStatus.OK
 
 class ReportController {
+    //static boolean needsUpdate
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -17,8 +18,8 @@ class ReportController {
    }
 
     def createSaveResetResponse(){
-        create()
-        save()
+        def report = new Report(params)
+        report.save(flush: true)
         response.reset()
     }
 
@@ -26,13 +27,30 @@ class ReportController {
         respond new Report(params)
     }
 
-    public boolean saveRep(Report relatorio){
-        if(relatorio.findByName(relatorio.name)==null){
-                notFound()
-                return false//não é para renderizar nenhuma view porque esses relatórios não são feitos pelo usuário, apenas mostrados
+    public void addStudentToReport(Student student, Report reportInstance){
+        if(reportInstance!=null){
+            reportInstance.addToStudents(student)
+            reportInstance.save(flush: true)
+            flash.message = message(code: 'default.updated.message', args:[message(code: 'Report.label', default: 'Report'), reportInstance.id])
         }
-        relatorio.save(flush: true)
-        return true
+    }
+
+    def delete(Report reportInstance) {
+
+        if (reportInstance == null) {
+            notFound()
+            return
+        }
+
+        reportInstance.delete flush:true
+
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'Report.label', default: 'Report'), reportInstance.id])
+                redirect action:"index", method:"GET"
+            }
+            '*'{ render status: NO_CONTENT }
+        }
     }
 
     def save(){
@@ -44,7 +62,7 @@ class ReportController {
         if(reportInstance.hasErrors()){
             respond reportInstance.errors, view:'show'
         }
-
+        reportInstance.fillReport()
         reportInstance.save(flush: true)
         request.withFormat {
             form multipartForm {
@@ -79,6 +97,10 @@ class ReportController {
 
     def findByName(String nome){
         return Report.findByName(nome)
+    }
+
+    def edit(Report reportInstance) {
+        respond reportInstance
     }
 
     protected void notFound() {

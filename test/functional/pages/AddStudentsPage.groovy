@@ -10,13 +10,12 @@ class AddStudentsPage extends Page{
     static url = "/TA/student/create"
 
     static at =  {
-        title ==~ /Create Student/
+        title ==~ /Criar Student/
     }
 
     def fillStudentDetails(String name, String login) {
         $("form").name = name
         $("form").login = login
-
     }
 
     def selectAddStudent() {

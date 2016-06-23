@@ -5,8 +5,12 @@ package steps
 
 import ta.Criterion
 import ta.CriterionController
+
+//import ta.Criterion
+//import ta.CriterionController
 import ta.Evaluation
 import ta.EvaluationController
+import ta.EvaluationsByCriterion
 import ta.Student
 
 import java.text.SimpleDateFormat
@@ -68,8 +72,11 @@ class EvaluationDataAndOperations{
         Criterion criterion = new Criterion(desc);
         controller.save(criterion)
         controller.response.reset();
-        def controller2 = new StudentController()
-        controller2.addCriterionToAllStudent(desc);
+        //def controller2 = new StudentController()
+        def EvaluationsByCriterion ec = new EvaluationsByCriterion(criterion)
+        for(Student student : Student.list()){
+            student.criterionsAndEvaluations.add(ec)
+        }
     }
 
 
@@ -89,7 +96,7 @@ class EvaluationDataAndOperations{
         def found = false;
         for(Student student : Student.findAll()){
             def counter = 0
-            student.each(student.criterionsAndEvaluations){
+            student.each(student.criteriaAndEvaluations){
                 if(criterionName == student.criterions.get(counter).name){
                     def studentCriterions = student.getCriterions().get(counter);
                     def counter2 = 0;
@@ -115,31 +122,16 @@ class EvaluationDataAndOperations{
         return false;
     }
 
-    public static boolean createEvaluation(String criterionName, String origin, String dateInString){
+    public static boolean createEvaluation(String value, String criterionName, String origin, String dateInString){
+        if(value == null) return false;
         def applicationDate = formattedDate(dateInString)
         def cont = new StudentController()
         def cont2 = new EvaluationController();
-        cont2.params<<[value : "--"] <<[origin: origin] << [applicationDate : applicationDate];
-        Evaluation evaluation = cont2.createEvaluation()
-        def returningValue= cont.addEvaluations(criterionName,Evaluation)
-        cont.response.reset()
-        cont2.response.reset()
-        return returningValue
+        def values = [value, value, value];
+        cont2.params<<[value : values] <<[origin: origin] << [applicationDate : applicationDate];
+        cont2.saveAll()
+        return true;
     }
-    public static boolean createEvaluationNoValue(String criterionName, String origin, String dateInString){
-        def applicationDate = formattedDate(dateInString)
-        def cont = new StudentController()
-        def cont2 = new EvaluationController();
-        cont2.params<<[value : null] <<[origin: origin] << [applicationDate : applicationDate];
-        Evaluation evaluation = cont2.createEvaluation(criterionName,origin,dateInString)
-        cont.params<<[origin:origin,applicationDate : evaluation.applicationDate, Criterion:evaluation.criterion, value : null]
-        def returningValue= cont.addEvaluations()
-        cont.response.reset()
-        cont2.response.reset()
-        return returningValue
-    }
-
-
     public static boolean checkEvaluationAllStudents(String criterionName,String origin,String dateInString){
         def cont = new StudentController()
         return cont.checkEvaluationsAllStudents(criterionName,origin,dateInString)
@@ -150,7 +142,6 @@ class EvaluationDataAndOperations{
         return cont.checkRedundantEvaluationAllStudents(criterionName,origin,dateInString)
     }
 
-
     public static boolean createStudent(String login, String name){
         def cont = new StudentController()
         cont.params << [login: login] << [name: name]
@@ -159,4 +150,45 @@ class EvaluationDataAndOperations{
         return saved
     }
 
+    //MEUS METODOS
+
+    public static void createAndGiveEvaluation(String studentName, String studentLogin, String studentEvaluation, String criterionName, String evaluationOrigin, String evaluationDate){
+        def student = new StudentController()
+        //student.params << [login: studentLogin] << [name: studentName]
+        Student studentCreated = student.createAndSaveStudent2(studentName, studentLogin)
+
+        def criterion = new CriterionController()
+        criterion.params << [description : criterionName]
+        Criterion criterionCreated = criterion.createAndSaveCriterion()
+
+        Date applicationDate = formattedDate(evaluationDate)
+
+        def evaluation = new EvaluationController()
+        evaluation.params << [/*description : criterionName,*/ origin : evaluationOrigin, value : studentEvaluation, applicationDate : applicationDate, criterion : criterionCreated]
+        Evaluation evaluationCreated = evaluation.createAndSaveEvaluationWithoutParam(/*evaluationOrigin, studentEvaluation, evaluationDate*/)
+        //student.addEvaluationTests(studentLogin, criterionName, evaluationOrigin)
+        //student.addEvaluationToStudent2(studentLogin, applicationDate)
+        student.evaluationTests(studentLogin, evaluationOrigin)
+        student.response.reset()
+        evaluation.response.reset()
+        criterion.response.reset()
+    }
+
+    public static void updateEvaluationInStudent(String studentLogin, String newEvaluation, String criterionName, String evaluationOrigin){
+        def student = new StudentController()
+        student.updateEvaluation(studentLogin, newEvaluation, criterionName, evaluationOrigin)
+        student.response.reset()
+    }
+
+    public static Student getStudent(String studentLogin){
+        def student = new StudentController()
+        return student.getStudent(studentLogin)
+    }
+
+    public static boolean compatibleTo(Student stu1, Student stu2){
+        boolean compatible = false
+        if(stu1.name.equals(stu2.name) && stu1.login.equals(stu2.login) && stu1.criteriaAndEvaluations == stu2.criteriaAndEvaluations) compatible = true
+        return compatible
+    }
 }
+

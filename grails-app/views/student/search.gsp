@@ -28,18 +28,17 @@
 <div id="search-header">
     <h1>Search by login</h1>
 </div>
-<div id="search_student" class="content scaffold-search" role="main">
-        <g:form controller="student" action="consult">
-            <div id="search_student" class="fieldcontain ${hasErrors(bean: studentInstance, field: 'login', 'error')} required">
-                <label for="consult">
-                    <g:message code="student.login.label" default="Consulta" />
-                    <span class="required-indicator">*</span>
-                </label>
-                <!-- <g:textField name="login" required="" value="${studentInstance?.login}"/> -->
-                <g:textField name="consult" required="" size="50"/>
-                <g:submitButton name="search" class="search" value="${message(code: 'default.button.search.label', default: 'Search')}" size = "20" />
-            </div>
-        </g:form>
+<div class="content scaffold-search" role="main">
+    <g:form controller="student" action="consult">
+        <div id="search_student">
+            <label for="consult">
+                <g:message code="student.login.label" default="Login" />
+                <span class="required-indicator">*</span>
+            </label>
+            <g:textField name="consult" required="" size="50"/>
+            <g:submitButton name="search" value="${message(code: 'default.button.search.label', default: 'Search')}" size = "20" />
+        </div>
+    </g:form>
 </div>
 
 <div id="list-student" class="content scaffold-list" role="main">
@@ -55,7 +54,7 @@
 
             <g:sortableColumn property="login" title="${message(code: 'student.login.label', default: 'Login')}" />
 
-            <g:sortableColumn property="average" title="${message(code: 'student.average.label', default: 'Media')}" />
+            <g:sortableColumn property="average" title="${message(code: 'student.average.label', default: 'Global Average')}" />
 
         </tr>
         </thead>
@@ -66,7 +65,9 @@
                 <td><g:link action="show" id="${studentInstance.id}">${fieldValue(bean: studentInstance, field: "name")}</g:link></td>
 
                 <td>${fieldValue(bean: studentInstance, field: "login")}</td>
-                <!-- td com as a média do aluno -->
+
+                <td>${fieldValue(bean: studentInstance, field: "average")}</td>
+
             </tr>
         </g:each>
         </tbody>
