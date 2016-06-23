@@ -69,7 +69,7 @@ Given(~'^I am in the create group page$') { ->
     //at AddStudentsPage
 }
 
-When(~'^I add the text "([^"]*)"$') { String name, String login ->
+When(~'^I add the text "([^"]*)"$') { String text ->
     //at AddStudentsPage
     page.fillGroupStudentDetails(text)
     page.selectAddGroup()

@@ -402,7 +402,13 @@ class StudentController {
             String info = token1.get(0)
             List<String> token2 = info.tokenize('(')
             String name = token2.get(0)
+            char nn = name.charAt(0)
+            if(name.charAt(0) == 160) {
+                name = name.substring(1)
+            }
+            name = name.substring(0, name.length()-1)
             String login = token2.get(1)
+            login = login.substring(0, login.length()-1)
             Student novo = new Student(name, login)
             novo.calcMedia()
 

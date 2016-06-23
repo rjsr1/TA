@@ -1,14 +1,16 @@
 package pages
 
+import geb.Page
+
 /**
  * Created by rodrigocalegario on 6/23/16.
  */
-class AddGroupStudentPage {
+class AddGroupStudentPage extends Page{
     static url = "/TA/student/createGroup"
 
-    static at =  {
-        title ==~ /Create Student/
-    }
+//    static at =  {
+//        title ==~ /Create Student/
+//    }
 
     def fillGroupStudentDetails(String text) {
         $("form").name = text
