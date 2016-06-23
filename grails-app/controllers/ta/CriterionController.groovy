@@ -51,13 +51,6 @@ class CriterionController {
         return criterionInstance.description.equals(c.description)
     }
 
-    /*public createAndSaveCriterion() {
-        Criterion crit = new Criterion(params)
-        if(Criterion.findByDescription(crit.description) == null) {
-            crit.save(flush: true)
-        }
-    }*/
-
     @Transactional
     def createAndSaveCriterion() {
         Criterion criterionInstance = new Criterion(params)
