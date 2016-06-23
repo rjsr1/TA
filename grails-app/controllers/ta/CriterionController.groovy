@@ -9,7 +9,7 @@ class CriterionController {
     static allowedMethods = [update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
+        params.max = Math.min(max ?: 100, 100)
         respond Criterion.list(params), model:[criterionInstanceCount: Criterion.count()]
     }
 
@@ -51,15 +51,45 @@ class CriterionController {
         return criterionInstance.description.equals(c.description)
     }
 
-    public createAndSaveCriterion() {
-        Criterion crit = new Criterion(params)
-        if(Criterion.findByDescription(crit.description) == null) {
-            crit.save(flush: true)
+    @Transactional
+    def createAndSaveCriterion() {
+        Criterion criterionInstance = new Criterion(params)
+        if (Criterion.findByDescription(criterionInstance.getDescription()) == null) {
+            if (criterionInstance.hasErrors()) {
+                respond criterionInstance.errors, view: 'create'
+                return
+            }
+            if(!criterionInstance.save(flush: true)){
+                render(view: "create", model: [criterionInstance: criterionInstance])
+                return
+            }
+            flash.message = message(code: 'default.created.message', args: [message(code: 'criterion.label', default: 'Criterion'), criterionInstance.id])
+            redirect(action: "show", id: criterionInstance.id)
         }
     }
 
     public List<Criterion> getCriteriaList() {
         return Criterion.list()
+    }
+
+    def saveGroup(){
+        String group = params.description
+        String[] criteria = group.split(";")
+        for (int i = 0; i < criteria.size(); i++) {
+            Criterion novo = new Criterion(criteria[i])
+
+            if (Criterion.findByDescription(novo.getDescription()) == null) {
+                novo.save flush: true
+            }
+        }
+
+        flash.message = message(code: 'default.created.message', args: [message(code: criteria.length, 'criterion.label', default: 'Criterion')])
+
+        redirect action: "index", method: "GET"
+    }
+
+    def createGroup(){
+        respond view: 'createGroup'
     }
 
     @Transactional
