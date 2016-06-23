@@ -12,6 +12,8 @@ class AddStudentsTestDataAndOperations {
         def cont = new StudentController()
         cont.params << [name: name, login: login]
         cont.createAndSaveStudent()
+        //Student a = new Student(name, login)
+        //cont.save(a)
         cont.response.reset()
     }
 
@@ -23,6 +25,12 @@ class AddStudentsTestDataAndOperations {
 
     static public int countStudent(){
         return Student.list().size()
+    }
+
+    static public void createGroup(String group){
+        def controller = new StudentController()
+        controller.params << [name: group]
+        controller.saveGroup()
     }
 
 }

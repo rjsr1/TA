@@ -1,6 +1,7 @@
 package steps
 
 import cucumber.api.PendingException
+import pages.AddGroupStudentPage
 import ta.Student
 import steps.AddStudentsTestDataAndOperations
 import pages.AddStudentsPage
@@ -53,7 +54,23 @@ Given(~'^the student "([^"]*)" with login "([^"]*)" is registered in the system$
 Then(~'^the system does not register "([^"]*)" with login "([^"]*)"$') { String name, String login ->
     assert countStudent == AddStudentsTestDataAndOperations.countStudent()
 }
+
 Then(~'^I can\'t see the name of "([^"]*)" and the login "([^"]*)" in the list of students$') { String name, String login ->
     to StudentPage
     //falta a funcionalidade aqui ainda
+}
+
+When(~'^I send a text with "([^"]*)"$') { String group ->
+    AddStudentsTestDataAndOperations.createGroup(group)
+}
+
+Given(~'^I am in the create group page$') { ->
+    to AddGroupStudentPage
+    //at AddStudentsPage
+}
+
+When(~'^I add the text "([^"]*)"$') { String name, String login ->
+    //at AddStudentsPage
+    page.fillGroupStudentDetails(text)
+    page.selectAddGroup()
 }
