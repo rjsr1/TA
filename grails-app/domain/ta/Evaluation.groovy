@@ -15,7 +15,7 @@ class Evaluation {
         this.origin = origin
         this.value =value
         this.applicationDate = applicationDate;
-        this.criterion = criterion;
+        this.criterion = Criterion.findById(Long.parseLong(criterion));
     }
     public boolean compatibleTo(Evaluation evaluationInstance){
         return this.origin.equals(evaluationInstance.getOrigin()) && this.value.equals(evaluationInstance.getValue()) && this.applicationDate.compareTo(evaluationInstance.getApplicationDate()) == 0 && this.criterion.equals(evaluationInstance.getCriterion())

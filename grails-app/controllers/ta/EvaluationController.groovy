@@ -11,9 +11,35 @@ class EvaluationController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    public static Date formattedDate(String dateInString){
+        def formatter = new SimpleDateFormat("dd/mm/yyyy");
+        Date date = formatter.parse(dateInString);
+        return date;
+    }
+
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Evaluation.list(params), model:[evaluationInstanceCount: Evaluation.count()]
+    }
+
+    /*public boolean createEvaluation(String criterionName, String evaluationOrigin, String evaluationDate, String studentEvaluation){
+        def applicationDate = formattedDate(evaluationDate)
+        //createEvaluation([origin: evaluationOrigin, value: ])
+        cont2.params<<[value : "--"] <<[origin: origin] << [applicationDate : applicationDate];
+        Evaluation evaluation = cont2.createEvaluation()
+        def returningValue= cont.addEvaluations(criterionName,Evaluation)
+        cont.response.reset()
+        cont2.response.reset()
+        return returningValue
+    }*/
+
+    public boolean saveEvaluation(Evaluation evaluation){
+        if(Evaluation.findByCriterion(evaluation.criterion) == null && Evaluation.findByOrigin(evaluation.origin) == null){
+            evaluation.save flush: true
+            return true
+        }else{
+            return false
+        }
     }
 
     def show(Evaluation evaluationInstance) {
@@ -29,6 +55,27 @@ class EvaluationController {
         return evaluation
     }
 
+    /* COMENTADO POR CALEGARIO A PEDIDO DE DANILO
+    public Evaluation createEvaluation(String criterionName, String origin,String dateInString){
+        def criterion = Criterion.findByDescription(criterionName)
+        def date = this.formattedDate(dateInString)
+        Evaluation evaluation = new Evaluation(origin, null, date, criterion)
+        evaluation.save flush : true
+        return evaluation;
+    }
+    */
+
+    public Evaluation createAndSaveEvaluationWithoutParam(/*String evaluationDate*/){
+        //def applicationDate = formattedDate(evaluationDate)
+        //params << [applicationDate: applicationDate]
+        Evaluation evaluation = new Evaluation(params)
+        //saveStudent(student)
+        //if(Evaluation.findByLogin(evaluation.get()) == null) {
+            evaluation.save flush: true
+        //}
+        return evaluation
+    }
+
     @Transactional
     def save(Evaluation evaluationInstance) {
         if (evaluationInstance == null) {
@@ -41,6 +88,8 @@ class EvaluationController {
             return
         }
 
+        String[] todos = evaluationInstance.value.split(",")
+        log.info(todos[0])
         evaluationInstance.save flush:true
 
         request.withFormat {
@@ -58,8 +107,10 @@ class EvaluationController {
         List<Evaluation> listEvaluation = new LinkedList<Evaluation>()
 
         StudentController student = new StudentController()
+        def list = Student.list()
         for(int i = 0; i < allValues.size(); i++){
             Evaluation newEvaluation = new Evaluation(params.origin, allValues.get(i), params.applicationDate, params.criterion.id)
+            if(list.get(i).findEvaluationByCriterion(newEvaluation.criterion.description).findSpecificEvaluation(newEvaluation)) return
             newEvaluation.save flush: true
             listEvaluation.add(newEvaluation)
         }
@@ -135,10 +186,5 @@ class EvaluationController {
             }
             '*'{ render status: NOT_FOUND }
         }
-    }
-    public static Date formattedDate(String dateInString){
-        def formatter = new SimpleDateFormat("dd/mm/yyyy");
-        Date date = formatter.parse(dateInString);
-        return date;
     }
 }
