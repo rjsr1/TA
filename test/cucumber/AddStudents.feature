@@ -11,7 +11,7 @@ Feature: Add Student
 
 #Cenário GUI
   Scenario: Message from the new student registration
-    Given I am in the add student page
+    Given I am in the "add student" page
     When I add the "Rodrigo Calegario" with login "rc"
     Then I can see the name of "Rodrigo Calegario" and the login "rc" in the list of students
 
@@ -23,9 +23,11 @@ Feature: Add Student
 
 #Cenário GUI
   Scenario: Error message when registering a student twice
-    Given  I am in the add student page
+    Given I am in the "sudent list" page
+    And the name of "Roberto Alves" and the login "ra" is already in the list of student
+    And I go to the "add student" page
     When I add the "Roberto Alves" with login "ra"
-    Then I can't see the name of "Roberto Alves" and the login "ra" in the list of students
+    Then I can see the name of "Roberto Alves" and the login "ra" in the list of students only once
 
 #Cenario Controller
   Scenario: Register a group of student
@@ -37,7 +39,7 @@ Feature: Add Student
 
 #Cenario GUI
   Scenario: See the new group of students in the list
-    Given I am in the create group page
+    Given I am in the "create group" page
     When I add the text "Danilo Ribeiro (dlr4 :: DLRibeiro); Arthur Lapprand (abl3 :: ArthurLapprand)"
     Then I can see the name of "Danilo Ribeiro" and the login "dlr4" in the list of students
     And I can see the name of "Arthur Lapprand" and the login "abl3" in the list of students
@@ -50,9 +52,11 @@ Feature: Add Student
     Then the student "Felipe Bormann" with login "fhab" is saved in the system
     And the system does not register "Arthur Jorge" with login "anew"
 
-##Cenario GUI
-#  Scenario: Register a student twice in a group of student in list
-#    Given I am in the create group page
-#    When I add the text "Milton Vasconcelos (mvgn :: miltongneto); Otávio Vera Cruz (ovcg :: ovcg)"
-#    Then I can see the name of "Milton Vasconcelos" and the login "mvgn" in the list of students
-#    And I can't see the name of "Otávio Vera Cruz" and the login "ovcg" in the list of students
+#Cenario GUI
+  Scenario: Register a student twice in a group of student in list
+    Given I am in the "sudent list" page
+    And the name of "Otávio Vera Cruz" and the login "ovcg" is already in the list of student
+    And I go to the "create group" page
+    When I add the text "Milton Vasconcelos (mvgn :: miltongneto); Otávio Vera Cruz (ovcg :: ovcg)"
+    Then I can see the name of "Milton Vasconcelos" and the login "mvgn" in the list of students
+    And I can see the name of "Otávio Vera Cruz" and the login "ovcg" in the list of students only once

@@ -43,4 +43,9 @@ class AddStudentsTestDataAndOperations {
         controller.saveGroup()
     }
 
+    static public int alunoQtd(String login){
+        return Student.findAllByLogin(login).size()
+    }
+
+
 }

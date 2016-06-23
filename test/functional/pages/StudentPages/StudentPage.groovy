@@ -23,5 +23,12 @@ class StudentPage extends Page {
     def selectStudent(String name){
         $("tr").find("td").has("a",text: name).click()
     }
+
+    boolean qtdStudentTable(int qtdStudent){
+        boolean r = false
+        int qtdTable = $("tr").find("td").allElements().size()
+        if(qtdStudent == (qtdTable)/3) r = true
+        return r
+    }
 }
 
