@@ -1,49 +1,58 @@
-///**
-// * Created by Arthur Lapprand on 03/05/2016.
-// */
-//
-//
-//import pages.CreateCriterionPage
-//import pages.ShowCriterionPage
-//import steps.CriterionTestDataAndOperations
-//import cucumber.api.groovy.EN
-//import cucumber.api.groovy.Hooks
-//import ta.Criterion
-//
-//this.metaClass.mixin(Hooks)
-//this.metaClass.mixin(EN)
-//
-///*
-//Feature: Add Criterion
-//  As the teacher
-//  I want to be able to register new criteria
-//  So I can evaluate the students with these criteria
-//*/
-//
-//Criterion crit
-//String tempDesc
-//
-///*
-//#Controller Scenario
-//Scenario: Register a criterion that does not exist
-//Given the criterion with name "P1" isn't on the system
-//When I create the criterion "P1"
-//Then the criterion "P1" is properly added to the system
-//*/
-//Given(~'^the criterion with name "([^"]*)" is not on the system$') {
-//    String desc -> crit = CriterionTestDataAndOperations.getCriterion(desc)
-//        assert crit == null
-//}
-//
-//When(~'^I create the criterion "([^"]*)"$') {
-//    String desc -> CriterionTestDataAndOperations.createCriterion(desc)
-//        crit = CriterionTestDataAndOperations.getCriterion(desc)
-//}
-//
-//Then(~'^the criterion "([^"]*)" is properly added to the system$') {
-//    String desc -> assert CriterionTestDataAndOperations.compatibleTo(desc, crit)
-//}
-//
+/**
+ * Created by TMB on 23/06/2016.
+ */
+
+
+import pages.CreateCriterionPage
+import pages.ShowCriterionPage
+import steps.CriterionTestDataAndOperations
+import cucumber.api.groovy.EN
+import cucumber.api.groovy.Hooks
+import ta.Criterion
+
+this.metaClass.mixin(Hooks)
+this.metaClass.mixin(EN)
+
+/*
+Feature: Add Criterion
+  As the teacher
+  I want to be able to register new criteria
+  So I can evaluate the students with these criteria
+*/
+
+Criterion crit
+String tempDesc
+
+/*
+#Controller Scenario
+Scenario: Register a criterion that does not exist
+Given the criterion with name "P1" isn't on the system
+When I create the criterion "P1"
+Then the criterion "P1" is properly added to the system
+*/
+Given(~'^the criterion with name "([^"]*)" is not on the system$') {
+    String desc -> crit = CriterionTestDataAndOperations.getCriterion(desc)
+        assert crit == null
+}
+
+And(~'^the criterion with name "([^"]*)" is not on the system$') {
+    String desc -> crit = CriterionTestDataAndOperations.getCriterion(desc)
+        assert crit == null
+}
+
+When(~'^I create the group of criteria "([^"]*)"$') {
+    String desc -> CriterionTestDataAndOperations.createCriterion(desc)
+        crit = CriterionTestDataAndOperations.getCriterion(desc)
+}
+
+Then(~'^the criterion "([^"]*)" is properly added to the system$') {
+    String desc -> assert CriterionTestDataAndOperations.compatibleTo(desc, crit)
+}
+
+And(~'^the criterion "([^"]*)" is properly added to the system$') {
+    String desc -> assert CriterionTestDataAndOperations.compatibleTo(desc, crit)
+}
+
 ///*
 //#Controller Scenario
 //Scenario: Register a criterion that already exists

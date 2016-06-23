@@ -245,12 +245,17 @@ class StudentController {
         return false
     }
 
-    public Student createAndSaveStudent() {
-        Student student = new Student(params)
-        if (Student.findByLogin(student.getLogin()) == null) {
-            student.save flush: true
+    @Transactional
+    def createAndSaveStudent() {
+        Student studentInstance = new Student(params)
+        if (Student.findByLogin(studentInstance.getLogin()) == null) {
+            if(!studentInstance.save(flush: true)){
+                render(view: "create", model: [studentInstance: studentInstance])
+                return
+            }
+            flash.message = message(code: 'default.created.message', args: [message(code: 'student.label', default: 'Student'), studentInstance.id])
+            redirect(action: "show", id: studentInstance.id)
         }
-        return student
     }
 
     public Student createAndSaveStudent2(String studentName, String studentLogin){

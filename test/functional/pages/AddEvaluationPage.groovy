@@ -10,4 +10,8 @@ class AddEvaluationPage extends Page {
     static at = {
         title ==~ /Criar Evaluation/
     }
+
+    def addEvaluation(){
+
+    }
 }
