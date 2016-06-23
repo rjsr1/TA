@@ -62,6 +62,26 @@ class CriterionController {
         return Criterion.list()
     }
 
+    def saveGroup(){
+        String group = params.description
+        String[] criteria = group.split(";")
+        for (int i = 0; i < criteria.size(); i++) {
+            Criterion novo = new Criterion(criteria[i])
+
+            if (Criterion.findByDescription(novo.getDescription()) == null) {
+                novo.save flush: true
+            }
+        }
+
+        flash.message = message(code: 'default.created.message', args: [message(code: criteria.length, 'criterion.label', default: 'Criterion')])
+
+        redirect action: "index", method: "GET"
+    }
+
+    def createGroup(){
+        respond view: 'createGroup'
+    }
+
     @Transactional
     def save(Criterion criterionInstance) {
         if (criterionInstance == null) {

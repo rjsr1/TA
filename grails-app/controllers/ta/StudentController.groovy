@@ -249,6 +249,10 @@ class StudentController {
     def createAndSaveStudent() {
         Student studentInstance = new Student(params)
         if (Student.findByLogin(studentInstance.getLogin()) == null) {
+            if (studentInstance.hasErrors()) {
+                respond studentInstance.errors, view: 'create'
+                return
+            }
             if(!studentInstance.save(flush: true)){
                 render(view: "create", model: [studentInstance: studentInstance])
                 return

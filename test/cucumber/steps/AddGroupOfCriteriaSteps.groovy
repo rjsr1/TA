@@ -20,8 +20,8 @@ Feature: Add Criterion
   So I can evaluate the students with these criteria
 */
 
-Criterion crit
-String tempDesc
+Criterion crit1, crit2
+String tempDesc, descriptionCrit1, descriptionCrit2
 
 /*
 #Controller Scenario
@@ -31,28 +31,74 @@ When I create the criterion "P1"
 Then the criterion "P1" is properly added to the system
 */
 Given(~'^the criterion with name "([^"]*)" is not on the system$') {
-    String desc -> crit = CriterionTestDataAndOperations.getCriterion(desc)
+    String description ->
+        crit = CriterionTestDataAndOperations.retrieveCriterion(description)
         assert crit == null
+        descriptionCrit1 = description
 }
 
-And(~'^the criterion with name "([^"]*)" is not on the system$') {
-    String desc -> crit = CriterionTestDataAndOperations.getCriterion(desc)
+And(~'^the criterion with name "([^"]*)" is also not on the system$') {
+    String description ->
+        crit = CriterionTestDataAndOperations.retrieveCriterion(description)
         assert crit == null
+        descriptionCrit2 = description
 }
 
 When(~'^I create the group of criteria "([^"]*)"$') {
-    String desc -> CriterionTestDataAndOperations.createCriterion(desc)
-        crit = CriterionTestDataAndOperations.getCriterion(desc)
+    String description ->
+        CriterionTestDataAndOperations.createGroupCriteria(description)
+        crit1 = CriterionTestDataAndOperations.retrieveCriterion(descriptionCrit1)
+        crit2 = CriterionTestDataAndOperations.retrieveCriterion(descriptionCrit2)
 }
 
 Then(~'^the criterion "([^"]*)" is properly added to the system$') {
-    String desc -> assert CriterionTestDataAndOperations.compatibleTo(desc, crit)
+    String description ->
+        assert CriterionTestDataAndOperations.compatibleTo(description, crit1)
 }
 
-And(~'^the criterion "([^"]*)" is properly added to the system$') {
-    String desc -> assert CriterionTestDataAndOperations.compatibleTo(desc, crit)
+And(~'^the criterion "([^"]*)" is also properly added to the system$') {
+    String description ->
+        assert CriterionTestDataAndOperations.compatibleTo(description, crit2)
 }
-
+/*
+#GUI Scenario
+Scenario: Register a non-existent group of criteria
+Given I am at the Add Group of Criteria page
+And the criterion "C3" does not exist
+And the criterion "C4" does not exist
+When I fill the field Nome with the name "C3;C4"
+And I finalize the criteria registration
+Then I should see the "C3" criterion available on the criteria list
+And I should see the "C4" criterion available on the criteria list
+*/
+//Given(~'^I am at the Add Group of Criteria page$') {
+//    String desc ->
+//        to CreateCriterionPage
+//        at CreateCriterionPage
+//        page.createCriterion(desc)
+//        at ShowCriterionPage
+//}
+//
+//And(~'^the criterion "([^"]*)" does not exist$') { ->
+//    to CreateCriterionPage
+//    at CreateCriterionPage
+//}
+//
+//When(~'^I fill the field Nome with the name "([^"]*)"$') {
+//    String desc ->
+//        at CreateCriterionPage
+//        page.createCriterion(desc)
+//}
+//
+//And(~'^I finalize the criteria registration$') { ->
+//    to CreateCriterionPage
+//    at CreateCriterionPage
+//}
+//
+//Then(~'^I should see the "([^"]*)" criterion available on the criteria list$') { ->
+//    at CreateCriterionPage
+//    assert page.checkForErrors()
+//}
 ///*
 //#Controller Scenario
 //Scenario: Register a criterion that already exists

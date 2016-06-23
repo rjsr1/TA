@@ -28,6 +28,8 @@ Feature: Add Criterion
 #GUI Scenario
   Scenario: Register a non-existent group of criteria
     Given I am at the Add Group of Criteria page
+    And the criterion "C3" does not exist
+    And the criterion "C4" does not exist
     When I fill the field Nome with the name "C3;C4"
     And I finalize the criteria registration
     Then I should see the "C3" criterion available on the criteria list

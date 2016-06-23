@@ -32,4 +32,16 @@ class CriterionTestDataAndOperations {
         controller.params << [description: desc]
         return controller.retrieveCriterion()
     }
+
+    public static Criterion retrieveCriterion(String description){
+        Criterion crit = Criterion.findByDescription(description)
+        return crit
+    }
+
+    public static void createGroupCriteria(String descriptionGroup){
+        def controller = new CriterionController()
+        controller.params << [description: descriptionGroup]
+        controller.saveGroup()
+        controller.response.reset()
+    }
 }
