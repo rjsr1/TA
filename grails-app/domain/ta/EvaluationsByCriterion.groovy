@@ -29,14 +29,19 @@ class EvaluationsByCriterion {
         int qtdEvaluations = 0;
         for(int i = 0; i < evaluations.size(); i++){
             String eval = evaluations[i].value
-            if (!eval.equals("--")) {
-                qtdEvaluations++
-                if (eval.equals("MA")) tempMedia += 9
-                else if (eval.equals("MPA")) tempMedia += 6
-                else tempMedia += 3
-            }
+            (qtdEvaluations, tempMedia) = calculateValueFromEvaluation(eval, qtdEvaluations, tempMedia)
         }
         this.criterionAverage = (tempMedia/qtdEvaluations);
+    }
+
+    public static List calculateValueFromEvaluation(String eval, int qtdEvaluations, double tempMedia) {
+        if (!eval.equals("--")) {
+            qtdEvaluations++
+            if (eval.equals("MA")) tempMedia += 9
+            else if (eval.equals("MPA")) tempMedia += 6
+            else tempMedia += 3
+        }
+        [qtdEvaluations, tempMedia]
     }
 
     /*  ------------------------
