@@ -11,7 +11,14 @@ class AddEvaluationPage extends Page {
         title ==~ /Criar Evaluation/
     }
 
-    def addEvaluation(){
+    def fillEvaluationDetails(String value, String origin, Date applicationDate,Long criterionId){
+        $("form").origin = origin
+        $("form").value = value
+        $("form").applicationDate = applicationDate
+        $("form").criterion = criterionId;
+    }
 
+    def selectAddEvaluation(){
+        $("input", name: "create").click()
     }
 }

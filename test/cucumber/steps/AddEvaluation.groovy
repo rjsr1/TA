@@ -191,17 +191,17 @@ When(~/^I request the system to add the evaluation valued "([^"]*)" in the crite
         to AddEvaluationPage
         at AddEvaluationPage
         def date = formattedDate(evaluationDate)
-        page.fillEvaluationDetails(criterionName, evaluationOrigin, date, value)
+        page.fillEvaluationDetails(value,evaluationOrigin,date,Criterion.findByDescription(criterionName).id)
 }
 
 Then(~/^I can see the evaluation valued "([^"]*)" in the criterion "([^"]*)", from "([^"]*)", date "([^"]*)" in the evaluation screen$/) {
     String criterionName, evaluationOrigin, evaluationDate ->
-        to ListStudentPage
-        at ListStudentPage
+        to StudentPage
+        at StudentPage
 
         page.selectStudent(studentNameGlobal, studentLoginGlobal)
 
-        to StudentPage
+        to ShowStudentPage
 
         assert page.confirmStudent(studentName, studentLogin)
         page.selectCriterion(criterionName)
