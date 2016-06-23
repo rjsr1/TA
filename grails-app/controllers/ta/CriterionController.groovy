@@ -51,10 +51,27 @@ class CriterionController {
         return criterionInstance.description.equals(c.description)
     }
 
-    public createAndSaveCriterion() {
+    /*public createAndSaveCriterion() {
         Criterion crit = new Criterion(params)
         if(Criterion.findByDescription(crit.description) == null) {
             crit.save(flush: true)
+        }
+    }*/
+
+    @Transactional
+    def createAndSaveCriterion() {
+        Criterion criterionInstance = new Criterion(params)
+        if (Criterion.findByDescription(criterionInstance.getDescription()) == null) {
+            if (criterionInstance.hasErrors()) {
+                respond criterionInstance.errors, view: 'create'
+                return
+            }
+            if(!criterionInstance.save(flush: true)){
+                render(view: "create", model: [criterionInstance: criterionInstance])
+                return
+            }
+            flash.message = message(code: 'default.created.message', args: [message(code: 'criterion.label', default: 'Criterion'), criterionInstance.id])
+            redirect(action: "show", id: criterionInstance.id)
         }
     }
 

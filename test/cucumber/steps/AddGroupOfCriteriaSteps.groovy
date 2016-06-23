@@ -5,7 +5,7 @@
 
 import pages.AddGroupCriteriaPage
 import pages.CriterionPages.CriterionPage
-import pages.ShowCriterionPage
+import pages.CreateCriterionPage
 import steps.CriterionTestDataAndOperations
 import cucumber.api.groovy.EN
 import cucumber.api.groovy.Hooks
@@ -73,7 +73,7 @@ And I finalize the criteria registration
 Then I should see the "C3" criterion available on the criteria list
 And I should see the "C4" criterion available on the criteria list
 */
-Given(~'^the criterion "([^"]*)" does not exists$') {
+Given(~'^I can not see the criterion "([^"]*)"$') {
     String description ->
         to CriterionPage
         at CriterionPage
@@ -116,6 +116,7 @@ And the criterion "C2" is not added to the system
 */
 And(~'^the criterion with name "([^"]*)" is on the system$') {
     String description ->
+        CriterionTestDataAndOperations.createCriterion(description)
         Criterion crit = CriterionTestDataAndOperations.retrieveCriterion(description)
         assert crit.description.equals(description)
         descriptionCrit2 = description
@@ -137,8 +138,14 @@ And I finalize the criteria registration
 Then I should see the "C6" criterion available on the criteria list
 And I should see the "C5" criterion only one time available on the criteria list
 */
-And(~'^the criterion "([^"]*)" does exists$') {
+And(~'^I can see the criterion "([^"]*)"$') {
     String description ->
+        to CreateCriterionPage
+        at CreateCriterionPage
+
+        page.fillCriterionDetails(description)
+        page.selectCreateCriterion()
+
         to CriterionPage
         at CriterionPage
 
