@@ -1,8 +1,8 @@
-/*
-Estes steps são da feature inicial, idealizada antes da iteração de imlementar features.
-Portanto, será descartado dos testes finais visto que não faz uso de métodos de controlador que não sejam
-Gerados automaticamente.
-*/
+///*
+//Estes steps são da feature inicial, idealizada antes da iteração de imlementar features.
+//Portanto, será descartado dos testes finais visto que não faz uso de métodos de controlador que não sejam
+//Gerados automaticamente.
+//*/
 ///**
 // * Created by Arthur Lapprand on 03/05/2016.
 // */

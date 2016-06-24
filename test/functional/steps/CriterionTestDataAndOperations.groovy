@@ -16,6 +16,12 @@ class CriterionTestDataAndOperations {
         controller.response.reset()
     }
 
+    public static void removeCriterion(Criterion criterionInstance) {
+        CriterionController cc = new CriterionController()
+        cc.delete(criterionInstance)
+        cc.response.reset()
+    }
+
     public static boolean compatibleTo(String desc, Criterion crit) {
         if (desc.equals(crit.description)) return true
         return false

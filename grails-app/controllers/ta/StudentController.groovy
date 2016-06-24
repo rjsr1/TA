@@ -4,6 +4,8 @@ import org.apache.ivy.core.settings.Validatable
 
 import java.text.SimpleDateFormat
 import java.lang.*
+import ta.Evaluation
+import ta.EvaluationsByCriterion
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -60,6 +62,10 @@ class StudentController {
 
     def updateAllAverages() {
         Student.list().each {
+            List<EvaluationsByCriterion> cae = it.criteriaAndEvaluations
+            for (int i = 0; i < cae.size(); i++) {
+                cae[i].doMedia()
+            }
             it.calcMedia()
         }
     }

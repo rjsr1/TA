@@ -123,15 +123,19 @@ class EvaluationDataAndOperations{
     }
 
     public static boolean createEvaluation(String value, String criterionName, String origin, String dateInString){
-        if(value == null) return false;
+        if(value == null || origin == "") return false;
         def applicationDate = formattedDate(dateInString)
-        def cont = new StudentController()
         def cont2 = new EvaluationController();
-        def values = [value, value, value];
-        cont2.params<<[value : values] <<[origin: origin] << [applicationDate : applicationDate];
+        def list = Student.list().size();
+        def values = []
+        for(int i = 0; i<list;i++){
+            values.add(value)
+        }
+        cont2.params<<[value : values, origin: origin, applicationDate : applicationDate, criterion : Criterion.findByDescription(criterionName)];
         cont2.saveAll()
         return true;
     }
+
     public static boolean checkEvaluationAllStudents(String criterionName,String origin,String dateInString){
         def cont = new StudentController()
         return cont.checkEvaluationsAllStudents(criterionName,origin,dateInString)

@@ -9,7 +9,7 @@ import ta.Evaluation
 @Transactional(readOnly = true)
 class EvaluationController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [save: "POST", update: "PUT"]
 
     public static Date formattedDate(String dateInString){
         def formatter = new SimpleDateFormat("dd/mm/yyyy");
@@ -155,28 +155,35 @@ class EvaluationController {
 
     @Transactional
     def delete(Evaluation evaluationInstance) {
-
-        if (evaluationInstance == null) {
+        /*if (evaluationInstance == null) {
             notFound()
             return
-        }
+        }*/
 
-        LinkedList<EvaluationsByCriterion> eccList = EvaluationsByCriterion.list()
-        for (int i = 0; i < eccList.size(); i++) {
-            eccList.get(i).removeFromEvaluations(evaluationInstance)
-        }
-
-        evaluationInstance.delete flush:true
-
-        StudentController sc = new StudentController()
-        sc.updateAllAverages()
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'Evaluation.label', default: 'Evaluation'), evaluationInstance.id])
-                redirect action:"index", method:"GET"
+        if (Evaluation.findById(evaluationInstance.id) != null) {
+            //LinkedList<EvaluationsByCriterion> eccList = EvaluationsByCriterion.list()
+            for (int i = 0; i < EvaluationsByCriterion.list().size(); i++) {
+                EvaluationsByCriterion.list().get(i).removeFromEvaluations(evaluationInstance)
             }
-            '*'{ render status: NO_CONTENT }
+
+            Student.list().each {
+                for (int i = 0; i < it.criteriaAndEvaluations.size(); i++) {
+                    it.criteriaAndEvaluations.get(i).removeFromEvaluations(evaluationInstance)
+                }
+            }
+
+            evaluationInstance.delete flush:true
+
+            StudentController sc = new StudentController()
+            sc.updateAllAverages()
+
+            request.withFormat {
+                form multipartForm {
+                    flash.message = message(code: 'default.deleted.message', args: [message(code: 'Evaluation.label', default: 'Evaluation'), evaluationInstance.id])
+                    redirect action:"index", method:"GET"
+                }
+                '*'{ render status: NO_CONTENT }
+            }
         }
     }
 

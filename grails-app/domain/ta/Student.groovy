@@ -104,12 +104,14 @@ class Student {
     }
 
     public EvaluationsByCriterion findEvaluationByCriterion(String criterionName){
-        for(int i =0; i<this.criteriaAndEvaluations.size(); i++){
-            if(this.criteriaAndEvaluations[i].getCriterion().getDescription().equals(criterionName)){
-                return this.criteriaAndEvaluations[i];
+        if (this.criteriaAndEvaluations != null) {
+            for(int i =0; i<this.criteriaAndEvaluations.size(); i++){
+                if(this.criteriaAndEvaluations[i].getCriterion().getDescription().equals(criterionName)){
+                    return this.criteriaAndEvaluations[i];
+                }
             }
+            return null
         }
-        return null
     }
 
     public void addEvaluationsByCriterion(EvaluationsByCriterion evCriterion){

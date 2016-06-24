@@ -1,12 +1,9 @@
 package steps
 
-import javafx.beans.binding.When
-import net.sf.ehcache.search.expression.And
-import ta.EvaluationController
-import ta.CriterionController
+import ta.EvaluationsByCriterion
 import ta.Student
 import ta.Evaluation
-import ta.Criterion
+import steps.RemoveEvaluationTestDataAndOperations
 
 this.metaClass.mixin(cucumber.api.groovy.Hooks)
 this.metaClass.mixin(cucumber.api.groovy.EN)
@@ -24,42 +21,75 @@ Given(~'^the system has a student registered with name "([^"]*)" and login "([^"
     assert studentToCheck.name.equals(name)
 }
 
-And(~'this student has a "([^"]*)" evaluation in criterion "([^"]*)" with origin "([^"]*)" and applicationDate "([^"]*)"$') {
+And(~'^this student has a "([^"]*)" evaluation in criterion "([^"]*)" with origin "([^"]*)" and applicationDate "([^"]*)"$') {
     String evaluationValue, String criterionDescription, String origin, String evaluationDate ->
 
+        boolean bool = false
+
+        def date = EvaluationDataAndOperations.formattedDate(evaluationDate)
+
         CriterionTestDataAndOperations.createCriterion(criterionDescription)
-        Criterion criterionCreated = Criterion.findByDescription(criterionDescription)
 
-        List<Evaluation> evaluationsToGive = new LinkedList<Evaluation>()
-        EvaluationController evCon = new EvaluationController()
-        Evaluation evaluationCreated
-        Student.list().each {
-            if(it.login.equals(studentToCheck.login)){
-                evCon.params << [
-                        origin: origin,
-                        value: evaluationValue,
-                        criterion: criterionCreated,
-                        applicationDate: EvaluationDataAndOperations.formattedDate(evaluationDate)
-                ]
-            }else{
-                evCon.params << [origin: origin,
-                                 value: "--",
-                                 criterion: criterionCreated,
-                                 applicationDate: EvaluationDataAndOperations.formattedDate(evaluationDate)
-                ]
+        EvaluationDataAndOperations.createEvaluation(evaluationValue, criterionDescription, origin, evaluationDate)
+
+        studentToCheck = Student.findByLogin(studentToCheck.login)
+
+        studentToCheck.findEvaluationByCriterion(criterionDescription).each {
+            List<Evaluation> l = it.evaluations
+            for (int i = 0; i < l.size(); i++) {
+                if (l[i].origin.equals(origin) && l[i].applicationDate.equals(date) && l[i].value.equals(evaluationValue)) bool = true
             }
-            evaluationCreated = evCon.createEvaluation()
-            evCon.save(evaluationCreated)
-            evaluationsToGive.add(evaluationCreated)
         }
-        evCon.params << [value: evaluationsToGive]
-        evCon.saveAll()
+
+        assert bool
 }
 
-When(~'I remove the evaluation "([^"]*)"$') {
+String tempEvaluationValue, tempCriterionDescription, tempOrigin, tempName, tempLogin
+def date
 
+When(~'^I remove the evaluation "([^"]*)" in criterion "([^"]*)" with origin "([^"]*)" and applicationDate "([^"]*)" from the student "([^"]*)" with login "([^"]*)"$') {
+    String evaluationValue, String criterionDescription, String origin, String evaluationDate, String name, String login ->
+        tempEvaluationValue = evaluationValue
+        tempCriterionDescription = criterionDescription
+        tempOrigin = origin
+        tempName = name
+        tempLogin = login
+
+        date = EvaluationDataAndOperations.formattedDate(evaluationDate)
+
+        Student s = Student.findByLogin(tempLogin)
+        List<EvaluationsByCriterion> ebcList = s.criteriaAndEvaluations
+        for (int i = 0; i < ebcList.size(); i++) {
+            if (ebcList.get(i).criterion.description.equals(tempCriterionDescription)) {
+                List<Evaluation> eList = ebcList.get(i).evaluations
+                for (int j = 0; j < eList.size(); j++) {
+                    if (eList.get(j).origin.equals(tempOrigin) &&
+                            eList.get(j).value.equals(tempEvaluationValue) &&
+                            eList.get(j).applicationDate.equals(date)) {
+                        RemoveEvaluationTestDataAndOperations.deleteEvaluation(eList.get(j))
+                    }
+                }
+            }
+        }
 }
 
-Then(~'the system correctly removes the evaluation$') {
+Then(~'^the system correctly removes the evaluation$') { ->
+    boolean bool = true
 
+    Student s = Student.findByLogin(tempLogin)
+    List<EvaluationsByCriterion> ebcList = s.criteriaAndEvaluations
+    for (int i = 0; i < ebcList.size(); i++) {
+        if (ebcList.get(i).criterion.description.equals(tempCriterionDescription)) {
+            List<Evaluation> eList = ebcList.get(i).evaluations
+            for (int j = 0; j < eList.size(); j++) {
+                if (eList.get(j).origin.equals(tempOrigin) &&
+                        eList.get(j).value.equals(tempEvaluationValue) &&
+                        eList.get(j).applicationDate.equals(date)) {
+                    bool = false
+                }
+            }
+        }
+    }
+
+    assert bool
 }

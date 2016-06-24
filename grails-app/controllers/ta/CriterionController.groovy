@@ -6,7 +6,7 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class CriterionController {
 
-    static allowedMethods = [update: "PUT", delete: "DELETE"]
+    static allowedMethods = [update: "PUT"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 100, 100)

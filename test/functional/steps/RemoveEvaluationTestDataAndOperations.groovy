@@ -1,16 +1,16 @@
 package steps
 
+import ta.Evaluation
 import ta.EvaluationController
-import ta.Student
 
 /**
  * Created by Lapp on 21/06/2016.
  */
 class RemoveEvaluationTestDataAndOperations {
 
-    def addEvaluation(String evaluationValue) {
+    def static deleteEvaluation(Evaluation evalInstance) {
         EvaluationController eController = new EvaluationController()
-
-        eController.saveAll()
+        eController.delete(evalInstance)
+        eController.response.reset()
     }
 }
