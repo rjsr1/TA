@@ -13,7 +13,7 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class StudentController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [update: "PUT"]
 
     public static Date formattedDate(String dateInString) {
         def formatter = new SimpleDateFormat("dd/mm/yyyy");

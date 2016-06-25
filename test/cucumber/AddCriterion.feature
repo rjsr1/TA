@@ -1,8 +1,8 @@
-#Esta feature é a feature inicial, idealizada antes da iteração de imlementar features.
-#Portanto, será descartada dos testes finais visto que não faz uso de métodos de controlador que não sejam
-#Gerados automaticamente.
-
-#Arthur Lapprand
+##Esta feature é a feature inicial, idealizada antes da iteração de imlementar features.
+##Portanto, será descartada dos testes finais visto que não faz uso de métodos de controlador que não sejam
+##Gerados automaticamente.
+#
+##Arthur Lapprand
 #Feature: Add Criterion
 #  As the teacher
 #  I want to be able to register new criteria
@@ -26,11 +26,11 @@
 #    And I am on the Add Criterion page
 #    When I add the criterion "P3"
 #    Then I should see a message related to the criterion registration failure
-
-#GUI Scenario
-
-#  Scenario: Register a non-existent criterion
-#    Given I am at the Add Criterion page
-#    When I fill the field Nome with the name "P1"
-#    And I finalize the criterion registration
-#    Then I should see the new criterion available on the criteria list
+#
+##GUI Scenario
+##
+##  Scenario: Register a non-existent criterion
+##    Given I am at the Add Criterion page
+##    When I fill the field Nome with the name "P1"
+##    And I finalize the criterion registration
+##    Then I should see the new criterion available on the criteria list

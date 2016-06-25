@@ -1,3 +1,4 @@
+package steps
 
 import pages.StudentPages.StudentPage
 import steps.EvaluationDataAndOperations
