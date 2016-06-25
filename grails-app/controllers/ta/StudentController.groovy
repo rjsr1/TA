@@ -10,6 +10,7 @@ import ta.EvaluationsByCriterion
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
+@SuppressWarnings("GroovyMissingReturnStatement")
 @Transactional(readOnly = true)
 class StudentController {
 
@@ -76,11 +77,7 @@ class StudentController {
             media += student.average
         }
         media = media / Student.list().size()
-        if (mediaAluno >= media) {
-            return true
-        } else {
-            return false
-        }
+        return mediaAluno >= media
     }
 
     public boolean addEvaluationsToAllStudents(LinkedList<Evaluation> evaluationList) {
@@ -116,6 +113,7 @@ class StudentController {
         }
     }
 
+    @SuppressWarnings(["GroovyMissingReturnStatement", "GroovyMissingReturnStatement", "GroovyMissingReturnStatement", "GroovyMissingReturnStatement", "GroovyMissingReturnStatement", "GroovyMissingReturnStatement"])
     public boolean evaluationTests(String studentLogin, String evaluationOrigin){
         def evaluation = Evaluation.findByOrigin(evaluationOrigin)
         List<Evaluation> listEval = new LinkedList<Evaluation>()
@@ -189,7 +187,7 @@ class StudentController {
 
     public List<Evaluation> countStudentsEvaluated(String criterionName, String origin, String dateInString) {
         List<Evaluation> returningValue = new LinkedList<>();
-        def evaluation = new Evaluation(origin, null, this.formattedDate(dateInString), criterionName);
+        def evaluation = new Evaluation(origin, null, formattedDate(dateInString), criterionName);
         def students = Student.findAll();
         for (int i = 0; i < students.size(); i++) {
             returningValue.add(students.get(i).findEvaluationByCriterion(criterionName).findSpecificEvaluation(evaluation))
@@ -198,7 +196,7 @@ class StudentController {
     }
 
     public boolean checkRedundantEvaluationAllStudents(String criterionName, String origin, String dateInString) {
-        def evaluation = new Evaluation(origin, null, this.formattedDate(dateInString), criterionName)
+        def evaluation = new Evaluation(origin, null, formattedDate(dateInString), criterionName)
         List<Student> students = Student.findAll();
         for (int i = 0; i < students.size(); i++) {
             def evCriterion = students.get(i).findEvaluationByCriterion(criterionName);
@@ -210,15 +208,11 @@ class StudentController {
     }
 
     public boolean checkEvaluationsAllStudents(String criterionName, String origin, String dateInString) {
-        def evaluation = new Evaluation(origin, null, this.formattedDate(dateInString), criterionName);
+        def evaluation = new Evaluation(origin, null, formattedDate(dateInString), criterionName);
         List<Student> students = Student.findAll()
         for (int i = 0; i < students.size(); i++) {
             def evCriterion = students.get(i).findEvaluationByCriterion(criterionName);
-            if (evCriterion.findSpecificEvaluation(evaluation) != null) {
-                return true;
-            } else {
-                return false
-            }
+            return evCriterion.findSpecificEvaluation(evaluation) != null
         }
     }
 

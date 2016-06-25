@@ -1,3 +1,7 @@
+package steps
+
+import cucumber.api.groovy.EN
+import cucumber.api.groovy.Hooks
 import pages.StudentConsultPage
 import ta.Student
 import steps.StudentConsultTestDataAndOperations
@@ -6,8 +10,8 @@ import steps.StudentConsultTestDataAndOperations
  * Created by joao on 02/06/16.
 */
 
-this.metaClass.mixin(cucumber.api.groovy.Hooks)
-this.metaClass.mixin(cucumber.api.groovy.EN)
+this.metaClass.mixin(Hooks)
+this.metaClass.mixin(EN)
 
 Student globalStudent
 //Controller
