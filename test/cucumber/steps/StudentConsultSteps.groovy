@@ -13,6 +13,7 @@ Student globalStudent
 //Controller
 Given(~/^the student "([^"]*)" with login "([^"]*)" is registered in the system$/) { String nome, String login ->
     StudentConsultTestDataAndOperations.createAndSaveStudent(nome, login)
+    StudentConsultTestDataAndOperations.createAndSaveStudent('Jose da Silva', 'jds')
     assert Student.findByLogin(login) != null
 }
 
@@ -26,7 +27,7 @@ Given(~/^the student "([^"]*)" with login "([^"]*)" is not registered in the sys
 }
 
 When(~/^I search for "([^"]*)"$/) { String login ->
-    globalStudent = StudentConsultTestDataAndOperations.lookForStudent()Student(login)
+    globalStudent = StudentConsultTestDataAndOperations.lookForStudent(login)
 }
 
 Then(~/^the system will not return anything$/) { ->
@@ -41,18 +42,58 @@ Given(~/^I'm on the "([^"]*)" page$/) { String pageName ->
     at StudentConsultPage
 }
 
-And(~/^I see the student "([^"]*)" with login "([^"]*)" in the list of students$/) { String nome, String login ->
+And(~/^I want to consult the student "([^"]*)" with login "([^"]*)"$/) { String nome, String login ->
     at StudentConsultPage
-    page.fillStudentSearch(global)
+    global = login
+    page.fillStudentSearch(login)
+}
+
+When(~/^I search for the student$/) { ->
+    at StudentConsultPage
     page.selectSearch()
 }
 
-When(~/^I request the student information$/) { ->
+Then(~/^the students will appear$/) { ->
+    at StudentConsultPage
+    page.findSearchResult()
+}
+
+//--
+Then(~/^no results will appear$/) { ->
+    at StudentConsultPage
+    page.findSearchResult()
+}
+
+//--
+And(~/^I want to consult the students "([^"]*)" and "([^"]*)"$/) { String nome, String login ->
+    at StudentConsultPage
+}
+
+When(~/^I consult for "([^"]*)"$/) { String nome ->
+    at StudentConsultPage
+    page.fillStudentSearch(nome)
+    page.selectSearch()
+}
+
+Then(~/^the results will contain the names of "([^"]*)" and "([^"]*)"$/) {String nomeA, String nomeB ->
+    at StudentConsultPage
+    page.findSearchResult()
+}
+
+//--
+And(~/^I searched for "([^"]*)" with login "([^"]*)"$/) { String nome, String login ->
+    at StudentConsultPage
+    global = login
+    page.fillStudentSearch(login)
+    page.selectSearch()
+}
+
+When(~/^I click on the student name$/) { ->
     at StudentConsultPage
     page.selectStudent()
 }
 
-Then(~/^all the student average evaluation in all criteria will appear in the screen$/) { ->
+Then(~/^the details about the student will appear$/) { ->
     at StudentConsultPage
-    page.showStudentDetails()
+
 }

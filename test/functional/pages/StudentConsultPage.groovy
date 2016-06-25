@@ -9,22 +9,22 @@ class StudentConsultPage extends Page {
     static url = "/TA/student/search"
 
     static at = {
-        title ==~ /Consult Student/
+        title ==~ /Search Student/
     }
 
-    def static fillStudentSearch(login){
-        $("form").title = login
+    def fillStudentSearch(String parametros){
+        $("form").consult = parametros
     }
 
-    def static selectSearch(){
+    def selectSearch(){
         $("input", name: "search").click()
     }
 
-    def static selectStudent(){
-
+    def selectStudent(String login){
+        $("a", name: login).click()
     }
 
-    def static showStudentDetails(){
-
+    def boolean findSearchResult(){
+        return $("td", fieldValue: "login").isDisplayed()
     }
 }

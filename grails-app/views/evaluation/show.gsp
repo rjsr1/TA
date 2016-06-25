@@ -17,7 +17,7 @@
 			</ul>
 		</div>
 		<div id="show-evaluation" class="content scaffold-show" role="main">
-			<h1><g:message code="default.show.label" args="[entityName]" /></h1>
+			<h1>Evaluation details</h1>
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
@@ -37,6 +37,15 @@
 					<span id="value-label" class="property-label"><g:message code="evaluation.value.label" default="Value" /></span>
 					
 						<span class="property-value" aria-labelledby="value-label"><g:fieldValue bean="${evaluationInstance}" field="value"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${evaluationInstance?.criterion}">
+				<li class="fieldcontain">
+					<span id="criterion-label" class="property-label"><g:message code="evaluation.criterion.label" default="Criterion" /></span>
+					
+						<span class="property-value" aria-labelledby="criterion-label"><g:link controller="criterion" action="show" id="${evaluationInstance?.criterion?.id}">${evaluationInstance?.criterion?.description?.encodeAsHTML()}</g:link></span>
 					
 				</li>
 				</g:if>
