@@ -109,11 +109,6 @@ class EvaluationController {
         StudentController student = new StudentController()
         def list = Student.list()
         for(int i = 0; i < allValues.size(); i++){
-            String id = (String)params.criterion.id
-            def crits = Criterion.findById(id)
-            String o = params.origin
-            String v = allValues.get(i)
-            String d = params.applicationDate
             Evaluation newEvaluation = new Evaluation(params.origin, allValues.get(i), params.applicationDate,(String)params.criterion.id)
             if(list.get(i).findEvaluationByCriterion(newEvaluation.criterion.description) != null) {
                 if (list.get(i).findEvaluationByCriterion(newEvaluation.criterion.description).findSpecificEvaluation(newEvaluation)) return

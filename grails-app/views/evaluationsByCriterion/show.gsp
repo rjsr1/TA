@@ -65,7 +65,7 @@
 
 						<td>${fieldValue(bean: evaluationInstance, field: "applicationDate")}</td>
 
-						<td><g:link controller="evaluation" action="show" id="${evaluationInstance?.id}">${fieldValue(bean: evaluationInstance, field: "value")}</g:link></td>
+						<td><g:link name="${evaluationInstance?.value}" controller="evaluation" action="show" id="${evaluationInstance?.id}">${fieldValue(bean: evaluationInstance, field: "value")}</g:link></td>
 
 					</tr>
 				</g:each>

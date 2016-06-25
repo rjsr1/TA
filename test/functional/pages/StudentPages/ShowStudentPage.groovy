@@ -16,4 +16,8 @@ class ShowStudentPage extends Page {
         if ($("tbody").has("a", name: desc)) return false
         return true
     }
+
+    def selectCriterionByDesc(String desc) {
+        $("td").find("a", name: desc).click()
+    }
 }
