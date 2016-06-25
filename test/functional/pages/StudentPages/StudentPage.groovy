@@ -7,7 +7,7 @@ class StudentPage extends Page {
     static url = "/TA/student/index"
 
     static at =  {
-        title ==~ /Student Listagem/
+        title ==~ /Student List/
     }
 
     boolean confirmStudent(String name, String login) {
@@ -22,6 +22,10 @@ class StudentPage extends Page {
 
     def selectStudent(String name){
         $("tr").find("td").has("a",text: name).click()
+    }
+
+    def selectStudentByLogin(String login){
+        $("a", name: login).click()
     }
 }
 

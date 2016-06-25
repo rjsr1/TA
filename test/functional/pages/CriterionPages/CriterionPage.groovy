@@ -12,7 +12,7 @@ class CriterionPage extends Page {
     }
 
     def selectCriterion(String desc) {
-        $("td").find(desc).click()
+        $("a", name: desc).click()
     }
 
     boolean confirmCriterion(String desc){

@@ -10,7 +10,7 @@ Feature: Remove Criterion
     Given a student with name "Zeca" and login "zc" is already on the system
     And this student has an evaluation in criterion "TEORICA"
     When I remove the criterion "TEORICA"
-    Then I should not see that criterion listed in the student
+    Then I should not see the criterion "TEORICA" listed in the student with login "zc"
 
 #Controller Scenario
   Scenario: Remove a criterion from the system

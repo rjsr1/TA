@@ -1,11 +1,13 @@
 package steps
 
-import javafx.beans.binding.When
 import pages.AddEvaluationPage
 import pages.AddStudentsPage
 import pages.CreateCriterionPage
 import pages.CriterionPages.CriterionPage
+
 import pages.ShowCriterionPage
+import pages.StudentPages.ShowStudentPage
+import pages.StudentPages.StudentPage
 import ta.Criterion
 import ta.Evaluation
 import ta.EvaluationsByCriterion
@@ -45,12 +47,20 @@ When(~'^I remove the criterion "([^"]*)"$') {
         to CriterionPage
         at CriterionPage
         page.selectCriterion(criterionDesc)
-        //page.selectDeleteCriterion()
+        at ShowCriterionPage
+        assert page.selectDeleteCriterion()
 }
 
-Then(~'^I should not see that criterion listed in the student$') { ->
-
+Then(~'^I should not see the criterion "([^"]*)" listed in the student with login "([^"]*)"$') {
+    String criterionDesc, String login ->
+        to StudentPage
+        at StudentPage
+        page.selectStudentByLogin(login)
+        at ShowStudentPage
+        assert page.checkForCriterion(criterionDesc)
 }
+
+// Controller Scenario
 
 Student studentToCheck
 
