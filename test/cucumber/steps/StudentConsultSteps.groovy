@@ -35,7 +35,8 @@ Then(~/^the system will not return anything$/) { ->
 }
 
 //GUI
-String global
+String globalLogin
+String globalNome
 
 Given(~/^I'm on the "([^"]*)" page$/) { String pageName ->
     to StudentConsultPage
@@ -83,14 +84,15 @@ Then(~/^the results will contain the names of "([^"]*)" and "([^"]*)"$/) {String
 //--
 And(~/^I searched for "([^"]*)" with login "([^"]*)"$/) { String nome, String login ->
     at StudentConsultPage
-    global = login
+    globalLogin = login
+    globalNome = nome
     page.fillStudentSearch(login)
     page.selectSearch()
 }
 
 When(~/^I click on the student name$/) { ->
     at StudentConsultPage
-    page.selectStudent()
+    page.selectStudent(globalNome)
 }
 
 Then(~/^the details about the student will appear$/) { ->

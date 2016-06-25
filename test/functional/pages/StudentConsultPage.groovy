@@ -20,8 +20,8 @@ class StudentConsultPage extends Page {
         $("input", name: "search").click()
     }
 
-    def selectStudent(String login){
-        $("a", name: login).click()
+    def selectStudent(String name){
+        $("td", name: name).click()
     }
 
     def boolean findSearchResult(){
