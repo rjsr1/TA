@@ -112,30 +112,10 @@ class StudentController {
         }
         return true
     }
-    public void addEvaluationToStudent(String login){
-        def student = Student.findByLogin(login);
-        def evaluationInstance = new Evaluation(params);
-        student.addEvaluation(evaluationInstance);
-        student.save flush: true
-    }
-
-    public void addEvaluationToStudent2(String login, Date applicationDate) {
-        def student = Student.findByLogin(login)
-        def eval = Evaluation.findByApplicationDate(applicationDate)
-        student.addEvaluation(eval)
-        student.save flush: true
-    }
+   //HAVIA CODIGO REPETIDO AQUI
 
 
-
-    public void addCriterionToAllStudent(String description) {
-        def students = Student.findAll();
-        for (int i = 0; i < students.size(); i++) {
-            def evCriterion = new EvaluationsByCriterion(Criterion.findByDescription(description));
-            Student student = students.get(i);
-            student.addEvaluationsByCriterion(evCriterion)
-        }
-    }
+//HAVIA CODIGO ULTRAPASSADO AQUI(CODIGO COM COMPORTAMENTO DA APLICACAO ANTIGA)
 
     public double checkPorcentageEvaluationStudent(String evalValue, String loginA) {
         def student = Student.findByLogin(loginA)
@@ -155,75 +135,7 @@ class StudentController {
     }
 
 
-    public List<Evaluation> countStudentsEvaluated(String criterionName, String origin, String dateInString) {
-        List<Evaluation> returningValue = new LinkedList<>();
-        def evaluation = new Evaluation(origin, "--", this.formattedDate(dateInString), Criterion.findByDescription(criterionName));
-        def students = Student.findAll();
-        for (int i = 0; i < students.size(); i++) {
-            EvaluationsByCriterion evByCrit = students.get(i).findEvaluationByCriterion(criterionName);
-            if(evByCrit!=null)returningvalue.evByCrit.findSpecificEvaluation(evaluation);
-        }
-        return returningValue;
-    }
-
-    public boolean checkRedundantEvaluationAllStudents(String criterionName,String origin,String dateInString){
-        def evaluation = new Evaluation(origin,null,this.formattedDate(dateInString),criterionName);
-        List<Student> students = Student.findAll();
-        for (int i = 0; i < students.size(); i++) {
-            def evCriterion = students.get(i).findEvaluationByCriterion(criterionName);
-            if (evCriterion.findAll { it -> evCriterion.findSpecificEvaluation(evaluation) != null }.size() > 1) {
-                return false
-            }
-        }
-        return true
-    }
-
-
-    public boolean checkEvaluationsAllStudents(String criterionName, String origin, String dateInString){
-       def evaluation = new Evaluation(origin,null,this.formattedDate(dateInString),criterionName);
-       List<Student> students = Student.findAll()
-       for(int i =0; i<students.size();i++){
-           def evCriterion  = students.get(i).findEvaluationByCriterion(criterionName);
-           return evCriterion.findSpecificEvaluation(evaluation) != null
-       }
-        return false;
-
-    }
-
-    public int countAllStudents() {
-        return Student.findAll().size();
-    }
-
-    public boolean saveStudent() {
-        def studentInstance = new Student(params);
-        if (Student.findByLogin(studentInstance.login) == null) {
-            studentInstance.save flush: true
-            return true
-        }
-        return false
-    }
-    public Student createAndSaveStudent(){
-        Student student = new Student(params)
-        if(Student.findByLogin(student.getLogin()) == null) {
-            student.save flush: true
-        }
-        return student
-    }
-
-    def addEvaluation(Student studentInstance, String criterionName, Evaluation evaluationInstance) {
-        def student = studentInstance;
-        student.addEvaluation(evaluationInstance);
-        student.save flush: true
-    }
-
-    public Student searchStudent() {
-        def studentInstance = Student.findByLogin(params)
-        return studentInstance
-    }
-
-    public Student createStudent() {
-        return new Student(params)
-    }
+//  AQUI HAVIA CODIGO PARA TESTE, QUE NAO PRECISA MAIS
 
     def show(Student studentInstance) {
         respond studentInstance
