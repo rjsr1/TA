@@ -140,24 +140,4 @@ class Student {
             this.addToCriteriaAndEvaluations(evCriterion);
         }
     }
-
-    public boolean evaluationExist(Evaluation evaluationInstance){
-        for(int i = 0; i<this.criteriaAndEvaluations.size(); i++){
-            if(this.criteriaAndEvaluations[i].getCriterion().getDescription().equals(evaluationInstance.getCriterion().getDescription())){
-                List<Evaluation> evaluationsForThisCriterion = this.criteriaAndEvaluations[i].evaluations;
-                for(int j=0; j<evaluationsForThisCriterion.size();j++){
-                    //if(evaluationsForThisCriterion.compatibleTo(evaluationInstance)){
-                    //    return true
-                    //}
-                }
-            }
-        }
-        return false
-    }
-
-    /*private boolean criterionExists(String criterionDescription){
-        for(int i=0;i<this.criteriaAndEvaluations.size();i++){
-            if(this.criteriaAndEvaluations.get(i).criterion.description.equals(criterionDescription))
-        }
-    }*/
 }
