@@ -122,6 +122,7 @@ hs_err_pid*
 /cobertura.ser
 .DS_Store
 /target/
+chromedrivers/
 .idea/workspace.xml
 GebConfig.groovy
 grails-app/conf/hibernate/
@@ -139,3 +140,4 @@ web-app/css/
 web-app/images/
 web-app/js/
 .slcache/
+chromedrivers/
