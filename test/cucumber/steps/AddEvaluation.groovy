@@ -188,7 +188,7 @@ When(~/^I request the system to add the evaluation valued "([^"]*)" in the crite
 }
 
 Then(~/^I can see the evaluation valued "([^"]*)" in the criterion "([^"]*)", from "([^"]*)", date "([^"]*)" in the evaluation screen$/) {
-    String criterionName, evaluationOrigin, evaluationDate ->
+    String value, criterionName, evaluationOrigin, evaluationDate ->
         to StudentPage
         at StudentPage
 
@@ -201,7 +201,7 @@ Then(~/^I can see the evaluation valued "([^"]*)" in the criterion "([^"]*)", fr
 
         to ShowEvaluationByCriterionPage
 
-        assert page.checkForEvaluation(evaluationOrigin)
+        assert page.checkForEvaluation(value)
 }
 
 /*
