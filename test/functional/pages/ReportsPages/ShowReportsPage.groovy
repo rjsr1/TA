@@ -8,7 +8,7 @@ import geb.Page
 class ShowReportsPage extends Page {
     static url = "/TA/report/show"
     static at = {
-        title ==~/Ver Report/
+        title ==~/Show Report/
     }
 
     def boolean checkName(String name){
