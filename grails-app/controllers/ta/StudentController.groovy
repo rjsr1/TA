@@ -4,10 +4,13 @@ import org.apache.ivy.core.settings.Validatable
 
 import java.text.SimpleDateFormat
 import java.lang.*
+import ta.Evaluation
+import ta.EvaluationsByCriterion
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
+@SuppressWarnings("GroovyMissingReturnStatement")
 @Transactional(readOnly = true)
 class StudentController {
 
@@ -22,23 +25,6 @@ class StudentController {
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Student.list(params), model: [studentInstanceCount: Student.count()]
-    }
-
-
-    public void checkConditionPercentage(String loginA, Report reportInstance) {
-        double aux = checkPercentageEvaluationStudent(reportInstance.avaliacao, loginA)
-        def controllerRepo = new ReportController()
-        if (aux >= reportInstance.valor) {
-            Student student = Student.findByLogin(loginA)
-            controllerRepo.addStudentToReport(student, reportInstance)
-        }
-    }
-
-    public void checkConditionAverage(Student student, Report reportInstance) {
-        def controllerRepo = new ReportController()
-        if (checkTotalAverage(student.average)) {
-            controllerRepo.addStudentToReport(student, reportInstance)
-        }
     }
 
     public double checkPercentageEvaluationStudent(String evalValue, String loginA) {
@@ -60,6 +46,10 @@ class StudentController {
 
     def updateAllAverages() {
         Student.list().each {
+            List<EvaluationsByCriterion> cae = it.criteriaAndEvaluations
+            for (int i = 0; i < cae.size(); i++) {
+                cae[i].doMedia()
+            }
             it.calcMedia()
         }
     }
@@ -70,11 +60,7 @@ class StudentController {
             media += student.average
         }
         media = media / Student.list().size()
-        if (mediaAluno >= media) {
-            return true
-        } else {
-            return false
-        }
+        return mediaAluno >= media
     }
 
     public boolean addEvaluationsToAllStudents(LinkedList<Evaluation> evaluationList) {
@@ -97,6 +83,23 @@ class StudentController {
         }
         return true
     }
+
+    public void checkConditionPercentage(String loginA, Report reportInstance) {
+        double aux = checkPercentageEvaluationStudent(reportInstance.avaliacao, loginA)
+        def controllerRepo = new ReportController()
+        if (aux >= reportInstance.valor) {
+            Student student = Student.findByLogin(loginA)
+            controllerRepo.addStudentToReport(student, reportInstance)
+        }
+    }
+
+    public void checkConditionAverage(Student student, Report reportInstance) {
+        def controllerRepo = new ReportController()
+        if (checkTotalAverage(student.average)) {
+            controllerRepo.addStudentToReport(student, reportInstance)
+        }
+    }
+
    //HAVIA CODIGO INUTIL AQUI
    //HAVIA CODIGO REPETIDO AQUI
 
@@ -123,8 +126,64 @@ class StudentController {
 
 //  AQUI HAVIA CODIGO PARA TESTE, QUE NAO PRECISA MAIS
 
+    public boolean updateEvaluation(String studentLogin, String newEvaluation, String criterionName, String evaluationOrigin){
+        Student updatedStudent = Student.findByLogin(studentLogin)
+        for(int i = 0; i < updatedStudent.criteriaAndEvaluations.size(); i++){
+            if(updatedStudent.criteriaAndEvaluations.get(i).getCriterion().getDescription().equals(criterionName)){
+                List<Evaluation> evaluationsInCriterion = updatedStudent.criteriaAndEvaluations.get(i).getEvaluations();
+                for(int j = 0; j < evaluationsInCriterion.size(); j++){
+                    //if(evaluationsInCriterion.get(j) != null) {
+                        if (evaluationsInCriterion.get(j).getOrigin().equals(evaluationOrigin)) {
+                            evaluationsInCriterion.get(j).setValue(newEvaluation)
+                        }
+                    //}
+                }
+            }
+        }
+    }
+
+    public int countAllStudents(){
+        return Student.findAll().size();
+    }
+
+    public boolean saveStudent() {
+        def studentInstance = new Student(params);
+        if (Student.findByLogin(studentInstance.login) == null) {
+            studentInstance.save flush: true
+            return true
+        }
+        return false
+    }
+
+    @Transactional
+    def createAndSaveStudent() {
+        Student studentInstance = new Student(params)
+        if (Student.findByLogin(studentInstance.getLogin()) == null) {
+            if (studentInstance.hasErrors()) {
+                respond studentInstance.errors, view: 'create'
+                return
+            }
+            if(!studentInstance.save(flush: true)){
+                render(view: "create", model: [studentInstance: studentInstance])
+                return
+            }
+            flash.message = message(code: 'default.created.message', args: [message(code: 'student.label', default: 'Student'), studentInstance.id])
+            redirect(action: "show", id: studentInstance.id)
+        }
+    }
+
+    public Student searchStudent() {
+        def studentInstance = Student.findByLogin(params.login)
+        return studentInstance
+    }
+
     def show(Student studentInstance) {
         respond studentInstance
+    }
+
+    public Student getStudent(String studentLogin){
+        Student studentFound = Student.findByLogin(studentLogin)
+        return studentFound
     }
 
     def create() {
@@ -229,6 +288,9 @@ class StudentController {
             group.get(i).save flush: true;
         }
     }
+
+
+
 
     def saveGroup() {
         String group = params.name

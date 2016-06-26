@@ -80,8 +80,29 @@ class Student {
         for(int i = 0; i < evaluationWithCriterion.size(); i++){
             if(evaluationWithCriterion.get(i).getOrigin().equals(evaluationOrigin)){
                 finalEvaluation = evaluationWithCriterion.get(i)
+>>>>>>> 2f06e3b14898e5fb67c15f95e609aa4fe42ff089
+            }
+        }else {
+            EvaluationsByCriterion newEvByCrit = new EvaluationsByCriterion(evaluationInstance.criterion)
+            newEvByCrit.addEvaluation(evaluationInstance)
+            newEvByCrit.save(flush: true)
+            this.addToCriteriaAndEvaluations(newEvByCrit)
+        }
+<<<<<<< HEAD
+        this.calcMedia()
+
+        /*
+        Criterion criterionCreated = Criterion.findByDescription(criterionName)
+
+        List<Evaluation> evaluationWithCriterion = Evaluation.findAllByCriterion(criterionCreated)
+        Evaluation finalEvaluation
+        for(int i = 0; i < evaluationWithCriterion.size(); i++){
+            if(evaluationWithCriterion.get(i).getOrigin().equals(evaluationOrigin)){
+                finalEvaluation = evaluationWithCriterion.get(i)
             }
         }
+=======
+>>>>>>> 2f06e3b14898e5fb67c15f95e609aa4fe42ff089
 
         def evaluationsByCriterionController = new EvaluationsByCriterionController()
         evaluationsByCriterionController.params << [criterion : criterionCreated]
@@ -104,12 +125,14 @@ class Student {
     }
 
     public EvaluationsByCriterion findEvaluationByCriterion(String criterionName){
-        for(int i =0; i<this.criteriaAndEvaluations.size(); i++){
-            if(this.criteriaAndEvaluations[i].criterion.getDescription().equals(criterionName)){
-                return this.criteriaAndEvaluations[i];
+        if (this.criteriaAndEvaluations != null) {
+            for(int i =0; i<this.criteriaAndEvaluations.size(); i++){
+                if(this.criteriaAndEvaluations[i].getCriterion().getDescription().equals(criterionName)){
+                    return this.criteriaAndEvaluations[i];
+                }
             }
+            return null
         }
-        return null
     }
 
     public void addEvaluationsByCriterion(EvaluationsByCriterion evCriterion){

@@ -2,29 +2,29 @@ package pages
 
 import geb.Page
 
-/**
- * Created by joao on 19/05/16.
- */
+/*
+ Created by joao on 19/05/16.
+*/
 class StudentConsultPage extends Page {
     static url = "/TA/student/search"
 
     static at = {
-        title ==~ /Consult Student/
+        title ==~ /Search Student/
     }
 
-    def static fillStudentSearch(login){
-        $("form").title = login
+    def fillStudentSearch(String parametros){
+        $("form").consult = parametros
     }
 
-    def static selectSearch(){
+    def selectSearch(){
         $("input", name: "search").click()
     }
 
-    def static selectStudent(){
-
+    def selectStudent(String name){
+        $("td", name: name).click()
     }
 
-    def static showStudentDetails(){
-
+    def boolean findSearchResult(){
+        return $("td", fieldValue: "login").isDisplayed()
     }
 }
