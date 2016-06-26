@@ -1,7 +1,6 @@
 import org.openqa.selenium.chrome.ChromeDriver
 
 environments {
-<<<<<<< HEAD
     // run as “grails -Dgeb.env=chrome test-app”
     // See: http://code.google.com/p/selenium/wiki/ChromeDriver
     chrome {
