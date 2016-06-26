@@ -20,19 +20,23 @@ Before () {
 }
 
 After () {
-    Report.list().each { relatorio ->
-        relatorio.delete(flush: true)
-    }
+    cleanEnvironment()
+    scenarioInterceptor.destroy ()
+    bindingUpdater.remove ()
+}
+
+def void cleanEnvironment() {
+    cleanList(Report.list())
     CriterionController criterionController = new CriterionController()
     Criterion.list().each { crit ->
         criterionController.delete(crit)
     }
-    EvaluationsByCriterion.list().each { evbc ->
-        evbc.delete(fush: true)
+    cleanList(EvaluationsByCriterion.list())
+    cleanList(Student.list())
+}
+
+def cleanList(List l) {
+    l.each { e ->
+        e.delete(flush: true)
     }
-    Student.list().each { s ->
-        s.delete(flush: true)
-    }
-    scenarioInterceptor.destroy ()
-    bindingUpdater.remove ()
 }
