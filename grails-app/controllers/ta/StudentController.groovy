@@ -97,21 +97,7 @@ class StudentController {
         }
         return true
     }
-    def addEvaToStudents(String criterionName, LinkedList<Evaluation> evaluations){
-
-        Student.listOrderByLogin().each { Student student ->
-            student.addEvaluation(evaluations.poll());
-        }
-    }
-    //PARA TESTE- CUCUMBER
-    public boolean addEvaluationToAllStudents() {
-        def evaluationInstance = new Evaluation(params);
-        Student.findAll().each { Student student ->
-            student.addEvaluation(evaluationInstance);
-            student.save flush: true
-        }
-        return true
-    }
+   //HAVIA CODIGO INUTIL AQUI
    //HAVIA CODIGO REPETIDO AQUI
 
 
