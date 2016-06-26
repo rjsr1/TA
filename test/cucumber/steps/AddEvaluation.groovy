@@ -174,24 +174,17 @@ Given(~/^I see the student "([^"]*)", login "([^"]*)" and the criterion "([^"]*)
 
         assert page.confirmCriterion(criterionName)
 
-        //to AddEvaluationToStudentPage
-        //at AddEvaluationToStudentPage
-
-        //date = formattedDate(criterionDate)
-        /*page.fillEvaluationDetails(criterionName, evaluationOrigin, evaluationDate, studentEvaluation)
-        page.selectAddEvaluationToStudent()
-
-        to EvaluationPage
-
-        assert page.confirmEvaluation(criterionName, evaluationOrigin, evaluationDate, studentEvaluation)*/
 }
 
 When(~/^I request the system to add the evaluation valued "([^"]*)" in the criterion "([^"]*)", from "([^"]*)", date "([^"]*)"$/) {
     String value, criterionName, evaluationOrigin, evaluationDate, studentName, studentLogin ->
         to AddEvaluationPage
         at AddEvaluationPage
-        def date = formattedDate(evaluationDate)
-        page.fillEvaluationDetails(value,evaluationOrigin,date,Criterion.findByDescription(criterionName).id)
+        page.chooseCriterion(criterionName)
+        page.chooseValue(value)
+        page.chooseOrigin(evaluationOrigin)
+        page.chooseEvaluationDate(evaluationDate)
+        assert page.selectCreateStudent()
 }
 
 Then(~/^I can see the evaluation valued "([^"]*)" in the criterion "([^"]*)", from "([^"]*)", date "([^"]*)" in the evaluation screen$/) {
