@@ -24,8 +24,15 @@ class StudentPage extends Page {
         $("tr").find("td").has("a",text: name).click()
     }
 
-    def selectStudentByLogin(String login){
+    def selectStudentByLogin(String login) {
         $("a", name: login).click()
+    }
+
+    boolean qtdStudentTable(int qtdStudent) {
+        boolean r = false
+        int qtdTable = $("tr").find("td").allElements().size()
+        if(qtdStudent == (qtdTable)/3) r = true
+        return r
     }
 }
 
