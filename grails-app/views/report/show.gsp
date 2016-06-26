@@ -27,7 +27,7 @@
 				<li class="fieldcontain">
 					<span id="name-label" class="property-label"><g:message code="report.name.label" default="Name" /></span>
 					
-						<span class="property-value" aria-labelledby="name-label"><g:fieldValue bean="${reportInstance}" field="name"/></span>
+						<span id = "n" class="property-value" aria-labelledby="name-label"><g:fieldValue bean="${reportInstance}" field="name"/></span>
 					
 				</li>
 				</g:if>
@@ -36,7 +36,7 @@
 				<li class="fieldcontain">
 					<span id="tipo-label" class="property-label"><g:message code="report.tipo.label" default="Tipo" /></span>
 					
-						<span class="property-value" aria-labelledby="tipo-label"><g:fieldValue bean="${reportInstance}" field="tipo"/></span>
+						<span id="t" class="property-value" aria-labelledby="tipo-label"><g:fieldValue bean="${reportInstance}" field="tipo"/></span>
 					
 				</li>
 				</g:if>
@@ -45,7 +45,7 @@
 				<li class="fieldcontain">
 					<span id="avaliacao-label" class="property-label"><g:message code="report.avaliacao.label" default="Avaliacao" /></span>
 					
-						<span class="property-value" aria-labelledby="avaliacao-label"><g:fieldValue bean="${reportInstance}" field="avaliacao"/></span>
+						<span id="a" class="property-value" aria-labelledby="avaliacao-label"><g:fieldValue bean="${reportInstance}" field="avaliacao"/></span>
 					
 				</li>
 				</g:if>
@@ -54,7 +54,7 @@
 				<li class="fieldcontain">
 					<span id="valor-label" class="property-label"><g:message code="report.valor.label" default="Valor" /></span>
 					
-						<span class="property-value" aria-labelledby="valor-label"><g:fieldValue bean="${reportInstance}" field="valor"/></span>
+						<span id="v" class="property-value" aria-labelledby="valor-label"><g:fieldValue bean="${reportInstance}" field="valor"/></span>
 					
 				</li>
 				</g:if>

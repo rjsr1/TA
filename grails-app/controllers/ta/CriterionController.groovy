@@ -67,6 +67,13 @@ class CriterionController {
             redirect(action: "show", id: criterionInstance.id)
         }
     }
+    public Criterion createAndSaveCriterion2() {
+        Criterion crit = new Criterion(params)
+        if(Criterion.findByDescription(crit.description) == null) {
+            crit.save(flush: true)
+        }
+        return crit
+    }
 
     public List<Criterion> getCriteriaList() {
         return Criterion.list()

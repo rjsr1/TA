@@ -34,7 +34,7 @@
 		<g:message code="report.valor.label" default="Valor" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:field name="valor" value="${fieldValue(bean: reportInstance, field: 'valor')}" required=""/>
+	<g:field type ="number" name="valor" value="${fieldValue(bean: reportInstance, field: 'valor')}" required=""/>
 
 </div>
 

@@ -4,9 +4,8 @@ import static org.springframework.http.HttpStatus.NOT_FOUND
 import static org.springframework.http.HttpStatus.OK
 
 class ReportController {
-    //static boolean needsUpdate
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [update: "PUT"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -16,12 +15,6 @@ class ReportController {
    def show(Report reportInstance){
        respond reportInstance
    }
-
-    def createSaveResetResponse(){
-        def report = new Report(params)
-        report.save(flush: true)
-        response.reset()
-    }
 
     def create(){
         respond new Report(params)
@@ -93,10 +86,6 @@ class ReportController {
             }
             '*'{ respond reportInstance, [status: OK] }
         }
-    }
-
-    def findByName(String nome){
-        return Report.findByName(nome)
     }
 
     def edit(Report reportInstance) {

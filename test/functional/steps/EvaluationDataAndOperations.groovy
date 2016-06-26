@@ -69,14 +69,11 @@ class EvaluationDataAndOperations{
 
     public static void createCritAndAddToStudents(String desc){
         def controller = new CriterionController()
-        Criterion criterion = new Criterion(desc);
-        controller.save(criterion)
-        controller.response.reset();
+        controller.params << [description : desc]
+        Criterion criterion = controller.createAndSaveCriterion2()
+        controller.response.reset()
         //def controller2 = new StudentController()
-        def EvaluationsByCriterion ec = new EvaluationsByCriterion(criterion)
-        for(Student student : Student.list()){
-            student.criterionsAndEvaluations.add(ec)
-        }
+
     }
 
 

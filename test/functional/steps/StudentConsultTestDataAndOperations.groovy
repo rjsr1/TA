@@ -21,6 +21,12 @@ class StudentConsultTestDataAndOperations {
         return studentInstance.login.equalsIgnoreCase(login)
     }
 
+    public static boolean compatibleSearch2(String loginA){
+        def controllerS = new StudentController()
+        def aluno = controllerS.searchStudent2(loginA)
+        return aluno.login.equalsIgnoreCase(loginA)
+    }
+
     public static void createAndSaveStudent(String name, String login){
         def controller = new StudentController()
         controller.params << [name:name, login:login]

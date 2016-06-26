@@ -33,7 +33,7 @@ class Report {
     static constraints = {
         name unique : true
         name nullable : false
-        tipo inList: ["Porcentagem","Média"], nullable: false
+        tipo inList: ["Porcentagem","Media"], nullable: false
         avaliacao inList: ["MA", "MPA", "MANA"]
     }
 

@@ -83,7 +83,6 @@ class StudentController {
         }
         media = media / Student.list().size()
         return mediaAluno >= media
-        // foi feita uma refatoraçao para simplificar
     }
 
     public boolean addEvaluationsToAllStudents(LinkedList<Evaluation> evaluationList) {
@@ -171,7 +170,6 @@ class StudentController {
         }
     }
 
-
     public double checkPorcentageEvaluationStudent(String evalValue, String loginA) {
         def student = Student.findByLogin(loginA)
         def contE = 0
@@ -179,8 +177,8 @@ class StudentController {
         int tamanho = 0;
         for (int i = 0; i < evaluationLists.size(); i++) {
             def evaluations = evaluationLists.get(i).evaluations;
+            tamanho += evaluations.size();
             for (int j = 0; j < evaluations.size(); j++) {
-                tamanho += evaluations.size();
                 if (evaluations.get(i).value == evalValue) {
                     contE++;
                 }
@@ -282,10 +280,22 @@ class StudentController {
         student.save flush: true
     }
 
+    def addEvaluation2(String login, Evaluation evaluationInstance) {
+        def student = Student.findByLogin(login)
+        student.addEvaluation(evaluationInstance)
+        student.save flush: true
+    }
+
     public Student searchStudent() {
         def studentInstance = Student.findByLogin(params)
         return studentInstance
     }
+
+    public Student searchStudent2(String login){
+        def studentInstance = Student.findByLogin(login)
+        return studentInstance
+    }
+
 
     public Student createStudent() {
         return new Student(params)
