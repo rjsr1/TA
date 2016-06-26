@@ -16,18 +16,24 @@ class Report {
         this.avaliacao = avaliacao
 
     }
-    /*def Report findByName(String name){
-        for(Report relatorio : Report.findAll()){
-            if(relatorio.name == name){
-              return relatorio
+
+    def fillReport() {
+        StudentController sc = new StudentController()
+        for (int i = 0; i < Student.list().size(); i++) {
+            for (Report report : Report.list()) {
+                if (report.tipo.equalsIgnoreCase("Porcentagem")) {
+                    sc.checkConditionPercentage(Student.list().get(i).login, report)
+                } else {
+                    sc.checkConditionAverage(Student.list().get(i), report)
+                }
             }
         }
-    }*/
+    }
 
     static constraints = {
         name unique : true
         name nullable : false
-        tipo inList: ["Porcentagem","Média"], nullable: false
+        tipo inList: ["Porcentagem","Media"], nullable: false
         avaliacao inList: ["MA", "MPA", "MANA"]
     }
 

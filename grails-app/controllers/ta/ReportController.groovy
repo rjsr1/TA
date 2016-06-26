@@ -4,9 +4,8 @@ import static org.springframework.http.HttpStatus.NOT_FOUND
 import static org.springframework.http.HttpStatus.OK
 
 class ReportController {
-    //static boolean needsUpdate
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [update: "PUT"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -16,12 +15,6 @@ class ReportController {
    def show(Report reportInstance){
        respond reportInstance
    }
-
-    def createSaveResetResponse(){
-        def report = new Report(params)
-        report.save(flush: true)
-        response.reset()
-    }
 
     def create(){
         respond new Report(params)
@@ -35,14 +28,6 @@ class ReportController {
         }
     }
 
-    public boolean saveRep(Report relatorio){
-        if(relatorio.findByName(relatorio.name)==null){
-                notFound()
-                return false//não é para renderizar nenhuma view porque esses relatórios não são feitos pelo usuário, apenas mostrados
-        }
-        relatorio.save(flush: true)
-        return true
-    }
     def delete(Report reportInstance) {
 
         if (reportInstance == null) {
@@ -70,7 +55,7 @@ class ReportController {
         if(reportInstance.hasErrors()){
             respond reportInstance.errors, view:'show'
         }
-
+        reportInstance.fillReport()
         reportInstance.save(flush: true)
         request.withFormat {
             form multipartForm {
@@ -101,10 +86,6 @@ class ReportController {
             }
             '*'{ respond reportInstance, [status: OK] }
         }
-    }
-
-    def findByName(String nome){
-        return Report.findByName(nome)
     }
 
     def edit(Report reportInstance) {
