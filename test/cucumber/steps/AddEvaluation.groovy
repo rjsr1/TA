@@ -199,14 +199,9 @@ Then(~/^I can see the evaluation valued "([^"]*)" in the criterion "([^"]*)", fr
         assert page.confirmStudent(studentName, studentLogin)
         page.selectCriterion(criterionName)
 
-        to CriterionPage
+        to ShowEvaluationByCriterionPage
 
-        assert page.confirmCriterion(criterionName)
-        page.selectEvaluation(evaluationOrigin, evaluationDate, newEvaluation)
-
-        to EvaluationPage
-
-        assert page.confirmEvaluation(criterionName, evaluationOrigin, evaluationDate)
+        assert page.checkForEvaluation(evaluationOrigin)
 }
 
 /*

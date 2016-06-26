@@ -29,15 +29,10 @@ class AddEvaluationPage extends Page {
     }
 
     def chooseEvaluationDate(Date evaluationDate){
-        def day = evaluationDate.getDay()
-        def month = evaluationDate.getMonth()
-        def year = evaluationDate.getYear()
-        $("select", name:"applicationDate_day").click()
-        $("select", name: "applicationDate_day").find("option").find{it.value().equals(day)}.click()
-        $("select", name:"applicationDate_month").click()
-        $("select", name: "applicationDate_month").find("option").find{it.value().equals(month)}.click()
-        $("select", name:"applicationDate_year").click()
-        $("select", name: "applicationDate_year").find("option").find{it.value().equals(year)}.click()
+        def day = (evaluationDate.getDay() < 10) ? "0" + evaluationDate.getDay() : evaluationDate.getDay();
+        def date_string = day + '-' + (evaluationDate.getMonth() + 1) + '-' + evaluationDate.getFullYear();
+        $("select", name:"applicationDate").click()
+        $("select", name:"applicationDate").value(date_string)
     }
     def chooseOrigin(String origin){
         $("select", name:"origin").click()
