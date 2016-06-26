@@ -73,25 +73,7 @@ Given(~'^the system has a student with name "([^"]*)" and login "([^"]*)"$') { S
 
 And(~'^that student has a "([^"]*)" evaluation in criterion "([^"]*)" with origin "([^"]*)" and applicationDate "([^"]*)"$') {
     String evaluationValue, String criterionDescription, String origin, String evaluationDate ->
-
-        boolean bool = false
-
-        def date = EvaluationDataAndOperations.formattedDate(evaluationDate)
-
-        CriterionTestDataAndOperations.createCriterion(criterionDescription)
-
-        EvaluationDataAndOperations.createEvaluation(evaluationValue, criterionDescription, origin, evaluationDate)
-
-        studentToCheck = Student.findByLogin(studentToCheck.login)
-
-        studentToCheck.findEvaluationByCriterion(criterionDescription).each {
-            List<Evaluation> l = it.evaluations
-            for (int i = 0; i < l.size(); i++) {
-                if (l[i].origin.equals(origin) && l[i].applicationDate.equals(date) && l[i].value.equals(evaluationValue)) bool = true
-            }
-        }
-
-        assert bool
+        assert CommonTestDataAndOperations.giveEvaluationToCriterion(evaluationValue, criterionDescription, origin, evaluationDate, studentToCheck.login)
 }
 
 String tempCritDesc

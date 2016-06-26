@@ -41,9 +41,7 @@ And(~'^this student has "([^"]*)" evaluation in criterion "([^"]*)"$') {
 
         to AddEvaluationPage
         at AddEvaluationPage
-        page.chooseCriterion(criterionDesc)
-        page.chooseValue(evaluationValue)
-        page.selectAddEvaluation()
+        addEvaluationToCriterion(criterionDesc, evaluationValue)
 }
 
 And(~'^has a "([^"]*)" evaluation in criterion "([^"]*)"$') {
@@ -55,9 +53,13 @@ And(~'^has a "([^"]*)" evaluation in criterion "([^"]*)"$') {
 
         to AddEvaluationPage
         at AddEvaluationPage
-        page.chooseCriterion(criterionDesc)
-        page.chooseValue(evaluationValue)
-        page.selectAddEvaluation()
+        addEvaluationToCriterion(criterionDesc, evaluationValue)
+}
+
+private void addEvaluationToCriterion(String criterionDesc, String evaluationValue) {
+    page.chooseCriterion(criterionDesc)
+    page.chooseValue(evaluationValue)
+    page.selectAddEvaluation()
 }
 
 String tempEval
@@ -98,25 +100,7 @@ Given(~'^the system has a student registered with name "([^"]*)" and login "([^"
 
 And(~'^this student has a "([^"]*)" evaluation in criterion "([^"]*)" with origin "([^"]*)" and applicationDate "([^"]*)"$') {
     String evaluationValue, String criterionDescription, String origin, String evaluationDate ->
-
-        boolean bool = false
-
-        def date = EvaluationDataAndOperations.formattedDate(evaluationDate)
-
-        CriterionTestDataAndOperations.createCriterion(criterionDescription)
-
-        EvaluationDataAndOperations.createEvaluation(evaluationValue, criterionDescription, origin, evaluationDate)
-
-        studentToCheck = Student.findByLogin(studentToCheck.login)
-
-        studentToCheck.findEvaluationByCriterion(criterionDescription).each {
-            List<Evaluation> l = it.evaluations
-            for (int i = 0; i < l.size(); i++) {
-                if (l[i].origin.equals(origin) && l[i].applicationDate.equals(date) && l[i].value.equals(evaluationValue)) bool = true
-            }
-        }
-
-        assert bool
+        assert CommonTestDataAndOperations.giveEvaluationToCriterion(evaluationValue, criterionDescription, origin, evaluationDate, studentToCheck.login)
 }
 
 String tempEvaluationValue, tempCriterionDescription, tempOrigin, tempName

@@ -70,6 +70,16 @@ class StudentController {
         }
     }
 
+    def List evaluate(String eval, int qtdEvaluations, double tempMedia) {
+        if (!eval.equals("--")) {
+            qtdEvaluations++
+            if (eval.equals("MA")) tempMedia += 9
+            else if (eval.equals("MPA")) tempMedia += 6
+            else tempMedia += 3
+        }
+        [qtdEvaluations, tempMedia]
+    }
+
     public boolean checkTotalAverage(double mediaAluno) {
         double media = 0
         for (Student student : Student.list()) {

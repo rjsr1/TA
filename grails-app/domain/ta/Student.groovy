@@ -26,6 +26,7 @@ class Student {
     }
 
     public void calcMedia() {
+        StudentController sc = new StudentController()
         int qtdEvaluations = 0
         double tempMedia = 0
         List<Evaluation> evaluationsInCriterion
@@ -33,12 +34,7 @@ class Student {
             evaluationsInCriterion = this.criteriaAndEvaluations[i].getEvaluations()
             for (int j = 0; j < evaluationsInCriterion.size(); j++) {
                 String eval = evaluationsInCriterion.get(j).value
-                if (!eval.equals("--")) {
-                    qtdEvaluations++
-                    if (eval.equals("MA")) tempMedia += 9
-                    else if (eval.equals("MPA")) tempMedia += 6
-                    else tempMedia += 3
-                }
+                (qtdEvaluations, tempMedia) = sc.evaluate(eval, qtdEvaluations, tempMedia)
             }
         }
         if (qtdEvaluations > 0) {
