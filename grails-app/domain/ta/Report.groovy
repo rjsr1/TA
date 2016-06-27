@@ -17,19 +17,6 @@ class Report {
 
     }
 
-    def fillReport() {
-        StudentController sc = new StudentController()
-        for (int i = 0; i < Student.list().size(); i++) {
-            for (Report report : Report.list()) {
-                if (report.tipo.equalsIgnoreCase("Porcentagem")) {
-                    sc.checkConditionPercentage(Student.list().get(i).login, report)
-                } else {
-                    sc.checkConditionAverage(Student.list().get(i), report)
-                }
-            }
-        }
-    }
-
     static constraints = {
         name unique : true
         name nullable : false

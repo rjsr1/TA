@@ -27,6 +27,16 @@ class ReportController {
             flash.message = message(code: 'default.updated.message', args:[message(code: 'Report.label', default: 'Report'), reportInstance.id])
         }
     }
+    def fillReport(Report reportInstance) {
+        StudentController sc = new StudentController()
+        for (int i = 0; i < Student.list().size(); i++) {
+            if (reportInstance.tipo.equalsIgnoreCase("Porcentagem")) {
+                sc.checkConditionPercentage(Student.list().get(i).login, reportInstance)
+            } else {
+                sc.checkConditionAverage(Student.list().get(i), reportInstance)
+            }
+        }
+    }
 
     def delete(Report reportInstance) {
 
@@ -55,7 +65,7 @@ class ReportController {
         if(reportInstance.hasErrors()){
             respond reportInstance.errors, view:'show'
         }
-        reportInstance.fillReport()
+        fillReport(reportInstance)
         reportInstance.save(flush: true)
         request.withFormat {
             form multipartForm {

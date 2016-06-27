@@ -54,7 +54,7 @@
 				<li class="fieldcontain">
 					<span id="valor-label" class="property-label"><g:message code="report.valor.label" default="Valor" /></span>
 					
-						<span id="v" class="property-value" aria-labelledby="valor-label"><g:fieldValue bean="${reportInstance}" field="valor"/></span>
+						<span class="property-value" aria-labelledby="valor-label"><g:fieldValue bean="${reportInstance}" field="valor"/></span>
 					
 				</li>
 				</g:if>

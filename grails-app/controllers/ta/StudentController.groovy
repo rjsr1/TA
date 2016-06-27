@@ -4,6 +4,8 @@ import org.apache.ivy.core.settings.Validatable
 
 import java.text.SimpleDateFormat
 import java.lang.*
+import ta.Evaluation
+import ta.EvaluationsByCriterion
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -28,7 +30,7 @@ class StudentController {
     public void checkConditionPercentage(String loginA, Report reportInstance) {
         double aux = checkPercentageEvaluationStudent(reportInstance.avaliacao, loginA)
         def controllerRepo = new ReportController()
-        if (aux >= reportInstance.valor) {
+        if (aux*100 >= reportInstance.valor) {
             Student student = Student.findByLogin(loginA)
             controllerRepo.addStudentToReport(student, reportInstance)
         }
@@ -58,29 +60,15 @@ class StudentController {
         return contE / tamanho
     }
 
-    /*public double averageOneStudent(Student student) {
-        int geralMANA = 0
-        int geralMPA = 0
-        int geralMA = 0
-        int tamanho = 0
-        double media
-        def critevaluationsList = student.criteriaAndEvaluations
-        for (int i = 0; i < critevaluationsList.size(); i++) {
-            List<Evaluation> evaluations = critevaluationsList.get(i).getEvaluations()
-            for (int j = 0; evaluations.size(); j++) {
-                tamanho += evaluations.size()
-                if (evaluations.get(i).value.equalsIgnoreCase("MANA")) {
-                    geralMANA += 3
-                } else if (evaluations.get(i).value.equalsIgnoreCase("MPA")) {
-                    geralMPA += 6
-                } else {
-                    geralMA += 9
-                }
+    def updateAllAverages() {
+        Student.list().each {
+            List<EvaluationsByCriterion> cae = it.criteriaAndEvaluations
+            for (int i = 0; i < cae.size(); i++) {
+                cae[i].doMedia()
             }
+            it.calcMedia()
         }
-        media = (geralMA + geralMPA + geralMANA) / tamanho
-        return media
-    }*/
+    }
 
     public boolean checkTotalAverage(double mediaAluno) {
         double media = 0
@@ -93,11 +81,9 @@ class StudentController {
         } else {
             return false
         }
-
     }
 
     public boolean addEvaluationsToAllStudents(LinkedList<Evaluation> evaluationList) {
-        //List<Student> students = Student.list();
         for(Report reports : Report.list()){
             reports.students = []
         }
@@ -118,12 +104,36 @@ class StudentController {
         return true
     }
 
+    public void addEvaluationsToStudentTests(String studentLogin, LinkedList<Evaluation> evaluationList){
+        for (int i = 0; i < Student.list().size(); i++) {
+            if(Student.list().get(i).login.equals(studentLogin)){
+                Student.list().get(i).addEvaluation(evaluationList.get(0))
+                Student.list().get(i).save(
+                        flush: true,
+                        failOnError: true
+                )
+            }
+        }
+    }
+
+    public boolean evaluationTests(String studentLogin, String evaluationOrigin){
+        def evaluation = Evaluation.findByOrigin(evaluationOrigin)
+        List<Evaluation> listEval = new LinkedList<Evaluation>()
+        listEval.add(evaluation)
+        //addEvaluationsToAllStudents(studentLogin, listEval)
+        addEvaluationsToStudentTests(studentLogin, listEval)
+    }
+
     public boolean addEvaluationToAllStudents() {
         def evaluationInstance = new Evaluation(params);
         for (Student student : Student.findAll()) {
             student.addEvaluation(evaluationInstance);
             student.save flush: true
         }
+        /*for(Student student : Student.list()){
+            student.addEvaluation(evaluationInstance.get(i));
+            student.save flush : true
+        }*/
         return true
     }
 
@@ -141,6 +151,13 @@ class StudentController {
         student.save flush: true
     }
 
+    public void addEvaluationTests(String studentLogin, String criterionName, String evaluationOrigin){
+        Student student = Student.findByLogin(studentLogin)
+        Evaluation evaluation = Evaluation.findByCriterion(Criterion.findByDescription(criterionName))
+        //student.addEvaluation(null, criterionName, evaluationOrigin)
+        student.addEvaluation(evaluation)
+        student.save flush : true
+    }
 
     public void addCriterionToAllStudent(String description) {
         def students = Student.findAll();
@@ -149,24 +166,6 @@ class StudentController {
             Student student = students.get(i);
             student.addEvaluationsByCriterion(evCriterion)
         }
-    }
-
-
-    public double checkPorcentageEvaluationStudent(String evalValue, String loginA) {
-        def student = Student.findByLogin(loginA)
-        def contE = 0
-        def evaluationLists = student.criteriaAndEvaluations;
-        int tamanho = 0;
-        for (int i = 0; i < evaluationLists.size(); i++) {
-            def evaluations = evaluationLists.get(i).evaluations;
-            for (int j = 0; j < evaluations.size(); j++) {
-                tamanho += evaluations.size();
-                if (evaluations.get(i).value == evalValue) {
-                    contE++;
-                }
-            }
-        }
-        return contE / tamanho;
     }
 
 
@@ -205,24 +204,25 @@ class StudentController {
         }
     }
 
-    public int countAllStudents() {
-        return Student.findAll().size();
-    }
-
-    /* COMENTADO POR RODRIGO CALEGARIO 28/05/16
-    public boolean saveStudent(Student student){
-        if(Student.findByLogin(student.login) ==null){
-            student.save flush: true
-            return true
-        }else{
-            return false
+    public boolean updateEvaluation(String studentLogin, String newEvaluation, String criterionName, String evaluationOrigin){
+        Student updatedStudent = Student.findByLogin(studentLogin)
+        for(int i = 0; i < updatedStudent.criteriaAndEvaluations.size(); i++){
+            if(updatedStudent.criteriaAndEvaluations.get(i).getCriterion().getDescription().equals(criterionName)){
+                List<Evaluation> evaluationsInCriterion = updatedStudent.criteriaAndEvaluations.get(i).getEvaluations();
+                for(int j = 0; j < evaluationsInCriterion.size(); j++){
+                    //if(evaluationsInCriterion.get(j) != null) {
+                        if (evaluationsInCriterion.get(j).getOrigin().equals(evaluationOrigin)) {
+                            evaluationsInCriterion.get(j).setValue(newEvaluation)
+                        }
+                    //}
+                }
+            }
         }
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> ArthurLapprand-master
-    */
+    public int countAllStudents(){
+        return Student.findAll().size();
+    }
 
     public boolean saveStudent() {
         def studentInstance = new Student(params);
@@ -233,9 +233,26 @@ class StudentController {
         return false
     }
 
-    public Student createAndSaveStudent() {
-        Student student = new Student(params)
-        if (Student.findByLogin(student.getLogin()) == null) {
+    @Transactional
+    def createAndSaveStudent() {
+        Student studentInstance = new Student(params)
+        if (Student.findByLogin(studentInstance.getLogin()) == null) {
+            if (studentInstance.hasErrors()) {
+                respond studentInstance.errors, view: 'create'
+                return
+            }
+            if(!studentInstance.save(flush: true)){
+                render(view: "create", model: [studentInstance: studentInstance])
+                return
+            }
+            flash.message = message(code: 'default.created.message', args: [message(code: 'student.label', default: 'Student'), studentInstance.id])
+            redirect(action: "show", id: studentInstance.id)
+        }
+    }
+
+    public Student createAndSaveStudent2(String studentName, String studentLogin){
+        Student student = new Student(studentName, studentLogin)
+        if(Student.findByLogin(studentLogin) == null){
             student.save flush: true
         }
         return student
@@ -247,33 +264,10 @@ class StudentController {
         student.save flush: true
     }
 
-    def addEvaluation2(String login, Evaluation evaluationInstance) {
-        def student = Student.findByLogin(login)
-        student.addEvaluation(evaluationInstance)
-        student.save flush: true
-    }
-
-/*    def addCriterion(Criterion criterionInstance){
-        for(Student student : Student.findAll()){
-=======
-    def addCriterion(Criterion criterionInstance) {
-        for (Student student : Student.findAll()) {
->>>>>>> ArthurLapprand-master
-            student.criteriaAndEvaluations.add(criterionInstance)
-            save(student)
-        }
-    }*/
-
     public Student searchStudent() {
         def studentInstance = Student.findByLogin(params)
         return studentInstance
     }
-
-    public Student searchStudent2(String login){
-        def studentInstance = Student.findByLogin(login)
-        return studentInstance
-    }
-
 
     public Student createStudent() {
         return new Student(params)
@@ -281,6 +275,11 @@ class StudentController {
 
     def show(Student studentInstance) {
         respond studentInstance
+    }
+
+    public Student getStudent(String studentLogin){
+        Student studentFound = Student.findByLogin(studentLogin)
+        return studentFound
     }
 
     def create() {
@@ -351,67 +350,62 @@ class StudentController {
         }
     }
 
-            @Transactional
-            def delete(Student studentInstance) {
+    @Transactional
+    def delete(Student studentInstance) {
 
-                if (studentInstance == null) {
-                    notFound()
-                    return
-                }
+        if (studentInstance == null) {
+            notFound()
+            return
+        }
 
-                studentInstance.delete flush: true
+        studentInstance.delete flush: true
 
-                request.withFormat {
-                    form multipartForm {
-                        flash.message = message(code: 'default.deleted.message', args: [message(code: 'student.label', default: 'Student'), studentInstance.id])
-                        redirect action: "index", method: "GET"
-                    }
-                    '*' { render status: NO_CONTENT }
-                }
-            }
-
-            protected void notFound() {
-                request.withFormat {
-                    form multipartForm {
-                        flash.message = message(code: 'default.not.found.message', args: [message(code: 'student.label', default: 'Student'), params.id])
-                        redirect action: "index", method: "GET"
-                    }
-                    '*' { render status: NOT_FOUND }
-                }
-            }
-
-//    public Student searchStudent (){
-//        def student = Student.findByLogin(params)
-//        return student
-//    }
-
-
-            public void groupSave(List<Student> group) {
-                for (int i = 0; i < group.size(); i++) {
-                    group.get(i).save flush: true;
-                }
-            }
-
-            def saveGroup() {
-                String group = params.name
-                String[] students = group.split(";")
-                for (int i = 0; i < students.size(); i++) {
-                    List<String> token1 = students[i].tokenize(':')
-                    String info = token1.get(0)
-                    List<String> token2 = info.tokenize('(')
-                    String name = token2.get(0)
-                    String login = token2.get(1)
-                    Student novo = new Student(name, login)
-                    novo.calcMedia()
-                }
-
-                if (Student.findByLogin(novo.getLogin()) == null) {
-                    novo.save flush: true
-                }
-                flash.message = message(code: 'default.created.message', args: [message(code: students.length, 'student.label', default: 'Student')])
-
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'student.label', default: 'Student'), studentInstance.id])
                 redirect action: "index", method: "GET"
             }
+            '*' { render status: NO_CONTENT }
+        }
+    }
+
+    protected void notFound() {
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'student.label', default: 'Student'), params.id])
+                redirect action: "index", method: "GET"
+            }
+            '*' { render status: NOT_FOUND }
+        }
+    }
+
+    public void groupSave(List<Student> group) {
+        for (int i = 0; i < group.size(); i++) {
+            group.get(i).save flush: true;
+        }
+    }
+
+    def saveGroup() {
+        String group = params.name
+        String[] students = group.split(";")
+        for (int i = 0; i < students.size(); i++) {
+            List<String> token1 = students[i].tokenize(':')
+            String info = token1.get(0)
+            List<String> token2 = info.tokenize('(')
+            String name = token2.get(0)
+            String login = token2.get(1)
+            Student novo = new Student(name, login)
+            novo.calcMedia()
+
+            if (Student.findByLogin(novo.getLogin()) == null) {
+                novo.save flush: true
+            }
+        }
+
+        flash.message = message(code: 'default.created.message', args: [message(code: students.length, 'student.label', default: 'Student')])
+
+        redirect action: "index", method: "GET"
+    }
 
     def createGroup() {
         respond view: 'createGroup'
