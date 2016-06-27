@@ -1,5 +1,6 @@
 package pages.StudentPages
 
+
 import geb.Page
 
 /**
@@ -19,5 +20,9 @@ class ShowStudentPage extends Page {
 
     def selectCriterionByDesc(String desc) {
         $("td").find("a", name: desc).click()
+    }
+
+    def selectCriterion(String name){
+        $("tr").find("td").has("a",text: name).click()
     }
 }

@@ -20,3 +20,4 @@ class ShowEvaluationByCriterionPage extends Page {
         return !($("td").has("a", name: value))
     }
 }
+

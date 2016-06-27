@@ -13,23 +13,9 @@ class CriterionController {
         respond Criterion.list(params), model:[criterionInstanceCount: Criterion.count()]
     }
 
-    /*def addEvaluation(Criterion criterionInstance,Evaluation evaluationInstance){
-        criterionInstance.evaluations.add(evaluationInstance)
-        edit(criterionInstance)
-    }*/
-
-    public Criterion createCriterion(){
+    public createCriterion(){
         Criterion criterion = new Criterion(params)
-        return criterion
-    }
-
-    public boolean saveCriterion(Criterion criterion){
-        if(Criterion.findByDescription(criterion.description) == null){
-            criterion.save flush: true
-            return true
-        }else{
-            return false
-        }
+        criterion.save flush : true
     }
 
     def show(Criterion criterionInstance) {

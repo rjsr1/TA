@@ -10,6 +10,7 @@ import ta.EvaluationsByCriterion
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
+@SuppressWarnings("GroovyMissingReturnStatement")
 @Transactional(readOnly = true)
 class StudentController {
 
@@ -20,23 +21,6 @@ class StudentController {
     def index(Integer max) {
         params.max = Math.min(max ?: 100, 100)
         respond Student.list(params), model: [studentInstanceCount: Student.count()]
-    }
-
-
-    public void checkConditionPercentage(String loginA, Report reportInstance) {
-        double aux = checkPercentageEvaluationStudent(reportInstance.avaliacao, loginA)
-        def controllerRepo = new ReportController()
-        if (aux >= reportInstance.valor) {
-            Student student = Student.findByLogin(loginA)
-            controllerRepo.addStudentToReport(student, reportInstance)
-        }
-    }
-
-    public void checkConditionAverage(Student student, Report reportInstance) {
-        def controllerRepo = new ReportController()
-        if (checkTotalAverage(student.average)) {
-            controllerRepo.addStudentToReport(student, reportInstance)
-        }
     }
 
     public double checkPercentageEvaluationStudent(String evalValue, String loginA) {
@@ -139,34 +123,20 @@ class StudentController {
         return true
     }
 
-    public void addEvaluationToStudent(String login) {
-        def student = Student.findByLogin(login);
-        def evaluationInstance = new Evaluation(params);
-        student.addEvaluation(evaluationInstance);
-        student.save flush: true
+    public void checkConditionPercentage(String loginA, Report reportInstance) {
+        double aux = checkPercentageEvaluationStudent(reportInstance.avaliacao, loginA)
+        def controllerRepo = new ReportController()
+        if (aux >= reportInstance.valor) {
+            Student student = Student.findByLogin(loginA)
+            controllerRepo.addStudentToReport(student, reportInstance)
+        }
+
     }
 
-    public void addEvaluationToStudent2(String login, Date applicationDate) {
-        def student = Student.findByLogin(login)
-        def eval = Evaluation.findByApplicationDate(applicationDate)
-        student.addEvaluation(eval)
-        student.save flush: true
-    }
-
-    public void addEvaluationTests(String studentLogin, String criterionName, String evaluationOrigin){
-        Student student = Student.findByLogin(studentLogin)
-        Evaluation evaluation = Evaluation.findByCriterion(Criterion.findByDescription(criterionName))
-        //student.addEvaluation(null, criterionName, evaluationOrigin)
-        student.addEvaluation(evaluation)
-        student.save flush : true
-    }
-
-    public void addCriterionToAllStudent(String description) {
-        def students = Student.findAll();
-        for (int i = 0; i < students.size(); i++) {
-            def evCriterion = new EvaluationsByCriterion(Criterion.findByDescription(description));
-            Student student = students.get(i);
-            student.addEvaluationsByCriterion(evCriterion)
+    public void checkConditionAverage(Student student, Report reportInstance) {
+        def controllerRepo = new ReportController()
+        if (checkTotalAverage(student.average)) {
+            controllerRepo.addStudentToReport(student, reportInstance)
         }
     }
 
@@ -185,39 +155,6 @@ class StudentController {
             }
         }
         return contE / tamanho;
-    }
-
-
-    public List<Evaluation> countStudentsEvaluated(String criterionName, String origin, String dateInString) {
-        List<Evaluation> returningValue = new LinkedList<>();
-        def evaluation = new Evaluation(origin, null, EvaluationController.formattedDate(dateInString), criterionName);
-        def students = Student.findAll();
-        for (int i = 0; i < students.size(); i++) {
-            returningValue.add(students.get(i).findEvaluationByCriterion(criterionName).findSpecificEvaluation(evaluation))
-        }
-        return returningValue;
-    }
-
-    public boolean checkRedundantEvaluationAllStudents(String criterionName, String origin, String dateInString) {
-        def evaluation = new Evaluation(origin, null, EvaluationController.formattedDate(dateInString), criterionName)
-        List<Student> students = Student.findAll();
-        for (int i = 0; i < students.size(); i++) {
-            def evCriterion = students.get(i).findEvaluationByCriterion(criterionName);
-            if (evCriterion.findAll { it -> evCriterion.findSpecificEvaluation(evaluation) != null }.size() > 1) {
-                return false
-            }
-        }
-        return true
-    }
-
-    public boolean checkEvaluationsAllStudents(String criterionName, String origin, String dateInString) {
-        def evaluation = new Evaluation(origin, null, EvaluationController.formattedDate(dateInString), criterionName);
-        List<Student> students = Student.findAll()
-        for (int i = 0; i < students.size(); i++) {
-            def evCriterion = students.get(i).findEvaluationByCriterion(criterionName);
-            return evCriterion.findSpecificEvaluation(evaluation) != null
-            //foi feita uma refatoraçao para simplificar
-        }
     }
 
     public boolean updateEvaluation(String studentLogin, String newEvaluation, String criterionName, String evaluationOrigin){
@@ -266,20 +203,6 @@ class StudentController {
         }
     }
 
-    public Student createAndSaveStudent2(String studentName, String studentLogin){
-        Student student = new Student(studentName, studentLogin)
-        if(Student.findByLogin(studentLogin) == null){
-            student.save flush: true
-        }
-        return student
-    }
-
-    def addEvaluation(Student studentInstance, String criterionName, Evaluation evaluationInstance) {
-        def student = studentInstance;
-        student.addEvaluation(evaluationInstance);
-        student.save flush: true
-    }
-
     def addEvaluation2(String login, Evaluation evaluationInstance) {
         def student = Student.findByLogin(login)
         student.addEvaluation(evaluationInstance)
@@ -287,7 +210,7 @@ class StudentController {
     }
 
     public Student searchStudent() {
-        def studentInstance = Student.findByLogin(params)
+        def studentInstance = Student.findByLogin(params.login)
         return studentInstance
     }
 

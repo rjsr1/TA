@@ -65,27 +65,6 @@ class Student {
             this.addToCriteriaAndEvaluations(newEvByCrit)
         }
         this.calcMedia()
-
-        /*
-        Criterion criterionCreated = Criterion.findByDescription(criterionName)
-
-        List<Evaluation> evaluationWithCriterion = Evaluation.findAllByCriterion(criterionCreated)
-        Evaluation finalEvaluation
-        for(int i = 0; i < evaluationWithCriterion.size(); i++){
-            if(evaluationWithCriterion.get(i).getOrigin().equals(evaluationOrigin)){
-                finalEvaluation = evaluationWithCriterion.get(i)
-            }
-        }
-
-        def evaluationsByCriterionController = new EvaluationsByCriterionController()
-        evaluationsByCriterionController.params << [criterion : criterionCreated]
-        EvaluationsByCriterion evaluationsByCriterionCreated = evaluationsByCriterionController.createAndSaveEvaluationsByCriterion()
-        evaluationsByCriterionCreated.addEvaluation(*//*evaluationInstance*//*finalEvaluation)
-
-        this.criterionsAndEvaluations.add(evaluationsByCriterionCreated)
-
-        evaluationsByCriterionController.response.reset()
-        */
     }
 
 
