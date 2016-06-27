@@ -190,45 +190,45 @@ class EvaluationDataAndOperations{
         return saved
     }
 
-    //MEUS METODOS
-
-    public static void createAndGiveEvaluation(String studentName, String studentLogin, String studentEvaluation, String criterionName, String evaluationOrigin, String evaluationDate){
-        def student = new StudentController()
-        //student.params << [login: studentLogin] << [name: studentName]
-        Student studentCreated = student.createAndSaveStudent2(studentName, studentLogin)
-
-        def criterion = new CriterionController()
-        criterion.params << [description : criterionName]
-        Criterion criterionCreated = criterion.createAndSaveCriterion()
-
-        Date applicationDate = formattedDate(evaluationDate)
-
-        def evaluation = new EvaluationController()
-        evaluation.params << [/*description : criterionName,*/ origin : evaluationOrigin, value : studentEvaluation, applicationDate : applicationDate, criterion : criterionCreated]
-        Evaluation evaluationCreated = evaluation.createAndSaveEvaluationWithoutParam(/*evaluationOrigin, studentEvaluation, evaluationDate*/)
-        //student.addEvaluationTests(studentLogin, criterionName, evaluationOrigin)
-        //student.addEvaluationToStudent2(studentLogin, applicationDate)
-        student.evaluationTests(studentLogin, evaluationOrigin)
-        student.response.reset()
-        evaluation.response.reset()
-        criterion.response.reset()
-    }
-
-    public static void updateEvaluationInStudent(String studentLogin, String newEvaluation, String criterionName, String evaluationOrigin){
-        def student = new StudentController()
-        student.updateEvaluation(studentLogin, newEvaluation, criterionName, evaluationOrigin)
-        student.response.reset()
-    }
-
-    public static Student getStudent(String studentLogin){
-        def student = new StudentController()
-        return student.getStudent(studentLogin)
-    }
-
-    public static boolean compatibleTo(Student stu1, Student stu2){
-        boolean compatible = false
-        if(stu1.name.equals(stu2.name) && stu1.login.equals(stu2.login) && stu1.criteriaAndEvaluations == stu2.criteriaAndEvaluations) compatible = true
-        return compatible
-    }
+//    //MEUS METODOS
+//
+//    public static void createAndGiveEvaluation(String studentName, String studentLogin, String studentEvaluation, String criterionName, String evaluationOrigin, String evaluationDate){
+//        def student = new StudentController()
+//        //student.params << [login: studentLogin] << [name: studentName]
+//        Student studentCreated = student.createAndSaveStudent2(studentName, studentLogin)
+//
+//        def criterion = new CriterionController()
+//        criterion.params << [description : criterionName]
+//        Criterion criterionCreated = criterion.createAndSaveCriterion()
+//
+//        Date applicationDate = formattedDate(evaluationDate)
+//
+//        def evaluation = new EvaluationController()
+//        evaluation.params << [/*description : criterionName,*/ origin : evaluationOrigin, value : studentEvaluation, applicationDate : applicationDate, criterion : criterionCreated]
+//        Evaluation evaluationCreated = evaluation.createAndSaveEvaluationWithoutParam(/*evaluationOrigin, studentEvaluation, evaluationDate*/)
+//        //student.addEvaluationTests(studentLogin, criterionName, evaluationOrigin)
+//        //student.addEvaluationToStudent2(studentLogin, applicationDate)
+//        student.evaluationTests(studentLogin, evaluationOrigin)
+//        student.response.reset()
+//        evaluation.response.reset()
+//        criterion.response.reset()
+//    }
+//
+//    public static void updateEvaluationInStudent(String studentLogin, String newEvaluation, String criterionName, String evaluationOrigin){
+//        def student = new StudentController()
+//        student.updateEvaluation(studentLogin, newEvaluation, criterionName, evaluationOrigin)
+//        student.response.reset()
+//    }
+//
+//    public static Student getStudent(String studentLogin){
+//        def student = new StudentController()
+//        return student.getStudent(studentLogin)
+//    }
+//
+//    public static boolean compatibleTo(Student stu1, Student stu2){
+//        boolean compatible = false
+//        if(stu1.name.equals(stu2.name) && stu1.login.equals(stu2.login) && stu1.criteriaAndEvaluations == stu2.criteriaAndEvaluations) compatible = true
+//        return compatible
+//    }
 }
 
