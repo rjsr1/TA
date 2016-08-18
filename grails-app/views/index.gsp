@@ -11,9 +11,9 @@
 				padding: 1em;
 				width: 12em;
 				float: left;
-				-moz-box-shadow: 0px 0px 1.25em #ccc;
-				-webkit-box-shadow: 0px 0px 1.25em #ccc;
-				box-shadow: 0px 0px 1.25em #ccc;
+				-moz-box-shadow: 0 0 1.25em #ccc;
+				-webkit-box-shadow: 0 0 1.25em #ccc;
+				box-shadow: 0 0 1.25em #ccc;
 				-moz-border-radius: 0.6em;
 				-webkit-border-radius: 0.6em;
 				border-radius: 0.6em;
@@ -113,7 +113,9 @@
 				<h2>Available Controllers:</h2>
 				<ul>
 					<g:each var="c" in="${grailsApplication.controllerClasses.sort { it.fullName } }">
-						<li class="controller"><g:link controller="${c.logicalPropertyName}">${c.fullName}</g:link></li>
+						<g:if test="${c.fullName!='ta.EvaluationsByCriterionController'}">
+							<li class="controller"><g:link controller="${c.logicalPropertyName}">${c.fullName}</g:link></li>
+						</g:if>
 					</g:each>
 				</ul>
 			</div>
