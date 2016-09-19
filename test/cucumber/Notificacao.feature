@@ -20,7 +20,7 @@ Feature: Notification
 #
 #Controller
   Scenario: Update a report
-    Given that report with name "70% of evaluations are MANA", evaluation "MANA", type "Porcentagem", value "0.7" is in the system
+    Given that report with name "70% of evaluations are MANA", evaluation "MANA", type "Porcentagem", value "70" is in the system
    When I add the evaluation "MANA" in the criterion "blah blah" with origin "Mini-Test" and date "26/04/2016" to the student with name "Saulo Henrique Dias" and the login "shd2"
     Then 70% of the student "shd2" evaluations are composed of "MANA"
     And the report "70% of evaluations are MANA" is updated adding the student with login "shd2"

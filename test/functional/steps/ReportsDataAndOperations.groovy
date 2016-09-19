@@ -15,12 +15,12 @@ class ReportsDataAndOperations {
         def contS = new StudentController()
         def repo = Report.findByAvaliacao(evalType)
        double aux = contS.checkPercentageEvaluationStudent(evalType,loginA)
-        /*if(aux>=repo.valor){
+        /*if(aux>=repo.valor){ Refatoração para simplificar
             needsUpdate = true
         }else{
             needsUpdate = false
         }*/
-        return needsUpdate = (aux>=repo.valor)
+        return needsUpdate = (aux*100>=repo.valor)
     }
 
 //#if($the report "" is updated)
