@@ -7,7 +7,7 @@ import geb.Page
 class CreateReportsPage extends Page {
     static url = "/TA/report/create"
     static at ={
-        title ==~/Criar Report/
+        title ==~/Create Report/
     }
 
     def fillReportDetails(String name, String type, String eval, double value){

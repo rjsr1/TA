@@ -7,7 +7,7 @@ import geb.Page
 class IndexReport extends Page {
     static url = "/TA/report/index"
     static at={
-        title ==~/Report Listagem/
+        title ==~/Report List/
     }
 
     def selectReport(String name){

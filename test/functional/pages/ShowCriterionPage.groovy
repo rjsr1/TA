@@ -11,4 +11,12 @@ class ShowCriterionPage extends Page {
     static at = {
         title ==~ /Show Criterion/
     }
+
+    def boolean selectDeleteCriterion() {
+        boolean b = false
+        if ($("input", class: "delete").isDisplayed()) b = true
+        if(b) {
+            withConfirm {$("input", class: "delete").click()}
+        }
+    }
 }

@@ -3,6 +3,11 @@ package support
 import geb.Browser
 import geb.binding.BindingUpdater
 import org.codehaus.groovy.grails.test.support.GrailsTestRequestEnvironmentInterceptor
+import ta.Criterion
+import ta.CriterionController
+import ta.Evaluation
+import ta.EvaluationsByCriterion
+import ta.Student
 
 import static cucumber.api.groovy.Hooks.*
 import ta.Report
@@ -15,14 +20,23 @@ Before () {
 }
 
 After () {
-<<<<<<< HEAD
-    Report.list().each { relatorio ->
-        relatorio.delete(flush: true)
-=======
-    Vaga.list().each { vaga ->
-        vaga.delete(flush:true)
->>>>>>> 399b655284b0cf25700ea5b4a77c1f3fb45ec05b
-    }
+    cleanEnvironment()
     scenarioInterceptor.destroy ()
     bindingUpdater.remove ()
+}
+
+def void cleanEnvironment() {
+    cleanList(Report.list())
+    CriterionController criterionController = new CriterionController()
+    Criterion.list().each { crit ->
+        criterionController.delete(crit)
+    }
+    cleanList(EvaluationsByCriterion.list())
+    cleanList(Student.list())
+}
+
+def cleanList(List l) {
+    l.each { e ->
+        e.delete(flush: true)
+    }
 }

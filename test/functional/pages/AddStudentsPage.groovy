@@ -16,7 +16,6 @@ class AddStudentsPage extends Page{
     def fillStudentDetails(String name, String login) {
         $("form").name = name
         $("form").login = login
-
     }
 
     def selectAddStudent() {

@@ -1,4 +1,3 @@
-#@ignore
 Feature: Notification
     As an administrator
     I want to be notified about the students issues without searching for their historic

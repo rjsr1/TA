@@ -17,7 +17,7 @@
 	</ul>
 </div>
 <div id="show-student" class="content scaffold-show" role="main">
-	<h1><g:message code="default.show.label" args="[entityName]" /></h1>
+	<h1>Student details</h1>
 	<g:if test="${flash.message}">
 		<div class="message" role="status">${flash.message}</div>
 	</g:if>
@@ -42,7 +42,6 @@
 		</g:if>
 
 		<div id="list-evaluation" class="content scaffold-list" role="main">
-			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>
@@ -58,13 +57,13 @@
 				</thead>
 				<tbody>
 				<g:each in="${studentInstance?.criteriaAndEvaluations}" status="i" var="criteriaAndEvaluations">
-					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-						​
-						<td>${fieldValue(bean: criteriaAndEvaluations, field: "criterion.description")}</td>
-						​
-						<td>${fieldValue(bean: criteriaAndEvaluations, field: "criterionAverage")}</td>
-						​
-					</tr>
+						<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+							​
+							<td><g:link name="${criteriaAndEvaluations.criterion.description}" controller="evaluationsByCriterion" action="show" id="${criteriaAndEvaluations.id}">${fieldValue(bean: criteriaAndEvaluations, field: "criterion.description")}</g:link></td>
+							​
+							<td>${fieldValue(bean: criteriaAndEvaluations, field: "criterionAverage")}</td>
+							​
+						</tr>
 				</g:each>
 				</tbody>
 			</table>
