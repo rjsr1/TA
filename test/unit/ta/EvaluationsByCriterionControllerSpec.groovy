@@ -1,25 +1,5 @@
 package ta
 
-<<<<<<< HEAD
-import grails.test.mixin.TestFor
-import spock.lang.Specification
-
-/**
- * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
- */
-@TestFor(EvaluationsByCriterionController)
-class EvaluationsByCriterionControllerSpec extends Specification {
-
-    def setup() {
-    }
-
-    def cleanup() {
-    }
-
-    void "test something"() {
-=======
-
-
 import grails.test.mixin.*
 import spock.lang.*
 
@@ -166,6 +146,5 @@ class EvaluationsByCriterionControllerSpec extends Specification {
             EvaluationsByCriterion.count() == 0
             response.redirectedUrl == '/evaluationsByCriterion/index'
             flash.message != null
->>>>>>> ArthurLapprand-master
     }
 }

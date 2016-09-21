@@ -8,7 +8,7 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class EvaluationsByCriterionController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [update: "PUT"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -17,6 +17,20 @@ class EvaluationsByCriterionController {
 
     def show(EvaluationsByCriterion evaluationsByCriterionInstance) {
         respond evaluationsByCriterionInstance
+    }
+
+    def showEvaluationsByCriterion(EvaluationsByCriterion evalByCritInstance) {
+        for (int i = 0; i < evalByCritInstance.size(); i++) {
+            if (evalByCritInstance[i].criterion.description.equals(params.cri)) {
+                respond studentInstance.criteriaAndEvaluations
+            }
+        }
+    }
+
+    def updateAllCriterionAverages() {
+        EvaluationsByCriterion.list().each {
+            it.doMedia()
+        }
     }
 
     def create() {

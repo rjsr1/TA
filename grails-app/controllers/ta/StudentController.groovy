@@ -10,37 +10,17 @@ import ta.EvaluationsByCriterion
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
+@SuppressWarnings("GroovyMissingReturnStatement")
 @Transactional(readOnly = true)
 class StudentController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [update: "PUT"]
 
-    public static Date formattedDate(String dateInString) {
-        def formatter = new SimpleDateFormat("dd/mm/yyyy");
-        Date date = formatter.parse(dateInString);
-        return date;
-    }
+    //formattedDate foi removido pois ele estava no EvaluationController
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
+        params.max = Math.min(max ?: 100, 100)
         respond Student.list(params), model: [studentInstanceCount: Student.count()]
-    }
-
-
-    public void checkConditionPercentage(String loginA, Report reportInstance) {
-        double aux = checkPercentageEvaluationStudent(reportInstance.avaliacao, loginA)
-        def controllerRepo = new ReportController()
-        if (aux*100 >= reportInstance.valor) {
-            Student student = Student.findByLogin(loginA)
-            controllerRepo.addStudentToReport(student, reportInstance)
-        }
-    }
-
-    public void checkConditionAverage(Student student, Report reportInstance) {
-        def controllerRepo = new ReportController()
-        if (checkTotalAverage(student.average)) {
-            controllerRepo.addStudentToReport(student, reportInstance)
-        }
     }
 
     public double checkPercentageEvaluationStudent(String evalValue, String loginA) {
@@ -70,17 +50,23 @@ class StudentController {
         }
     }
 
+    def List evaluate(String eval, int qtdEvaluations, double tempMedia) {
+        if (!eval.equals("--")) {
+            qtdEvaluations++
+            if (eval.equals("MA")) tempMedia += 9
+            else if (eval.equals("MPA")) tempMedia += 6
+            else tempMedia += 3
+        }
+        [qtdEvaluations, tempMedia]
+    }
+
     public boolean checkTotalAverage(double mediaAluno) {
         double media = 0
         for (Student student : Student.list()) {
             media += student.average
         }
         media = media / Student.list().size()
-        if (mediaAluno >= media) {
-            return true
-        } else {
-            return false
-        }
+        return mediaAluno >= media
     }
 
     public boolean addEvaluationsToAllStudents(LinkedList<Evaluation> evaluationList) {
@@ -137,70 +123,20 @@ class StudentController {
         return true
     }
 
-    public void addEvaluationToStudent(String login) {
-        def student = Student.findByLogin(login);
-        def evaluationInstance = new Evaluation(params);
-        student.addEvaluation(evaluationInstance);
-        student.save flush: true
-    }
-
-    public void addEvaluationToStudent2(String login, Date applicationDate) {
-        def student = Student.findByLogin(login)
-        def eval = Evaluation.findByApplicationDate(applicationDate)
-        student.addEvaluation(eval)
-        student.save flush: true
-    }
-
-    public void addEvaluationTests(String studentLogin, String criterionName, String evaluationOrigin){
-        Student student = Student.findByLogin(studentLogin)
-        Evaluation evaluation = Evaluation.findByCriterion(Criterion.findByDescription(criterionName))
-        //student.addEvaluation(null, criterionName, evaluationOrigin)
-        student.addEvaluation(evaluation)
-        student.save flush : true
-    }
-
-    public void addCriterionToAllStudent(String description) {
-        def students = Student.findAll();
-        for (int i = 0; i < students.size(); i++) {
-            def evCriterion = new EvaluationsByCriterion(Criterion.findByDescription(description));
-            Student student = students.get(i);
-            student.addEvaluationsByCriterion(evCriterion)
+    public void checkConditionPercentage(String loginA, Report reportInstance) {
+        double aux = checkPercentageEvaluationStudent(reportInstance.avaliacao, loginA)
+        def controllerRepo = new ReportController()
+        if (aux*100 >= reportInstance.valor) {
+            Student student = Student.findByLogin(loginA)
+            controllerRepo.addStudentToReport(student, reportInstance)
         }
+
     }
 
-
-    public List<Evaluation> countStudentsEvaluated(String criterionName, String origin, String dateInString) {
-        List<Evaluation> returningValue = new LinkedList<>();
-        def evaluation = new Evaluation(origin, null, this.formattedDate(dateInString), criterionName);
-        def students = Student.findAll();
-        for (int i = 0; i < students.size(); i++) {
-            returningValue.add(students.get(i).findEvaluationByCriterion(criterionName).findSpecificEvaluation(evaluation))
-        }
-        return returningValue;
-    }
-
-    public boolean checkRedundantEvaluationAllStudents(String criterionName, String origin, String dateInString) {
-        def evaluation = new Evaluation(origin, null, this.formattedDate(dateInString), criterionName)
-        List<Student> students = Student.findAll();
-        for (int i = 0; i < students.size(); i++) {
-            def evCriterion = students.get(i).findEvaluationByCriterion(criterionName);
-            if (evCriterion.findAll { it -> evCriterion.findSpecificEvaluation(evaluation) != null }.size() > 1) {
-                return false
-            }
-        }
-        return true
-    }
-
-    public boolean checkEvaluationsAllStudents(String criterionName, String origin, String dateInString) {
-        def evaluation = new Evaluation(origin, null, this.formattedDate(dateInString), criterionName);
-        List<Student> students = Student.findAll()
-        for (int i = 0; i < students.size(); i++) {
-            def evCriterion = students.get(i).findEvaluationByCriterion(criterionName);
-            if (evCriterion.findSpecificEvaluation(evaluation) != null) {
-                return true;
-            } else {
-                return false
-            }
+    public void checkConditionAverage(Student student, Report reportInstance) {
+        def controllerRepo = new ReportController()
+        if (checkTotalAverage(student.average)) {
+            controllerRepo.addStudentToReport(student, reportInstance)
         }
     }
 
@@ -250,24 +186,22 @@ class StudentController {
         }
     }
 
-    public Student createAndSaveStudent2(String studentName, String studentLogin){
-        Student student = new Student(studentName, studentLogin)
-        if(Student.findByLogin(studentLogin) == null){
-            student.save flush: true
-        }
-        return student
-    }
-
-    def addEvaluation(Student studentInstance, String criterionName, Evaluation evaluationInstance) {
-        def student = studentInstance;
-        student.addEvaluation(evaluationInstance);
+    def addEvaluation2(String login, Evaluation evaluationInstance) {
+        def student = Student.findByLogin(login)
+        student.addEvaluation(evaluationInstance)
         student.save flush: true
     }
 
     public Student searchStudent() {
-        def studentInstance = Student.findByLogin(params)
+        def studentInstance = Student.findByLogin(params.login)
         return studentInstance
     }
+
+    public Student searchStudent2(String login){
+        def studentInstance = Student.findByLogin(login)
+        return studentInstance
+    }
+
 
     public Student createStudent() {
         return new Student(params)
@@ -305,7 +239,7 @@ class StudentController {
     }
 
     @Transactional
-    def save(Student studentInstance) {
+    def savee(Student studentInstance) {
         if (studentInstance == null) {
             notFound()
             return
@@ -385,15 +319,36 @@ class StudentController {
         }
     }
 
+    public String espacoBranco(String texto){
+        for (int i = 0; i < texto.length(); i++){
+            if(texto.charAt(i) == 160) {
+                texto = texto.substring(i+1)
+            }else{
+                break
+            }
+        }
+        for (int i = texto.length()-1; i > 0; i--){
+            if(texto.charAt(i) == 32) {
+                texto = texto.substring(0, texto.length()-1)
+            }else{
+                break
+            }
+        }
+        return texto
+    }
+
     def saveGroup() {
         String group = params.name
         String[] students = group.split(";")
         for (int i = 0; i < students.size(); i++) {
             List<String> token1 = students[i].tokenize(':')
+            if(token1.size() <= 1) break
             String info = token1.get(0)
             List<String> token2 = info.tokenize('(')
             String name = token2.get(0)
+            name = espacoBranco(name)
             String login = token2.get(1)
+            login = login.replaceAll(" ","")
             Student novo = new Student(name, login)
             novo.calcMedia()
 
@@ -402,10 +357,10 @@ class StudentController {
             }
         }
 
-        flash.message = message(code: 'default.created.message', args: [message(code: students.length, 'student.label', default: 'Student')])
-
         redirect action: "index", method: "GET"
     }
+
+
 
     def createGroup() {
         respond view: 'createGroup'

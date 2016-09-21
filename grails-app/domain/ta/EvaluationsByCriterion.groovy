@@ -21,24 +21,23 @@ class EvaluationsByCriterion {
 
     public void addEvaluation(Evaluation evaluationInstance) {
         addToEvaluations(evaluationInstance)
-        this.criterionAverage = doMedia();
+        doMedia();
     }
 
-    public double doMedia(){
-        double mediaCriterio = 0;
+    public void doMedia(){
+        StudentController sc = new StudentController()
         double tempMedia = 0;
         int qtdEvaluations = 0;
-        for(int i = 0; i < evaluations.size(); i++){
-            String eval = evaluations[i].value
-            if (eval.equals("MA")) tempMedia += 9
-            else if (eval.equals("MPA")) tempMedia += 6
-            else tempMedia += 3
-            qtdEvaluations++
+        if (evaluations.size() > 0) {
+            for(int i = 0; i < evaluations.size(); i++){
+                String eval = evaluations[i].value
+                (qtdEvaluations, tempMedia) = sc.evaluate(eval, qtdEvaluations, tempMedia)
+            }
+            this.criterionAverage = (tempMedia/qtdEvaluations);
+        } else {
+            this.criterionAverage = 0
         }
-        mediaCriterio = (tempMedia/qtdEvaluations);
-        return mediaCriterio;
     }
-
 
     /*  ------------------------
       | MÉTODOS USADOS EM TESTES |
