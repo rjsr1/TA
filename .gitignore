@@ -121,7 +121,8 @@ hs_err_pid*
 /*DB.*
 /cobertura.ser
 .DS_Store
-/target/
+/target/*
+.idea/*
 .idea/workspace.xml
 GebConfig.groovy
 grails-app/conf/hibernate/
@@ -138,4 +139,5 @@ web-app/META-INF/
 web-app/css/
 web-app/images/
 web-app/js/
-.slcache/
+.slcache/*
+chromedrivers/
