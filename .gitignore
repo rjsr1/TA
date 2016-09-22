@@ -117,6 +117,7 @@ hs_err_pid*
 
 ###### Others ##########
 .settings
+.idea/copyright/*
 /*.log
 /*DB.*
 /cobertura.ser
