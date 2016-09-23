@@ -76,7 +76,7 @@
 				<g:each in="${reportInstance?.students}" status="i" var="studentInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
-						<td><g:link action="show" id="${studentInstance.id}">${fieldValue(bean: studentInstance, field: "name")}</g:link></td>
+						<td><g:link controller="student" action="show" id="${studentInstance.id}">${fieldValue(bean: studentInstance, field: "name")}</g:link></td>
 
 						<td>${fieldValue(bean: studentInstance, field: "login")}</td>
 

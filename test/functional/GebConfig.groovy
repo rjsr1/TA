@@ -1,12 +1,20 @@
 import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.firefox.FirefoxDriver
 
 environments {
-    // run as “grails -Dgeb.env=chrome test-app”
-    // See: http://code.google.com/p/selenium/wiki/ChromeDriver
     chrome {
-        driver = { File file = new File("chromedrivers/chromedriver"); //configurar com o enderço correto do chromedriver.
-            System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
-            new ChromeDriver(); }
+        if (!System.getProperty("webdriver.chrome.driver")) {
+            def osPath = System.getProperty("os.name").toLowerCase().split(" ").first()
+
+            def webDriver = new File("chromedrivers", osPath).listFiles({ File dir, String name -> !dir.hidden } as FilenameFilter).first()
+
+            System.setProperty("webdriver.chrome.driver", webDriver.getAbsolutePath())
+        }
+
+        driver = { new ChromeDriver() }
     }
-    quitCachedDriverOnShutdown = false
+
+    firefox {
+        driver = { new FirefoxDriver() }
+    }
 }

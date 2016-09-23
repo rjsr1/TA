@@ -126,7 +126,7 @@ class StudentController {
     public void checkConditionPercentage(String loginA, Report reportInstance) {
         double aux = checkPercentageEvaluationStudent(reportInstance.avaliacao, loginA)
         def controllerRepo = new ReportController()
-        if (aux >= reportInstance.valor) {
+        if (aux*100 >= reportInstance.valor) {
             Student student = Student.findByLogin(loginA)
             controllerRepo.addStudentToReport(student, reportInstance)
         }
@@ -138,23 +138,6 @@ class StudentController {
         if (checkTotalAverage(student.average)) {
             controllerRepo.addStudentToReport(student, reportInstance)
         }
-    }
-
-    public double checkPorcentageEvaluationStudent(String evalValue, String loginA) {
-        def student = Student.findByLogin(loginA)
-        def contE = 0
-        def evaluationLists = student.criteriaAndEvaluations;
-        int tamanho = 0;
-        for (int i = 0; i < evaluationLists.size(); i++) {
-            def evaluations = evaluationLists.get(i).evaluations;
-            tamanho += evaluations.size();
-            for (int j = 0; j < evaluations.size(); j++) {
-                if (evaluations.get(i).value == evalValue) {
-                    contE++;
-                }
-            }
-        }
-        return contE / tamanho;
     }
 
     public boolean updateEvaluation(String studentLogin, String newEvaluation, String criterionName, String evaluationOrigin){
