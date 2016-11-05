@@ -23,8 +23,14 @@
 			<table>
 			<thead>
 					<tr>
+
+						<g:sortableColumn property="origin" title="${message(code: 'evaluation.origin.label', default: 'Origin')}" />
 					
-						<g:sortableColumn property="title" title="${message(code: 'evaluation.title.label', default: 'Title')}" />
+						<g:sortableColumn property="value" title="${message(code: 'evaluation.value.label', default: 'Value')}" />
+					
+						<th><g:message code="evaluation.criterion.label" default="Criterion" /></th>
+					
+						<g:sortableColumn property="applicationDate" title="${message(code: 'evaluation.applicationDate.label', default: 'Application Date')}" />
 					
 					</tr>
 				</thead>
@@ -32,7 +38,13 @@
 				<g:each in="${evaluationInstanceList}" status="i" var="evaluationInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<td><g:link action="show" id="${evaluationInstance.id}">${fieldValue(bean: evaluationInstance, field: "title")}</g:link></td>
+						<td><g:link action="show" id="${evaluationInstance.id}">${fieldValue(bean: evaluationInstance, field: "origin")}</g:link></td>
+					
+						<td>${fieldValue(bean: evaluationInstance, field: "value")}</td>
+					
+						<td>${fieldValue(bean: evaluationInstance, field: "criterion.description")}</td>
+					
+						<td><g:formatDate date="${evaluationInstance.applicationDate}" /></td>
 					
 					</tr>
 				</g:each>
