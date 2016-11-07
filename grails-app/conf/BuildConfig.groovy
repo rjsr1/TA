@@ -50,9 +50,12 @@ grails.project.dependency.resolution = {
         test "org.seleniumhq.selenium:selenium-support:2.52.0"
         test "org.seleniumhq.selenium:selenium-chrome-driver:2.52.0"
         test "org.seleniumhq.selenium:selenium-firefox-driver:2.52.0"
+
     }
 
     plugins {
+        //plugin email
+        compile ":novamail:0.2.2"
         // plugins for the build system only
         build ":tomcat:7.0.55"
 
