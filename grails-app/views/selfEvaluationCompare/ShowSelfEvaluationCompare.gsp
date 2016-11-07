@@ -13,6 +13,12 @@
 </head>
 
 <body>
+<g:each in="studentList" var="student">
+    <tr>Nome: ${student.name}</tr>
+
+
+
+</g:each>
 
 </body>
 </html>
