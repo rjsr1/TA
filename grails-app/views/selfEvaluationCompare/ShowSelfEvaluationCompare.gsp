@@ -13,8 +13,9 @@
 </head>
 
 <body>
-<g:each in="studentList" var="student">
-    <tr>Nome: ${student.name}</tr>
+<g:each in="studentList" var="student" status="i">
+    <tr>${student}</tr>
+    <tr>    </tr>
 
 
 
