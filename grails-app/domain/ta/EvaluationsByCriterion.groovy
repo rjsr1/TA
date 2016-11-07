@@ -24,16 +24,16 @@ class EvaluationsByCriterion {
         doMedia();
     }
 
-    public void doMedia(){
+    public doMedia = { ->
         StudentController sc = new StudentController()
         double tempMedia = 0;
         int qtdEvaluations = 0;
         if (evaluations.size() > 0) {
-            for(int i = 0; i < evaluations.size(); i++){
+            for (int i = 0; i < evaluations.size(); i++) {
                 String eval = evaluations[i].value
                 (qtdEvaluations, tempMedia) = sc.evaluate(eval, qtdEvaluations, tempMedia)
             }
-            this.criterionAverage = (tempMedia/qtdEvaluations);
+            this.criterionAverage = (tempMedia / qtdEvaluations);
         } else {
             this.criterionAverage = 0
         }
