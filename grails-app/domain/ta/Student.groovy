@@ -5,7 +5,6 @@ class Student {
     String login;
     List criteriaAndEvaluations;
     double average;
-    String email;
     Map<String,Integer> selfEvaluations;  //adicionado enquanto nao tem preencher autoavaliacao
 
     static hasMany = [criteriaAndEvaluations:EvaluationsByCriterion]
@@ -26,7 +25,7 @@ class Student {
         this.login = login;
         this.criteriaAndEvaluations = []
         this.selfEvaluations=[]
-        this.email="temporario"
+
     }
 
     public void calcMedia() {
