@@ -9,6 +9,21 @@ class ShowSelfEvaluationCompare extends Page{
         title ==~ /Show Self Evaluation/
     }
 
+    def boolean findStudent(String nome){
+         $("th").text()==nome
+    }
+    def boolean findColumm(String conteudo){
+        $("td").text()==conteudo
+
+    }
+
+    def boolean findRow(String nota){
+        $("tr").text()==nota
+    }
+
+
+
+
 
 
 

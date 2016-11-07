@@ -11,11 +11,14 @@ class SelfEvaluationCompare extends Page{
         title ==~ /Self Evaluation/
     }
     static content={
-        Comparebutton(to:ShowSelfEvaluationCompare){String nome-> $("a",text:nome)}
 
+        compareButton(to:ShowSelfEvaluationCompare){$("a","Compare Self-Evaluation")}
+            }
+
+    def CompareSelfEvaluation(String s){
+        $(Name:s).click()
 
     }
-
 
 
 
