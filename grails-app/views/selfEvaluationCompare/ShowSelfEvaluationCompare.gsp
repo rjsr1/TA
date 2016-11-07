@@ -13,13 +13,33 @@
 </head>
 
 <body>
-<g:each in="studentList" var="student" status="i">
-    <tr>${student}</tr>
-    <tr>    </tr>
+<table style="width:100%">
+    <tr>
+        <th>    </th>
+        <g:each in="${studentListInstance[0].criteriaAndEvaluations}" var="EvalByCriterion">
+            <th>${EvalByCriterion.criterion.description}</th>
+        </g:each>
+    </tr>
+    <tr>
+        <th>    </th>
+        <g:each in="${studentListInstance[0].criteriaAndEvaluations}" var="index">
+        <th>A|AA</th>
+    </g:each>
+    </tr>
+    <g:each in="${studentListInstance}" var="student">
+        <tr>
+            <th>${student.name}</th>
+            <g:each in="${student.criteriaAndEvaluations}" var="eval">
+            <th> ${eval.criterionAverage}|${eval.criterionAverage}</th>
+        </g:each>
+        </tr>
 
 
+    </g:each>
 
-</g:each>
+
+</table>
+
 
 </body>
 </html>
