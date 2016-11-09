@@ -3,13 +3,16 @@ package ta
 class Student {
     String name;
     String login;
+    List criteriaAndEvaluations;
     double average;
-    List criteriaAndEvaluations
+    Map<String,Integer> selfEvaluations;  //adicionado enquanto nao tem preencher autoavaliacao
+
     static hasMany = [criteriaAndEvaluations:EvaluationsByCriterion]
 
     static constraints = {
         name blank : false
         login unique : true, blank:false;
+
     }
 
     static mapping = {
@@ -20,7 +23,9 @@ class Student {
     public Student(String name, String login){
         this.name = name;
         this.login = login;
-        this.criteriaAndEvaluations = [];
+        this.criteriaAndEvaluations = []
+        this.selfEvaluations=[]
+
     }
 
     public void calcMedia() {
