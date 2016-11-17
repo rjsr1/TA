@@ -30,11 +30,14 @@
         <tr>
             <th>${student.name}</th>
             <g:each in="${student.criteriaAndEvaluations}" var="eval">
-               <g:if test="${eval.criterionAverage<s.selfEvaluations[eval.criterion.description]}">
-                   <th style="color: #cc0000">${eval.criterionAverage}|${eval.criterionAverage}</th>
+
+               <g:if test="${eval.criterionAverage<student.selfEvaluations[eval.criterion.description]}">
+                   <th style="color: #cc0000">${eval.criterionAverage}|${(student.selfEvaluations.find {it->
+                       it.criterion.description=eval.description}).criterion.criterionAverage}</th>
             </g:if>
                 <g:else>
-                    <th style="color: #006dba">${eval.criterionAverage}|${eval.criterionAverage}</th>
+                    <th style="color: #006dba">${eval.criterionAverage}|${(student.selfEvaluations.find {it->
+                        it.criterion.description=eval.description}).criterion.criterionAverage}</th>
                 </g:else>
         </g:each>
         </tr>

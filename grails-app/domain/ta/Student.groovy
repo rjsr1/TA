@@ -5,7 +5,7 @@ class Student {
     String login;
     List criteriaAndEvaluations;
     double average;
-    Map<String,Integer> selfEvaluations;  //adicionado enquanto nao tem preencher autoavaliacao
+    List selfEvaluationsByCriterion;  //adicionado enquanto nao tem preencher autoavaliacao
 
     static hasMany = [criteriaAndEvaluations:EvaluationsByCriterion]
 
@@ -24,7 +24,7 @@ class Student {
         this.name = name;
         this.login = login;
         this.criteriaAndEvaluations = []
-        this.selfEvaluations=[]
+        this.selfEvaluationsByCriterion=[]
 
     }
 
@@ -96,5 +96,10 @@ class Student {
         if(!this.findEvaluationByCriterion(evCriterion.getCriterion().getDescription())){
             this.addToCriteriaAndEvaluations(evCriterion);
         }
+    }
+
+    public void addSelfEvaluationByCriterion(SelfEvaluaitonByCriterion sec){
+        this.selfEvaluationsByCriterion<<sec
+
     }
 }
