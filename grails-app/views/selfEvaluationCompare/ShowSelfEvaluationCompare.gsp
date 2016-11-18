@@ -23,23 +23,28 @@
     <tr>
         <th>    </th>
         <g:each in="${studentListInstance[0].criteriaAndEvaluations}" var="index">
-        <th>A|AA</th>
-    </g:each>
+            <th>A|AA</th>
+        </g:each>
     </tr>
     <g:each in="${studentListInstance}" var="student">
         <tr>
             <th>${student.name}</th>
             <g:each in="${student.criteriaAndEvaluations}" var="eval">
+                <g:each in="${student.selfEvaluationsByCriterion}" var="self">
 
-               <g:if test="${eval.criterionAverage<student.selfEvaluations[eval.criterion.description]}">
-                   <th style="color: #cc0000">${eval.criterionAverage}|${(student.selfEvaluations.find {it->
-                       it.criterion.description=eval.description}).criterion.criterionAverage}</th>
-            </g:if>
-                <g:else>
-                    <th style="color: #006dba">${eval.criterionAverage}|${(student.selfEvaluations.find {it->
-                        it.criterion.description=eval.description}).criterion.criterionAverage}</th>
-                </g:else>
-        </g:each>
+                    <g:if test="${eval.criterion.description==self.criterion.description}">
+
+
+                        <g:if test="${eval.criterionAverage<self.criterionAverage}">
+                            <th style="color: #cc0000">${eval.criterionAverage}|${self.criterionAverage}</th>
+                        </g:if>
+                        <g:else>
+                            <th style="color: #006dba">${eval.criterionAverage}|${self.criterionAverage}</th>
+                        </g:else>
+                    </g:if>
+
+                </g:each>
+            </g:each>
         </tr>
 
 
@@ -47,7 +52,5 @@
 
 
 </table>
-
-
 </body>
 </html>
