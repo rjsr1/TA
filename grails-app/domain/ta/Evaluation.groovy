@@ -6,7 +6,7 @@ class Evaluation {
     Date applicationDate;
     Criterion criterion;
     static constraints = {
-        origin inList :["Test","Mini-Test","Form","Final"], blank: false
+        origin inList :["Test","Mini-Test","Form","Final","SelfEvaluation"], blank: false
         value inList :["MA","MPA","MANA","--"], blank :false
         criterion nullable : false
     }

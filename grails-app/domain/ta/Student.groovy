@@ -5,9 +5,11 @@ class Student {
     String login;
     List criteriaAndEvaluations;
     double average;
-    Map<String,Integer> selfEvaluations;  //adicionado enquanto nao tem preencher autoavaliacao
+    List selfEvaluationsByCriterion;
 
-    static hasMany = [criteriaAndEvaluations:EvaluationsByCriterion]
+
+    static hasMany = [criteriaAndEvaluations:EvaluationsByCriterion,criteriaAndSelfEvaluations:EvaluationsByCriterion]
+
 
     static constraints = {
         name blank : false
@@ -24,7 +26,7 @@ class Student {
         this.name = name;
         this.login = login;
         this.criteriaAndEvaluations = []
-        this.selfEvaluations=[]
+        this.selfEvaluationsByCriterion=[]
 
     }
 
@@ -92,9 +94,22 @@ class Student {
         }
     }
 
-    public void addEvaluationsByCriterion(EvaluationsByCriterion evCriterion){
-        if(!this.findEvaluationByCriterion(evCriterion.getCriterion().getDescription())){
-            this.addToCriteriaAndEvaluations(evCriterion);
+
+
+    public void addSelfEvaluation(Evaluation evaluationInstance){
+        if(this.findEvaluationByCriterion(evaluationInstance.getCriterion().getDescription()) != null) {
+            for (int i = 0; i < this.criteriaAndSelfEvaluations.size(); i++) {
+                if (this.criteriaAndSelfEvaluations[i].getCriterion().getDescription().equals(evaluationInstance.criterion.description)) {
+                    this.criteriaAndSelfEvaluations[i].addEvaluation(evaluationInstance)
+                }
+            }
+        }else {
+            EvaluationsByCriterion newEvByCrit = new EvaluationsByCriterion(evaluationInstance.criterion)
+            newEvByCrit.addEvaluation(evaluationInstance)
+            newEvByCrit.save(flush: true)
+            this.addToCriteriaAndSelfEvaluations(newEvByCrit)
         }
+
     }
+
 }
