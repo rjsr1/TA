@@ -107,8 +107,10 @@ class Student {
             EvaluationsByCriterion newEvByCrit = new EvaluationsByCriterion(evaluationInstance.criterion)
             newEvByCrit.addEvaluation(evaluationInstance)
             newEvByCrit.save(flush: true)
+            newEvByCrit.doMedia
             this.addToCriteriaAndSelfEvaluations(newEvByCrit)
         }
+
 
     }
 

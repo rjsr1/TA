@@ -28,7 +28,7 @@
     </tr>
     <g:each in="${studentListInstance}" var="student">
         <tr>
-            <th>${student.name}</th>
+            <th id=${student.name} >${student.name}</th>
             <g:each in="${student.criteriaAndEvaluations}" var="eval">
                 <g:each in="${student.selfEvaluationsByCriterion}" var="self">
 
