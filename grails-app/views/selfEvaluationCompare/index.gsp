@@ -13,7 +13,7 @@
 </head>
 <body>
 <g:link controller="SelfEvaluationCompare" action="ShowSelfEvaluationCompare">
-    <button type="button">Compare Self-Evaluation </button>
+    <button type="button">Compare Self-Evaluation</button>
 </g:link>
 </body>
 </html>

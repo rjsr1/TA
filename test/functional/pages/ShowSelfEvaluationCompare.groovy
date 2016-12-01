@@ -6,15 +6,14 @@ import geb.Page
 class ShowSelfEvaluationCompare extends Page{
     static url ="TA/ShowSelfEvaluationCompare"
     static at ={
-        title ==~ /Show Self Evaluation/
+        title ==~ /Self-Evaluation Compare Table/
     }
 
     def boolean findStudent(String nome){
-         $("th").text()==nome
+         $("th",id:nome).text()==nome
     }
     def boolean findColumm(String conteudo){
         $("td").text()==conteudo
-
     }
 
     def boolean findRow(String nota){
